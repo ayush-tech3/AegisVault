@@ -1,0 +1,29 @@
+{
+  "name": "midnight-privacy-dapp-root",
+  "version": "1.0.0",
+  "description": "Midnight Level 3 Submission: Private Voting (VeilVote) - Zero-Knowledge Secret Ballot Governance",
+  "private": true,
+  "workspaces": [
+    "contract",
+    "frontend"
+  ],
+  "scripts": {
+    "install:all": "npm install",
+    "test": "npm run test --workspace=contract",
+    "test:contract": "npm run test --workspace=contract",
+    "build": "npm run build --workspace=contract && npm run build --workspace=frontend",
+    "build:frontend": "npm run build --workspace=frontend",
+    "dev": "npm run dev --workspace=frontend",
+    "lint": "npm run lint --workspace=frontend"
+  },
+  "keywords": [
+    "midnight",
+    "zero-knowledge",
+    "compact",
+    "zk-snark",
+    "private-voting",
+    "dapp"
+  ],
+  "author": "Ayush Kumar",
+  "license": "MIT"
+}

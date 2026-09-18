@@ -1,0 +1,19 @@
+# Node modules
+node_modules/
+.npm
+
+# Build outputs
+dist/
+build/
+.turbo
+
+# Environment & local files
+.env
+.env.local
+*.log
+
+# Editor & OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
