@@ -3,9 +3,10 @@ import { Navbar } from './components/Navbar.tsx';
 import { ProposalCard } from './components/ProposalCard.tsx';
 import { CastVoteModal } from './components/CastVoteModal.tsx';
 import { CreateProposalModal } from './components/CreateProposalModal.tsx';
+import { ConnectWalletModal } from './components/ConnectWalletModal.tsx';
 import { PrivacyInspector } from './components/PrivacyInspector.tsx';
 import { ComplianceBadge } from './components/ComplianceBadge.tsx';
-import { midnightClient, SEED_VOTERS } from './services/midnight-client.ts';
+import { midnightClient, SEED_VOTERS, WalletProviderType } from './services/midnight-client.ts';
 import { Proposal, VoteTally, VoterProfile, LedgerLog } from './types/index.ts';
 import { Shield, Sparkles, Activity, Cpu, AlertCircle, RefreshCw } from 'lucide-react';
 
@@ -16,7 +17,7 @@ export function App() {
   const [nullifiers, setNullifiers] = useState<string[]>([]);
   const [currentVoter, setCurrentVoter] = useState<VoterProfile>(SEED_VOTERS[0]);
   const [isConnected, setIsConnected] = useState(true);
-  const [isLace, setIsLace] = useState(false);
+  const [walletType, setWalletType] = useState<WalletProviderType>('demo');
   const [isLoading, setIsLoading] = useState(true);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
@@ -24,6 +25,7 @@ export function App() {
   const [votingProposal, setVotingProposal] = useState<Proposal | null>(null);
   const [inspectingProposal, setInspectingProposal] = useState<Proposal | null>(null);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
 
   useEffect(() => {
     async function loadData() {
@@ -50,7 +52,7 @@ export function App() {
     setNullifiers(midnightClient.getNullifiers());
     setCurrentVoter(midnightClient.getConnectedVoter());
     setIsConnected(midnightClient.isWalletConnected());
-    setIsLace(midnightClient.isUsingLace());
+    setWalletType(midnightClient.getWalletType());
   };
 
   const handleSelectVoter = (voter: VoterProfile) => {
@@ -59,16 +61,22 @@ export function App() {
     showToast(`Switched active voter identity to ${voter.name}`);
   };
 
-  const handleConnectWallet = async () => {
-    await midnightClient.connectLace();
+  const handleConnectFreighter = async () => {
+    const voter = await midnightClient.connectFreighter();
     refreshData();
-    showToast('Midnight Wallet Connected Successfully');
+    showToast(`Freighter Wallet Connected (${voter.address.slice(0, 4)}...${voter.address.slice(-4)})`);
+  };
+
+  const handleConnectDemo = (voter?: VoterProfile) => {
+    const target = midnightClient.connectDemo(voter);
+    refreshData();
+    showToast(`Demo Prover Connected as ${target.name}`);
   };
 
   const handleDisconnectWallet = () => {
     midnightClient.disconnect();
     refreshData();
-    showToast('Wallet disconnected. Connect wallet to vote or create proposals.');
+    showToast('Wallet disconnected. Click "Connect Wallet" to reconnect with Freighter or Demo Wallet.');
   };
 
   const handleCastVote = async (proposalId: string, choiceIndex: number) => {
@@ -120,10 +128,10 @@ export function App() {
       <Navbar
         currentVoter={currentVoter}
         isConnected={isConnected}
+        walletType={walletType}
         onSelectVoter={handleSelectVoter}
-        onConnectWallet={handleConnectWallet}
+        onConnectWallet={() => setIsWalletModalOpen(true)}
         onDisconnectWallet={handleDisconnectWallet}
-        isLace={isLace}
         onOpenCreateModal={() => setIsCreateOpen(true)}
         onVoterUpdated={refreshData}
       />
@@ -134,7 +142,7 @@ export function App() {
             <AlertCircle size={18} />
             <span>Wallet is currently disconnected. You can browse public ledger proposals, but need to connect to cast votes.</span>
           </div>
-          <button onClick={handleConnectWallet} className="btn btn-primary" style={{ fontSize: '0.8rem', padding: '0.4rem 0.85rem' }}>
+          <button onClick={() => setIsWalletModalOpen(true)} className="btn btn-primary" style={{ fontSize: '0.8rem', padding: '0.4rem 0.85rem' }} id="btn-banner-connect">
             Connect Now
           </button>
         </div>
@@ -269,6 +277,13 @@ export function App() {
       <ComplianceBadge />
 
       {/* Modals */}
+      <ConnectWalletModal
+        isOpen={isWalletModalOpen}
+        onClose={() => setIsWalletModalOpen(false)}
+        onConnectFreighter={handleConnectFreighter}
+        onConnectDemo={handleConnectDemo}
+      />
+
       <CastVoteModal
         proposal={votingProposal}
         voter={currentVoter}

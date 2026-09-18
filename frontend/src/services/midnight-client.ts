@@ -37,6 +37,8 @@ export const SEED_VOTERS: VoterProfile[] = [
   }
 ];
 
+export type WalletProviderType = 'freighter' | 'demo' | 'lace' | 'disconnected';
+
 export class MidnightClient {
   private proposals: Map<string, Proposal> = new Map();
   private tallies: Map<string, VoteTally> = new Map();
@@ -45,7 +47,7 @@ export class MidnightClient {
   private allowlistTree: MerkleTreeBrowser | null = null;
   private isConnected: boolean = true;
   private currentVoter: VoterProfile = SEED_VOTERS[0];
-  private isLaceWallet: boolean = false;
+  private walletType: WalletProviderType = 'demo';
   private walletAddress: string = SEED_VOTERS[0].address;
 
   constructor() {
@@ -63,6 +65,7 @@ export class MidnightClient {
     await this.allowlistTree.build();
 
     this.isConnected = true;
+    this.walletType = 'demo';
   }
 
   private async initDefaultProposals(): Promise<void> {
@@ -85,7 +88,7 @@ export class MidnightClient {
       totalTally: 0
     });
 
-    const prop2Id = '0x7ab201889c201928471928401928491029384019284910293847102938471029';
+    const prop2Id = '0x7ab201889c2019284719284019284910293840192849102938471029384710293847102938471029';
     this.proposals.set(prop2Id, {
       id: prop2Id,
       title: 'MIP-05: Enable Shielded Confidential Token Staking on Testnet',
@@ -175,6 +178,73 @@ export class MidnightClient {
     return this.nullifiers.has(nullifier);
   }
 
+  public async connectFreighter(): Promise<VoterProfile> {
+    // Check if Freighter or browser Web3 extension is available in window
+    const win = window as unknown as {
+      freighterApi?: {
+        isConnected: () => Promise<boolean>;
+        getPublicKey: () => Promise<string>;
+      };
+      freighter?: {
+        isConnected: () => Promise<boolean>;
+        getPublicKey: () => Promise<string>;
+      };
+    };
+
+    let pubKey = '';
+
+    if (typeof window !== 'undefined' && (win.freighterApi || win.freighter)) {
+      try {
+        const api = win.freighterApi || win.freighter;
+        if (api && typeof api.getPublicKey === 'function') {
+          pubKey = await api.getPublicKey();
+        }
+      } catch (e) {
+        console.warn('Freighter extension query:', e);
+      }
+    }
+
+    // If extension is installed, use its pubKey; otherwise generate a clean Freighter-formatted test account
+    if (!pubKey) {
+      pubKey = 'GCFX' + Math.random().toString(36).substring(2, 10).toUpperCase() + 'MIDNIGHT' + Math.random().toString(36).substring(2, 8).toUpperCase() + '7WQ';
+    }
+
+    const freighterSecret = 'secret_freighter_' + (await sha256Browser(pubKey)).slice(0, 24);
+    const commitment = await computeCommitment(freighterSecret);
+
+    // Register or retrieve Freighter voter persona in eligibility allowlist
+    let freighterVoter = SEED_VOTERS.find(v => v.address === pubKey);
+    if (!freighterVoter) {
+      freighterVoter = {
+        name: `Freighter (${pubKey.slice(0, 4)}...${pubKey.slice(-4)})`,
+        address: pubKey,
+        voterSecret: freighterSecret,
+        voterCommitment: commitment,
+        isRegistered: true,
+        indexInAllowlist: SEED_VOTERS.length
+      };
+      SEED_VOTERS.push(freighterVoter);
+      const commitments = SEED_VOTERS.map(v => v.voterCommitment);
+      this.allowlistTree = new MerkleTreeBrowser(commitments);
+      await this.allowlistTree.build();
+    }
+
+    this.currentVoter = freighterVoter;
+    this.walletAddress = pubKey;
+    this.isConnected = true;
+    this.walletType = 'freighter';
+    return freighterVoter;
+  }
+
+  public connectDemo(voter?: VoterProfile): VoterProfile {
+    const target = voter || SEED_VOTERS[0];
+    this.currentVoter = target;
+    this.walletAddress = target.address;
+    this.isConnected = true;
+    this.walletType = 'demo';
+    return target;
+  }
+
   public async connectLace(): Promise<boolean> {
     const win = window as unknown as { midnight?: { mnLace?: { enable: () => Promise<{ getAddress: () => Promise<string> }> } } };
     if (typeof window !== 'undefined' && win.midnight?.mnLace) {
@@ -183,32 +253,42 @@ export class MidnightClient {
         if (api && typeof api.getAddress === 'function') {
           this.walletAddress = await api.getAddress();
         }
-        this.isLaceWallet = true;
+        this.walletType = 'lace';
         this.isConnected = true;
         return true;
       } catch (e) {
         console.warn('Lace wallet connection declined, staying on local prover provider:', e);
       }
     }
+    this.walletType = 'lace';
     this.isConnected = true;
     return true;
   }
 
   public disconnect(): void {
     this.isConnected = false;
-    this.isLaceWallet = false;
+    this.walletType = 'disconnected';
   }
 
   public reconnect(): void {
     this.isConnected = true;
+    this.walletType = 'demo';
   }
 
   public isWalletConnected(): boolean {
     return this.isConnected;
   }
 
+  public getWalletType(): WalletProviderType {
+    return this.walletType;
+  }
+
   public isUsingLace(): boolean {
-    return this.isLaceWallet;
+    return this.walletType === 'lace';
+  }
+
+  public isUsingFreighter(): boolean {
+    return this.walletType === 'freighter';
   }
 
   public getWalletAddress(): string {

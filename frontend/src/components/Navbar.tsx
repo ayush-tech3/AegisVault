@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
-import { Shield, Lock, Wallet, UserCheck, Key, Plus, LogOut, Power } from 'lucide-react';
+import { Shield, Lock, Wallet, UserCheck, Key, Plus, LogOut, Power, Compass } from 'lucide-react';
 import { VoterProfile } from '../types/index.ts';
-import { SEED_VOTERS, midnightClient } from '../services/midnight-client.ts';
+import { SEED_VOTERS, midnightClient, WalletProviderType } from '../services/midnight-client.ts';
 
 interface NavbarProps {
   currentVoter: VoterProfile;
   isConnected: boolean;
+  walletType: WalletProviderType;
   onSelectVoter: (voter: VoterProfile) => void;
   onConnectWallet: () => void;
   onDisconnectWallet: () => void;
-  isLace: boolean;
   onOpenCreateModal: () => void;
   onVoterUpdated: () => void;
 }
@@ -17,10 +16,10 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({
   currentVoter,
   isConnected,
+  walletType,
   onSelectVoter,
   onConnectWallet,
   onDisconnectWallet,
-  isLace,
   onOpenCreateModal,
   onVoterUpdated
 }) => {
@@ -129,9 +128,27 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Wallet Connect/Disconnect */}
           {isConnected ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <div className="badge badge-active" style={{ padding: '0.5rem 0.85rem' }}>
-                <Wallet size={13} />
-                <span>{isLace ? 'Lace Connected' : `${currentVoter.address.slice(0, 10)}...`}</span>
+              <div
+                className={`badge ${walletType === 'freighter' ? 'badge-active' : 'badge-shielded'}`}
+                style={{
+                  padding: '0.5rem 0.85rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  border: walletType === 'freighter' ? '1px solid rgba(6, 182, 212, 0.4)' : undefined
+                }}
+              >
+                {walletType === 'freighter' ? (
+                  <>
+                    <Compass size={14} color="#06b6d4" />
+                    <span style={{ color: '#67e8f9' }}>Freighter ({currentVoter.address.slice(0, 4)}...{currentVoter.address.slice(-4)})</span>
+                  </>
+                ) : (
+                  <>
+                    <Wallet size={14} />
+                    <span>{currentVoter.name.split(' ')[0]} (Prover)</span>
+                  </>
+                )}
               </div>
               <button
                 onClick={onDisconnectWallet}
