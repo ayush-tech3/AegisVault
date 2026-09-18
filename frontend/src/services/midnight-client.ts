@@ -47,10 +47,10 @@ export class MidnightClient {
   private nullifiers: Set<string> = new Set();
   private logs: LedgerLog[] = [];
   private allowlistTree: MerkleTreeBrowser | null = null;
-  private isConnected: boolean = true;
+  private isConnected: boolean = false;
   private currentVoter: VoterProfile = SEED_VOTERS[0];
-  private walletType: WalletProviderType = 'demo';
-  private walletAddress: string = SEED_VOTERS[0].address;
+  private walletType: WalletProviderType = 'disconnected';
+  private walletAddress: string = '';
 
   constructor() {
     this.initDefaultProposals();
@@ -66,8 +66,8 @@ export class MidnightClient {
     this.allowlistTree = new MerkleTreeBrowser(commitments);
     await this.allowlistTree.build();
 
-    this.isConnected = true;
-    this.walletType = 'demo';
+    this.isConnected = false;
+    this.walletType = 'disconnected';
   }
 
   private async initDefaultProposals(): Promise<void> {

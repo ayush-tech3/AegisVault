@@ -17,8 +17,8 @@ export function App() {
   const [logs, setLogs] = useState<LedgerLog[]>([]);
   const [nullifiers, setNullifiers] = useState<string[]>([]);
   const [currentVoter, setCurrentVoter] = useState<VoterProfile>(SEED_VOTERS[0]);
-  const [isConnected, setIsConnected] = useState(true);
-  const [walletType, setWalletType] = useState<WalletProviderType>('demo');
+  const [isConnected, setIsConnected] = useState(false);
+  const [walletType, setWalletType] = useState<WalletProviderType>('disconnected');
   const [activeTab, setActiveTab] = useState<AppPageTab>('proposals');
   const [isLoading, setIsLoading] = useState(true);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
@@ -78,7 +78,16 @@ export function App() {
   const handleDisconnectWallet = () => {
     midnightClient.disconnect();
     refreshData();
-    showToast('Wallet disconnected. Click "Connect Wallet" to reconnect with Freighter or Demo Wallet.');
+    showToast('Wallet disconnected. Click "Connect Wallet" to reconnect.');
+  };
+
+  const handleOpenCreateModal = () => {
+    if (!isConnected) {
+      showToast('Please connect your wallet first to create a proposal.');
+      setIsWalletModalOpen(true);
+      return;
+    }
+    setIsCreateOpen(true);
   };
 
   const handleCastVote = async (proposalId: string, choiceIndex: number) => {
@@ -145,7 +154,7 @@ export function App() {
           onSelectVoter={handleSelectVoter}
           onConnectWallet={() => setIsWalletModalOpen(true)}
           onDisconnectWallet={handleDisconnectWallet}
-          onOpenCreateModal={() => setIsCreateOpen(true)}
+          onOpenCreateModal={handleOpenCreateModal}
           onVoterUpdated={refreshData}
         />
 
@@ -153,10 +162,10 @@ export function App() {
           <div style={{ background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)', padding: '0.85rem 1.25rem', borderRadius: '14px', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: '#fbbf24', fontSize: '0.9rem' }}>
               <AlertCircle size={18} />
-              <span>Wallet disconnected. Connect Freighter extension or Demo Prover to cast secret votes.</span>
+              <span>Wallet disconnected. Connect Freighter extension or Demo Prover to cast secret votes or create proposals.</span>
             </div>
             <button onClick={() => setIsWalletModalOpen(true)} className="btn btn-primary" style={{ fontSize: '0.8rem', padding: '0.4rem 0.85rem' }} id="btn-banner-connect">
-              Connect Now
+              Connect Wallet
             </button>
           </div>
         )}
@@ -243,7 +252,14 @@ export function App() {
                       tally={tallies.get(prop.id)}
                       currentVoter={currentVoter}
                       isConnected={isConnected}
-                      onVoteClick={(p) => setVotingProposal(p)}
+                      onVoteClick={(p) => {
+                        if (!isConnected) {
+                          showToast('Please connect your wallet first to cast a vote.');
+                          setIsWalletModalOpen(true);
+                          return;
+                        }
+                        setVotingProposal(p);
+                      }}
                       onInspectClick={(p) => setInspectingProposal(p)}
                       onProposalFinalized={refreshData}
                     />
