@@ -39,23 +39,14 @@
 
 ## 📸 Deliverable Screenshots
 
-### 1. 🖥️ Product UI (Production Dashboard)
+### 1. 🖥️ Product UI (Live Production Dashboard)
 ![Product UI](screenshots/product-ui.png)
 
-### 2. 📱 Mobile Responsive Design (Responsive View)
+### 2. 📱 Mobile Responsive View (Smartphone Interface)
 ![Mobile Responsive Dashboard](screenshots/mobile-responsive-ui.png)
 
 ### 3. 🛡️ ZK Privacy & Merkle Proof Explorer
 ![ZK Privacy Explorer](screenshots/privacy-explorer-ui.png)
-
-### 4. 📊 Public Ledger Telemetry & Compliance Audit
-![Ledger Audit Feed](screenshots/ledger-audit-ui.png)
-
-### 5. 🧪 Automated Test Suite (8/8 Tests Passing)
-![Vitest Passing Test Suite](screenshots/test-suite-passing.png)
-
-### 6. ⚙️ CI/CD Pipeline (GitHub Actions - 100% Passing)
-![CI/CD Pipeline](screenshots/cicd-pipeline.png)
 
 ---
 
@@ -287,12 +278,9 @@ midnight-privacy-dapp/
 │   ├── vite.config.ts
 │   └── package.json
 ├── screenshots/
-│   ├── product-ui.png                  # Desktop dashboard screenshot
-│   ├── mobile-responsive-ui.png        # Mobile responsive screenshot
-│   ├── privacy-explorer-ui.png         # ZK privacy inspector screenshot
-│   ├── ledger-audit-ui.png             # Ledger audit telemetry screenshot
-│   ├── test-suite-passing.png          # 8/8 passing tests screenshot
-│   └── cicd-pipeline.png               # CI/CD pipeline passing screenshot
+│   ├── product-ui.png                  # Desktop live production dashboard screenshot
+│   ├── mobile-responsive-ui.png        # Mobile responsive phone screenshot
+│   └── privacy-explorer-ui.png         # ZK privacy inspector screenshot
 ├── docs/
 │   ├── PRODUCT_PROPOSAL.md             # Level 3 product proposal
 │   └── PRIVACY_MODEL.md                # Privacy leakage analysis

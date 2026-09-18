@@ -19,7 +19,16 @@ export function App() {
   const [currentVoter, setCurrentVoter] = useState<VoterProfile>(SEED_VOTERS[0]);
   const [isConnected, setIsConnected] = useState(false);
   const [walletType, setWalletType] = useState<WalletProviderType>('disconnected');
-  const [activeTab, setActiveTab] = useState<AppPageTab>('proposals');
+  const [activeTab, setActiveTab] = useState<AppPageTab>(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.replace('#', '');
+      if (hash === 'privacy' || hash === 'audit' || hash === 'proposals') return hash as AppPageTab;
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab');
+      if (tabParam === 'privacy' || tabParam === 'audit' || tabParam === 'proposals') return tabParam as AppPageTab;
+    }
+    return 'proposals';
+  });
   const [isLoading, setIsLoading] = useState(true);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
