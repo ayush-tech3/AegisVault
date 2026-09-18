@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { Shield, Lock, Wallet, UserCheck, Key, Plus, LogOut, Power, Compass } from 'lucide-react';
 import { VoterProfile } from '../types/index.ts';
 import { SEED_VOTERS, midnightClient, WalletProviderType } from '../services/midnight-client.ts';
