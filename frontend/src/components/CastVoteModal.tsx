@@ -102,12 +102,12 @@ export const CastVoteModal: React.FC<CastVoteModalProps> = ({
             </div>
 
             {/* Privacy Box */}
-            <div style={{ background: 'rgba(139, 92, 246, 0.08)', border: '1px solid rgba(139, 92, 246, 0.2)', padding: '0.9rem 1rem', borderRadius: '12px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#c4b5fd', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.3rem' }}>
+            <div style={{ background: 'rgba(168, 85, 247, 0.08)', border: '1px solid rgba(168, 85, 247, 0.25)', padding: '0.9rem 1rem', borderRadius: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#c084fc', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.3rem' }}>
                 <Sparkles size={14} /> Midnight Privacy Guarantee
               </div>
               <p style={{ fontSize: '0.8rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-                Active Identity: <strong>{voter.name}</strong>. Your private key <code style={{ color: '#38bdf8' }}>{voter.voterSecret.slice(0, 14)}...</code> remains strictly isolated on your client.
+                Active Identity: <strong>{voter.name}</strong>. Your private key <code style={{ color: '#05f292' }}>{voter.voterSecret.slice(0, 14)}...</code> remains strictly isolated on your client.
               </p>
             </div>
 
@@ -133,7 +133,7 @@ export const CastVoteModal: React.FC<CastVoteModalProps> = ({
 
             {/* Step Progress Display */}
             {isSubmitting && (
-              <div style={{ background: 'rgba(6, 182, 212, 0.1)', border: '1px solid rgba(6, 182, 212, 0.3)', padding: '0.75rem 1rem', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '0.65rem', color: '#38bdf8', fontSize: '0.82rem' }}>
+              <div style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.35)', padding: '0.75rem 1rem', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '0.65rem', color: '#05f292', fontSize: '0.82rem' }}>
                 <Loader2 size={16} className="spin" style={{ animation: 'spin 1s linear infinite' }} />
                 <span>{stepStatus}</span>
               </div>

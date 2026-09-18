@@ -69,8 +69,8 @@ export const CreateProposalModal: React.FC<CreateProposalModalProps> = ({
       <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ padding: '2rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-            <div style={{ padding: '0.5rem', background: 'rgba(6, 182, 212, 0.2)', borderRadius: '10px' }}>
-              <FileText size={20} color="#06b6d4" />
+            <div style={{ padding: '0.5rem', background: 'rgba(16, 185, 129, 0.2)', borderRadius: '10px' }}>
+              <FileText size={20} color="#05f292" />
             </div>
             <h3 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0 }}>
               Create Confidential Governance Proposal

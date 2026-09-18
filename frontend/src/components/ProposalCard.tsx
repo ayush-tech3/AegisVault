@@ -106,7 +106,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
                   left: 0,
                   bottom: 0,
                   width: `${percentage}%`,
-                  background: 'linear-gradient(90deg, rgba(139, 92, 246, 0.2), rgba(6, 182, 212, 0.25))',
+                  background: 'linear-gradient(90deg, rgba(16, 185, 129, 0.3), rgba(168, 85, 247, 0.35))',
                   transition: 'width 0.4s ease',
                   zIndex: 0
                 }}
@@ -115,7 +115,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
                 <span style={{ fontWeight: 500, color: 'var(--text-primary)', fontSize: '0.9rem' }}>
                   {option}
                 </span>
-                <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#38bdf8' }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#05f292' }}>
                   {count} votes ({percentage}%)
                 </span>
               </div>
