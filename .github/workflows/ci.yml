@@ -11,24 +11,31 @@ jobs:
     runs-on: ubuntu-latest
     name: Test & Build Smart Contracts & Frontend
 
+    strategy:
+      matrix:
+        node-version: [20]
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js Environment
+      - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      - name: Install Monorepo Dependencies
+      - name: Install Dependencies
         run: npm ci || npm install
 
-      - name: Run Zero-Knowledge Smart Contract Tests (5 Tests)
-        run: npm test
-
-      - name: Build Smart Contract Package
+      - name: Typecheck Contract Package
         run: npm run build --workspace=contract
 
-      - name: Build Frontend Application
+      - name: Run Automated Tests (8 ZK Contract Tests)
+        run: npm test
+
+      - name: Typecheck Frontend
+        run: npm run lint --workspace=frontend
+
+      - name: Build Frontend for Production
         run: npm run build --workspace=frontend
