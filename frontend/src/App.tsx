@@ -61,8 +61,8 @@ export function App() {
     showToast(`Switched active voter identity to ${voter.name}`);
   };
 
-  const handleConnectFreighter = async () => {
-    const voter = await midnightClient.connectFreighter();
+  const handleConnectFreighter = async (fallbackToMock?: boolean) => {
+    const voter = await midnightClient.connectFreighter(fallbackToMock);
     refreshData();
     showToast(`Freighter Wallet Connected (${voter.address.slice(0, 4)}...${voter.address.slice(-4)})`);
   };

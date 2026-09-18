@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Shield, Sparkles, X, Compass, CheckCircle2, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
-import { SEED_VOTERS } from '../services/midnight-client.ts';
+import React, { useState, useEffect } from 'react';
+import { Shield, Sparkles, X, Compass, CheckCircle2, ArrowRight, Loader2, AlertCircle, ExternalLink } from 'lucide-react';
+import { SEED_VOTERS, midnightClient } from '../services/midnight-client.ts';
 import { VoterProfile } from '../types/index.ts';
 
 interface ConnectWalletModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onConnectFreighter: () => Promise<void>;
+  onConnectFreighter: (fallbackToMock?: boolean) => Promise<void>;
   onConnectDemo: (voter?: VoterProfile) => void;
 }
 
@@ -17,19 +17,42 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
   onConnectDemo
 }) => {
   const [isConnectingFreighter, setIsConnectingFreighter] = useState(false);
+  const [hasExtension, setHasExtension] = useState<boolean | null>(null);
   const [freighterNotice, setFreighterNotice] = useState<string | null>(null);
   const [selectedDemoVoter, setSelectedDemoVoter] = useState<VoterProfile>(SEED_VOTERS[0]);
 
+  useEffect(() => {
+    if (isOpen) {
+      midnightClient.isFreighterAvailable().then(avail => {
+        setHasExtension(avail);
+      });
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
-  const handleFreighter = async () => {
+  const handleRealFreighter = async () => {
     setIsConnectingFreighter(true);
     setFreighterNotice(null);
     try {
-      await onConnectFreighter();
+      await onConnectFreighter(false);
       onClose();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Could not connect to Freighter wallet';
+      setFreighterNotice(msg);
+    } finally {
+      setIsConnectingFreighter(false);
+    }
+  };
+
+  const handleFallbackFreighter = async () => {
+    setIsConnectingFreighter(true);
+    setFreighterNotice(null);
+    try {
+      await onConnectFreighter(true);
+      onClose();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Failed to initialize test key';
       setFreighterNotice(msg);
     } finally {
       setIsConnectingFreighter(false);
@@ -41,12 +64,15 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
     onClose();
   };
 
+  // Filter seed voters to only canonical 4 demo delegates
+  const demoPersonas = SEED_VOTERS.filter(v => !v.address.startsWith('GCFX') && !v.name.startsWith('Freighter')).slice(0, 4);
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div
         className="modal-content"
         onClick={(e) => e.stopPropagation()}
-        style={{ padding: '2rem', maxWidth: '580px' }}
+        style={{ padding: '1.75rem', maxWidth: '580px', maxHeight: '92vh', overflowY: 'auto' }}
       >
         {/* Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
@@ -55,11 +81,11 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               <Shield size={22} color="#a78bfa" />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.3rem', fontWeight: 700, margin: 0 }}>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0 }}>
                 Select Wallet Provider
               </h3>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: 0 }}>
-                Choose a wallet to authenticate zero-knowledge voting operations
+                Connect your real browser extension or launch with a local prover
               </p>
             </div>
           </div>
@@ -74,40 +100,66 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
         </div>
 
         {freighterNotice && (
-          <div style={{ background: 'rgba(245, 158, 11, 0.12)', border: '1px solid rgba(245, 158, 11, 0.3)', padding: '0.75rem 1rem', borderRadius: '10px', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#fbbf24', fontSize: '0.85rem' }}>
-            <AlertCircle size={16} />
-            <span>{freighterNotice}</span>
+          <div style={{ background: 'rgba(244, 63, 94, 0.1)', border: '1px solid rgba(244, 63, 94, 0.3)', padding: '0.75rem 1rem', borderRadius: '10px', marginBottom: '1rem', display: 'flex', alignItems: 'flex-start', gap: '0.6rem', color: '#f87171', fontSize: '0.85rem' }}>
+            <AlertCircle size={18} style={{ flexShrink: 0, marginTop: '2px' }} />
+            <div style={{ flex: 1 }}>
+              <div>{freighterNotice}</div>
+              <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <a
+                  href="https://www.freighter.app/"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ color: '#38bdf8', fontSize: '0.8rem', textDecoration: 'underline', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}
+                >
+                  Download Freighter Extension <ExternalLink size={12} />
+                </a>
+                <button
+                  type="button"
+                  onClick={handleFallbackFreighter}
+                  style={{ background: 'transparent', border: 'none', color: '#a78bfa', fontSize: '0.8rem', textDecoration: 'underline', cursor: 'pointer', padding: 0 }}
+                >
+                  Use Simulated Test Account instead
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
         {/* Options Container */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '0.5rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           
-          {/* Option 1: Freighter Wallet */}
+          {/* Option 1: Real Freighter Wallet */}
           <div
             className="glass-panel"
             style={{
               padding: '1.25rem',
-              border: '1px solid rgba(6, 182, 212, 0.3)',
-              background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(22, 26, 42, 0.7))',
+              border: '1px solid rgba(6, 182, 212, 0.35)',
+              background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(22, 26, 42, 0.7))',
               display: 'flex',
               flexDirection: 'column',
-              gap: '0.75rem',
-              transition: 'all 0.2s ease'
+              gap: '0.75rem'
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'linear-gradient(135deg, #0891b2, #06b6d4)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Compass size={22} color="#fff" />
+                <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'linear-gradient(135deg, #0891b2, #06b6d4)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Compass size={24} color="#fff" />
                 </div>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span style={{ fontWeight: 700, fontSize: '1.05rem', color: '#f8fafc' }}>Freighter Wallet</span>
-                    <span className="badge badge-active" style={{ fontSize: '0.65rem', padding: '0.15rem 0.45rem' }}>Web3 Extension</span>
+                    <span style={{ fontWeight: 700, fontSize: '1.1rem', color: '#f8fafc' }}>Freighter Wallet</span>
+                    {hasExtension ? (
+                      <span className="badge badge-active" style={{ fontSize: '0.65rem', padding: '0.15rem 0.45rem' }}>
+                        Extension Ready ✅
+                      </span>
+                    ) : (
+                      <span className="badge badge-shielded" style={{ fontSize: '0.65rem', padding: '0.15rem 0.45rem' }}>
+                        Web3 Extension
+                      </span>
+                    )}
                   </div>
                   <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                    Connect via Freighter browser extension with secret key derivation
+                    Connects directly to real Freighter browser popup & retrieves your public key
                   </span>
                 </div>
               </div>
@@ -115,20 +167,20 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
 
             <button
               type="button"
-              onClick={handleFreighter}
+              onClick={handleRealFreighter}
               disabled={isConnectingFreighter}
               className="btn btn-cyan"
-              style={{ width: '100%', padding: '0.7rem 1rem', marginTop: '0.25rem' }}
+              style={{ width: '100%', padding: '0.75rem 1rem' }}
               id="btn-connect-freighter-opt"
             >
               {isConnectingFreighter ? (
                 <>
                   <Loader2 size={16} className="spin" style={{ animation: 'spin 1s linear infinite' }} />
-                  Connecting Freighter...
+                  Waiting for Freighter popup approval...
                 </>
               ) : (
                 <>
-                  Connect Freighter Wallet <ArrowRight size={16} />
+                  Connect Real Freighter Extension <ArrowRight size={16} />
                 </>
               )}
             </button>
@@ -139,7 +191,7 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
             className="glass-panel"
             style={{
               padding: '1.25rem',
-              border: '1px solid rgba(139, 92, 246, 0.3)',
+              border: '1px solid rgba(139, 92, 246, 0.35)',
               background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(22, 26, 42, 0.7))',
               display: 'flex',
               flexDirection: 'column',
@@ -148,28 +200,28 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'linear-gradient(135deg, #8b5cf6, #6366f1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Sparkles size={22} color="#fff" />
+                <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'linear-gradient(135deg, #8b5cf6, #6366f1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Sparkles size={24} color="#fff" />
                 </div>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span style={{ fontWeight: 700, fontSize: '1.05rem', color: '#f8fafc' }}>Demo Shielded Wallet</span>
-                    <span className="badge badge-shielded" style={{ fontSize: '0.65rem', padding: '0.15rem 0.45rem' }}>ZK Prover</span>
+                    <span style={{ fontWeight: 700, fontSize: '1.1rem', color: '#f8fafc' }}>Demo Shielded Wallet</span>
+                    <span className="badge badge-shielded" style={{ fontSize: '0.65rem', padding: '0.15rem 0.45rem' }}>Local Prover</span>
                   </div>
                   <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                    Instant zero-knowledge test identities (No extension needed)
+                    Instant zero-knowledge identities (Alice, Bob, Carol, Dave)
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Seed Voter Selector for Demo */}
+            {/* Seed Persona Grid */}
             <div style={{ background: 'rgba(0,0,0,0.35)', padding: '0.65rem 0.85rem', borderRadius: '8px', border: '1px solid var(--border-glass)' }}>
               <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.35rem' }}>
-                Choose Pre-authorized Test Persona:
+                Select Test Delegate:
               </span>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-                {SEED_VOTERS.map((voter) => (
+                {demoPersonas.map((voter) => (
                   <button
                     key={voter.name}
                     type="button"
@@ -178,7 +230,7 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
                       background: selectedDemoVoter.name === voter.name ? 'rgba(139, 92, 246, 0.25)' : 'rgba(255,255,255,0.03)',
                       border: selectedDemoVoter.name === voter.name ? '1px solid #8b5cf6' : '1px solid var(--border-glass)',
                       color: selectedDemoVoter.name === voter.name ? '#c4b5fd' : 'var(--text-secondary)',
-                      padding: '0.4rem 0.6rem',
+                      padding: '0.45rem 0.6rem',
                       borderRadius: '6px',
                       fontSize: '0.75rem',
                       fontWeight: 600,
@@ -200,10 +252,10 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               type="button"
               onClick={handleDemo}
               className="btn btn-primary"
-              style={{ width: '100%', padding: '0.7rem 1rem' }}
+              style={{ width: '100%', padding: '0.75rem 1rem' }}
               id="btn-connect-demo-opt"
             >
-              Connect as {selectedDemoVoter.name.split(' ')[0]} <ArrowRight size={16} />
+              Launch Demo as {selectedDemoVoter.name.split(' ')[0]} <ArrowRight size={16} />
             </button>
           </div>
 

@@ -37,6 +37,8 @@ export const SEED_VOTERS: VoterProfile[] = [
   }
 ];
 
+import { isConnected as isFreighterInstalled, requestAccess as requestFreighterAccess, getAddress as getFreighterAddress } from '@stellar/freighter-api';
+
 export type WalletProviderType = 'freighter' | 'demo' | 'lace' | 'disconnected';
 
 export class MidnightClient {
@@ -178,41 +180,96 @@ export class MidnightClient {
     return this.nullifiers.has(nullifier);
   }
 
-  public async connectFreighter(): Promise<VoterProfile> {
-    // Check if Freighter or browser Web3 extension is available in window
-    const win = window as unknown as {
-      freighterApi?: {
-        isConnected: () => Promise<boolean>;
-        getPublicKey: () => Promise<string>;
-      };
-      freighter?: {
-        isConnected: () => Promise<boolean>;
-        getPublicKey: () => Promise<string>;
-      };
-    };
+  public async isFreighterAvailable(): Promise<boolean> {
+    try {
+      const res = await isFreighterInstalled();
+      if (typeof res === 'boolean') return res;
+      if (res && typeof res.isConnected === 'boolean') return res.isConnected;
+    } catch {
+      // ignore
+    }
+    if (typeof window !== 'undefined') {
+      const win = window as unknown as { freighterApi?: unknown; freighter?: unknown };
+      return Boolean(win.freighterApi || win.freighter);
+    }
+    return false;
+  }
 
+  public async connectFreighter(fallbackToDevMock: boolean = false): Promise<VoterProfile> {
     let pubKey = '';
+    let lastError = '';
 
-    if (typeof window !== 'undefined' && (win.freighterApi || win.freighter)) {
-      try {
-        const api = win.freighterApi || win.freighter;
-        if (api && typeof api.getPublicKey === 'function') {
-          pubKey = await api.getPublicKey();
+    // 1. Trigger real browser extension popup via official @stellar/freighter-api
+    try {
+      const connectedRes = await isFreighterInstalled();
+      const isInst = typeof connectedRes === 'boolean' ? connectedRes : connectedRes?.isConnected;
+      
+      if (isInst) {
+        const accessRes = await requestFreighterAccess();
+        if (accessRes?.error) {
+          lastError = typeof accessRes.error === 'string' ? accessRes.error : JSON.stringify(accessRes.error);
+        } else if (accessRes?.address) {
+          pubKey = accessRes.address;
+        } else {
+          const addrRes = await getFreighterAddress();
+          if (addrRes?.address) {
+            pubKey = addrRes.address;
+          }
         }
-      } catch (e) {
-        console.warn('Freighter extension query:', e);
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.warn('Official Freighter API call returned:', msg);
+      lastError = msg;
+    }
+
+    // 2. Direct window.freighterApi check if official call was missed
+    if (!pubKey && typeof window !== 'undefined') {
+      const win = window as unknown as {
+        freighterApi?: {
+          requestAccess?: () => Promise<{ address?: string } | string>;
+          getPublicKey?: () => Promise<string>;
+        };
+        freighter?: {
+          requestAccess?: () => Promise<{ address?: string } | string>;
+          getPublicKey?: () => Promise<string>;
+        };
+      };
+      const api = win.freighterApi || win.freighter;
+      if (api) {
+        try {
+          if (typeof api.requestAccess === 'function') {
+            const acc = await api.requestAccess();
+            if (acc && typeof acc === 'object' && acc.address) pubKey = acc.address;
+            else if (typeof acc === 'string') pubKey = acc;
+          }
+          if (!pubKey && typeof api.getPublicKey === 'function') {
+            pubKey = await api.getPublicKey();
+          }
+        } catch (e: unknown) {
+          const msg = e instanceof Error ? e.message : String(e);
+          lastError = msg;
+        }
       }
     }
 
-    // If extension is installed, use its pubKey; otherwise generate a clean Freighter-formatted test account
+    // If real extension wasn't connected
     if (!pubKey) {
-      pubKey = 'GCFX' + Math.random().toString(36).substring(2, 10).toUpperCase() + 'MIDNIGHT' + Math.random().toString(36).substring(2, 8).toUpperCase() + '7WQ';
+      if (fallbackToDevMock) {
+        pubKey = 'GCFX' + Math.random().toString(36).substring(2, 10).toUpperCase() + 'MIDNIGHT7WQ';
+      } else {
+        if (lastError && (lastError.toLowerCase().includes('reject') || lastError.toLowerCase().includes('denied') || lastError.toLowerCase().includes('cancel'))) {
+          throw new Error('Connection rejected in Freighter extension popup.');
+        }
+        throw new Error('Freighter extension not found or popup was closed. Make sure Freighter is installed and unlocked.');
+      }
     }
 
+    // Derive deterministic client-side ZK voter secret from the real Freighter address
     const freighterSecret = 'secret_freighter_' + (await sha256Browser(pubKey)).slice(0, 24);
     const commitment = await computeCommitment(freighterSecret);
 
-    // Register or retrieve Freighter voter persona in eligibility allowlist
+    // Register real Freighter identity in the eligibility allowlist Merkle tree
     let freighterVoter = SEED_VOTERS.find(v => v.address === pubKey);
     if (!freighterVoter) {
       freighterVoter = {
