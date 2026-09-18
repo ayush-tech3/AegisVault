@@ -160,9 +160,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           {isActive && (
             <button
               onClick={() => onVoteClick(proposal)}
-              disabled={!isConnected}
               className="btn btn-primary"
-              style={{ fontSize: '0.85rem', padding: '0.5rem 1rem', opacity: isConnected ? 1 : 0.6 }}
+              style={{ fontSize: '0.85rem', padding: '0.5rem 1rem' }}
               id={`btn-vote-${proposal.id.slice(0, 8)}`}
             >
               <Vote size={15} /> {hasVoted ? 'Vote Again (Tests Nullifier)' : 'Cast Secret Vote'}

@@ -90,6 +90,15 @@ export function App() {
     setIsCreateOpen(true);
   };
 
+  const handleOpenVoteModal = (proposal: Proposal) => {
+    if (!isConnected) {
+      showToast('Please connect your wallet first to cast a shielded vote.');
+      setIsWalletModalOpen(true);
+      return;
+    }
+    setVotingProposal(proposal);
+  };
+
   const handleCastVote = async (proposalId: string, choiceIndex: number) => {
     await midnightClient.castVote(proposalId, choiceIndex);
     refreshData();
@@ -202,7 +211,7 @@ export function App() {
                     <Shield size={16} /> Open ZK Privacy Explorer
                   </button>
                   <button
-                    onClick={() => setIsCreateOpen(true)}
+                    onClick={handleOpenCreateModal}
                     className="btn btn-purple"
                     id="btn-hero-create"
                   >
