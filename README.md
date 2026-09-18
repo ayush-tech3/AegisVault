@@ -2,10 +2,10 @@
 
 [![Midnight Privacy dApp CI/CD](https://github.com/ayush-tech3/midnight-privacy-dapp/actions/workflows/ci.yml/badge.svg)](https://github.com/ayush-tech3/midnight-privacy-dapp/actions/workflows/ci.yml)
 [![Midnight Compact](https://img.shields.io/badge/Compact-v0.19.0-purple.svg)](https://midnight.network)
-[![Tests](https://img.shields.io/badge/Tests-5%20Passing-emerald.svg)](https://github.com/ayush-tech3/midnight-privacy-dapp)
+[![Tests](https://img.shields.io/badge/Tests-8%20Passing-emerald.svg)](https://github.com/ayush-tech3/midnight-privacy-dapp)
 [![Level 3 Submission](https://img.shields.io/badge/RiseIn%20Level%203-First%20Quarter-blue.svg)](https://risein.com)
 
-A decentralized, privacy-preserving governance and secret-ballot voting dApp built on the **Midnight Network** utilizing Compact smart contracts and zero-knowledge proofs.
+A decentralized, privacy-preserving governance and secret-ballot voting dApp built natively for the **Midnight Network** utilizing Compact smart contracts and zero-knowledge proofs.
 
 ---
 
@@ -23,27 +23,31 @@ A decentralized, privacy-preserving governance and secret-ballot voting dApp bui
 Midnight's dual-state architecture divides state into public on-chain ledger state and client-side private witness state:
 
 ### What an Observer CAN Learn (Public On-Chain Ledger)
-- The proposal identifier, title, description, and deadline.
-- The Merkle root of the eligible voter commitment set.
+- The proposal identifier, title, description, options, and deadline.
+- The Merkle root of the eligible voter commitment allowlist.
 - The set of spent **nullifiers** preventing double-voting.
 - The aggregated final vote tally for each option.
+- The lifecycle status of the proposal (Active vs Closed).
 
 ### What an Observer CANNOT Learn (Shielded Private Witness)
-- **Voter Identity / Address:** Who cast a specific vote (shielded by ZK Merkle membership proof).
-- **Individual Choice:** Which option any specific voter chose.
-- **Linkability:** Cross-proposal vote correlation is impossible because nullifiers are salted by unique proposal IDs: `Hash(voterSecret, proposalId)`.
+- **Voter Identity / Address:** Who cast a specific vote (shielded by zero-knowledge Merkle membership proof).
+- **Individual Choice:** Which option any specific voter chose (shielded in client-side private witness).
+- **Cross-Proposal Linkability:** Correlation of a voter across multiple proposals is impossible because nullifiers are salted by unique proposal IDs: `Hash(voterSecret, proposalId)`.
 
 ---
 
-## 🧪 Test Suite (5 Passing Tests)
+## 🧪 Automated Test Suite (8 Passing Tests)
 
-VeilVote includes automated unit and integration tests verifying cryptographic constraints and state transitions:
+VeilVote includes 8 automated unit and integration tests verifying cryptographic constraints, state machine transitions, and zero-knowledge privacy guarantees:
 
 1. **Proposal Initialization:** Verifies contract ledger setup, Merkle root registration, and zeroed tallies.
 2. **Confidential Vote Casting:** Proves voter eligibility via ZK witness, computes nullifier, and increments tallies.
 3. **Double-Voting Prevention:** Detects and rejects duplicate nullifier submissions for the same proposal.
 4. **Ineligible Voter Rejection:** Rejects voters who cannot provide a valid Merkle authentication proof.
 5. **Observer Privacy Invariant:** Cryptographically guarantees that an external observer cannot link nullifiers to voter secrets or choices.
+6. **Proposal Closure Protection:** Enforces proposal closure and rejects votes after finalization.
+7. **Option Bounds Validation:** Rejects out-of-bounds ballot option indices.
+8. **Per-Proposal Nullifier Isolation:** Verifies that a voter can participate in multiple independent proposals without nullifier collisions.
 
 ### Running Tests Locally
 
@@ -97,27 +101,27 @@ npm run build
 ```
 midnight-privacy-dapp/
 ├── .github/workflows/
-│   └── ci.yml               # Automated CI/CD pipeline
+│   └── ci.yml                  # Automated CI/CD pipeline
 ├── contract/
 │   ├── src/
-│   │   ├── index.compact    # Midnight Compact smart contract
-│   │   ├── crypto.ts        # Nullifiers, commitments & Merkle tree engine
+│   │   ├── index.compact       # Midnight Compact smart contract
+│   │   ├── crypto.ts           # Nullifiers, commitments & Merkle tree engine
 │   │   ├── zk-voting-engine.ts # Contract state machine & ZK verifier
-│   │   └── types.ts         # Contract interfaces & types
+│   │   └── types.ts            # Contract interfaces & types
 │   └── tests/
-│       └── voting.test.ts   # 5 Automated Vitest tests
+│       └── voting.test.ts      # 8 Automated Vitest tests
 ├── frontend/
 │   ├── src/
-│   │   ├── components/      # UI components & Privacy Inspector
-│   │   ├── services/        # Midnight Lace & Prover client
-│   │   ├── App.tsx          # Main dApp layout
-│   │   └── index.css        # Glassmorphic dark theme design system
+│   │   ├── components/         # UI components & Privacy Inspector
+│   │   ├── services/           # Midnight Lace & Prover client
+│   │   ├── App.tsx             # Main dApp layout
+│   │   └── index.css           # Glassmorphic dark theme design system
 │   ├── index.html
 │   └── vite.config.ts
 ├── docs/
-│   ├── PRODUCT_PROPOSAL.md  # Detailed Level 3 submission proposal
-│   └── PRIVACY_MODEL.md     # In-depth observer leakage analysis
-├── package.json             # Monorepo root configuration
+│   ├── PRODUCT_PROPOSAL.md     # Detailed Level 3 submission proposal
+│   └── PRIVACY_MODEL.md        # In-depth observer leakage analysis
+├── package.json                # Monorepo root configuration
 └── README.md
 ```
 

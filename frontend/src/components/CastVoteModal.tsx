@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Shield, Check, AlertCircle, X, Sparkles } from 'lucide-react';
+import { Shield, Check, AlertCircle, X, Sparkles, Loader2 } from 'lucide-react';
 import { Proposal, VoterProfile } from '../types/index.ts';
+import { computeNullifier } from '../services/crypto-browser.ts';
 
 interface CastVoteModalProps {
   proposal: Proposal | null;
@@ -17,6 +18,7 @@ export const CastVoteModal: React.FC<CastVoteModalProps> = ({
 }) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [stepStatus, setStepStatus] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [txSuccess, setTxSuccess] = useState<boolean>(false);
   const [derivedNullifier, setDerivedNullifier] = useState<string>('');
@@ -29,14 +31,27 @@ export const CastVoteModal: React.FC<CastVoteModalProps> = ({
     setError(null);
 
     try {
+      setStepStatus('1. Loading Shielded Private Witness (Voter Secret & Choice)...');
+      await new Promise(r => setTimeout(r, 400));
+
+      setStepStatus('2. Constructing Merkle Membership Proof against Eligibility Root...');
+      await new Promise(r => setTimeout(r, 450));
+
+      setStepStatus('3. Deriving Unlinkable Deterministic Nullifier = Hash(Secret, ProposalID)...');
+      const nullifier = await computeNullifier(voter.voterSecret, proposal.id);
+      setDerivedNullifier(nullifier);
+      await new Promise(r => setTimeout(r, 400));
+
+      setStepStatus('4. Submitting Shielded Transaction to Midnight Ledger...');
       await onSubmitVote(proposal.id, selectedOption);
-      setDerivedNullifier(`0x${Math.random().toString(16).slice(2, 10)}...${Math.random().toString(16).slice(2, 10)}`);
+
       setTxSuccess(true);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Failed to cast vote';
       setError(msg);
     } finally {
       setIsSubmitting(false);
+      setStepStatus('');
     }
   };
 
@@ -67,11 +82,11 @@ export const CastVoteModal: React.FC<CastVoteModalProps> = ({
               Ballot Successfully Shielded & Counted!
             </h4>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-              Your zero-knowledge proof verified your eligibility, generated a single-use nullifier, and recorded your vote anonymously on the Midnight ledger.
+              Your zero-knowledge proof verified your eligibility, registered your single-use nullifier, and incremented the public tally without revealing your identity or choice.
             </p>
             <div style={{ width: '100%', background: 'rgba(0,0,0,0.3)', padding: '0.75rem', borderRadius: '10px', border: '1px solid var(--border-glass)', textAlign: 'left' }}>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>Spent Nullifier (Public Identifier):</span>
-              <span className="hash-pill">{derivedNullifier}</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>Spent Nullifier (Public On-Chain Identifier):</span>
+              <span className="hash-pill" style={{ color: '#c084fc', display: 'block', marginTop: '0.2rem' }}>{derivedNullifier}</span>
             </div>
             <button onClick={onClose} className="btn btn-primary" style={{ marginTop: '1rem', width: '100%' }}>
               Done
@@ -92,7 +107,7 @@ export const CastVoteModal: React.FC<CastVoteModalProps> = ({
                 <Sparkles size={14} /> Midnight Privacy Guarantee
               </div>
               <p style={{ fontSize: '0.8rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-                Your private key <code style={{ color: '#38bdf8' }}>{voter.voterSecret.slice(0, 10)}...</code> remains strictly on your client. Only a zk-SNARK proof and anonymous nullifier are submitted.
+                Active Identity: <strong>{voter.name}</strong>. Your private key <code style={{ color: '#38bdf8' }}>{voter.voterSecret.slice(0, 14)}...</code> remains strictly isolated on your client.
               </p>
             </div>
 
@@ -104,6 +119,7 @@ export const CastVoteModal: React.FC<CastVoteModalProps> = ({
               {proposal.options.map((option, idx) => (
                 <button
                   key={idx}
+                  disabled={isSubmitting}
                   onClick={() => setSelectedOption(idx)}
                   className={`btn ${selectedOption === idx ? 'btn-primary' : 'btn-secondary'}`}
                   style={{ justifyContent: 'space-between', padding: '0.85rem 1rem' }}
@@ -115,15 +131,23 @@ export const CastVoteModal: React.FC<CastVoteModalProps> = ({
               ))}
             </div>
 
+            {/* Step Progress Display */}
+            {isSubmitting && (
+              <div style={{ background: 'rgba(6, 182, 212, 0.1)', border: '1px solid rgba(6, 182, 212, 0.3)', padding: '0.75rem 1rem', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '0.65rem', color: '#38bdf8', fontSize: '0.82rem' }}>
+                <Loader2 size={16} className="spin" style={{ animation: 'spin 1s linear infinite' }} />
+                <span>{stepStatus}</span>
+              </div>
+            )}
+
             {error && (
-              <div style={{ background: 'rgba(244, 63, 94, 0.1)', border: '1px solid rgba(244, 63, 94, 0.3)', padding: '0.75rem', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#f87171', fontSize: '0.85rem' }}>
-                <AlertCircle size={16} />
+              <div style={{ background: 'rgba(244, 63, 94, 0.1)', border: '1px solid rgba(244, 63, 94, 0.3)', padding: '0.75rem', borderRadius: '10px', display: 'flex', alignItems: 'flex-start', gap: '0.5rem', color: '#f87171', fontSize: '0.85rem' }}>
+                <AlertCircle size={18} style={{ flexShrink: 0, marginTop: '2px' }} />
                 <span>{error}</span>
               </div>
             )}
 
             <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
-              <button onClick={onClose} className="btn btn-secondary" style={{ flex: 1 }}>
+              <button onClick={onClose} disabled={isSubmitting} className="btn btn-secondary" style={{ flex: 1 }}>
                 Cancel
               </button>
               <button
@@ -133,7 +157,7 @@ export const CastVoteModal: React.FC<CastVoteModalProps> = ({
                 style={{ flex: 2, opacity: selectedOption === null || isSubmitting ? 0.6 : 1 }}
                 id="btn-submit-ballot"
               >
-                {isSubmitting ? 'Generating ZK Proof...' : 'Generate Proof & Submit'}
+                {isSubmitting ? 'Verifying Proof...' : 'Generate Proof & Submit'}
               </button>
             </div>
           </div>

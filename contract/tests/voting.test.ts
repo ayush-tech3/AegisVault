@@ -112,7 +112,7 @@ describe('Midnight VeilVote - Zero-Knowledge Secret Ballot Governance', () => {
         proposalId,
         {
           voterSecret: bobSecret,
-          ballotChoice: 0, // changes mind or spams
+          ballotChoice: 0,
           eligibilityProof: bobProof
         },
         1
@@ -193,12 +193,105 @@ describe('Midnight VeilVote - Zero-Knowledge Secret Ballot Governance', () => {
     expect(resDave.nullifier).not.toBe(daveSecret);
 
     // 2. Observer cannot match nullifier to individual ballot choice (one-way unlinkability)
-    expect(resCarol.nullifier.length).toBe(66); // 0x + 64 hex chars
+    expect(resCarol.nullifier.length).toBe(66);
     expect(resDave.nullifier.length).toBe(66);
 
     // 3. Observer only sees aggregated count
     const tally = ledger.tallies.get(proposalId)!;
     expect(tally.totalTally).toBe(2);
     expect(tally.optionVotes).toEqual([1, 1, 0]);
+  });
+
+  it('Test 6: Enforces proposal closure and rejects votes after closure', () => {
+    engine.createProposal({
+      id: proposalId,
+      title: 'MIP-04: Midnight Community Treasury Allocation',
+      description: 'Allocate 500,000 DUST for privacy developer grants',
+      options: ['Approve', 'Reject', 'Abstain'],
+      eligibilityRoot: eligibilityRoot
+    });
+
+    // Close proposal
+    engine.closeProposal(proposalId);
+
+    const ledger = engine.getLedger();
+    const prop = ledger.proposals.get(proposalId);
+    expect(prop?.status).toBe(ProposalStatus.Closed);
+
+    // Attempting to cast vote on closed proposal must throw
+    expect(() => {
+      engine.castVote(
+        proposalId,
+        {
+          voterSecret: voterSecrets[0],
+          ballotChoice: 0,
+          eligibilityProof: merkleTree.getProof(0)
+        },
+        0
+      );
+    }).toThrowError(/is closed/);
+  });
+
+  it('Test 7: Rejects out-of-bounds ballot choices', () => {
+    engine.createProposal({
+      id: proposalId,
+      title: 'MIP-04: Midnight Community Treasury Allocation',
+      description: 'Allocate 500,000 DUST for privacy developer grants',
+      options: ['Approve', 'Reject', 'Abstain'], // 3 options: indices 0, 1, 2
+      eligibilityRoot: eligibilityRoot
+    });
+
+    expect(() => {
+      engine.castVote(
+        proposalId,
+        {
+          voterSecret: voterSecrets[0],
+          ballotChoice: 9, // Invalid choice
+          eligibilityProof: merkleTree.getProof(0)
+        },
+        0
+      );
+    }).toThrowError(/out of bounds/);
+  });
+
+  it('Test 8: Verifies per-proposal nullifier isolation (same voter can participate in multiple proposals)', () => {
+    const proposalId2 = sha256('proposal_002_core_upgrade');
+
+    engine.createProposal({
+      id: proposalId,
+      title: 'MIP-04: Proposal 1',
+      description: 'First proposal',
+      options: ['Yes', 'No'],
+      eligibilityRoot: eligibilityRoot
+    });
+
+    engine.createProposal({
+      id: proposalId2,
+      title: 'MIP-05: Proposal 2',
+      description: 'Second proposal',
+      options: ['Yes', 'No'],
+      eligibilityRoot: eligibilityRoot
+    });
+
+    const aliceSecret = voterSecrets[0];
+    const aliceProof = merkleTree.getProof(0);
+
+    // Alice votes on Proposal 1
+    const res1 = engine.castVote(
+      proposalId,
+      { voterSecret: aliceSecret, ballotChoice: 0, eligibilityProof: aliceProof },
+      0
+    );
+
+    // Alice votes on Proposal 2 (should succeed because nullifiers are salted by proposalId)
+    const res2 = engine.castVote(
+      proposalId2,
+      { voterSecret: aliceSecret, ballotChoice: 1, eligibilityProof: aliceProof },
+      0
+    );
+
+    expect(res1.nullifier).not.toBe(res2.nullifier);
+    expect(engine.getLedger().tallies.get(proposalId)?.totalTally).toBe(1);
+    expect(engine.getLedger().tallies.get(proposalId2)?.totalTally).toBe(1);
   });
 });
