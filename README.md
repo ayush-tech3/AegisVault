@@ -29,11 +29,21 @@
 | **1. Public GitHub Repository** | [github.com/ayush-tech3/midnight-privacy-dapp](https://github.com/ayush-tech3/midnight-privacy-dapp) | ✅ Active & Public |
 | **2. Minimum Meaningful Commits** | [15+ Commits on `main`](https://github.com/ayush-tech3/midnight-privacy-dapp/commits/main) | ✅ 15+ Commits |
 | **3. Live Production Application** | **[midnightprivacydevlop.netlify.app](https://midnightprivacydevlop.netlify.app/)** | ✅ Live & Production Ready |
-| **4. Automated Tests Passing (3+ Required)** | [8/8 Passing Tests Table ⬇️](#-automated-test-suite-8-passing-tests) | ✅ 8 Tests Passing (100%) |
-| **5. CI/CD Workflow with Passing Runs** | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) | ✅ GitHub Actions Passing |
-| **6. Privacy Model Whitepaper** | [`docs/PRIVACY_MODEL.md`](docs/PRIVACY_MODEL.md) | ✅ Complete Privacy Analysis |
-| **7. Product Proposal** | [`docs/PRODUCT_PROPOSAL.md`](docs/PRODUCT_PROPOSAL.md) | ✅ Full Approved Proposal |
-| **8. Multi-Wallet Integration** | Real Freighter Extension + Demo Shielded Prover | ✅ Fully Integrated |
+| **4. Demo Video Walkthrough (1-Min)** | [Watch 1080p Demo Video (YouTube) ⬇️](#-demo-video-walkthrough) | 🎬 [Paste Video Link Here] |
+| **5. Automated Tests Passing (3+ Required)** | [8/8 Passing Tests Table ⬇️](#-automated-test-suite-8-passing-tests) | ✅ 8 Tests Passing (100%) |
+| **6. CI/CD Workflow with Passing Runs** | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) | ✅ GitHub Actions Passing |
+| **7. Privacy Model Whitepaper** | [`docs/PRIVACY_MODEL.md`](docs/PRIVACY_MODEL.md) | ✅ Complete Privacy Analysis |
+| **8. Product Proposal** | [`docs/PRODUCT_PROPOSAL.md`](docs/PRODUCT_PROPOSAL.md) | ✅ Full Approved Proposal |
+| **9. Multi-Wallet Integration** | Real Freighter Extension + Demo Shielded Prover | ✅ Fully Integrated |
+
+---
+
+## 🎥 Demo Video Walkthrough
+
+[![Watch Demo Video](https://img.shields.io/badge/▶️_Watch_Demo_Video-YouTube-red?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/YOUR_DEMO_VIDEO_LINK_HERE)
+
+> 🎬 **Direct Demo Video Link:**
+> **[https://youtu.be/YOUR_DEMO_VIDEO_LINK_HERE](https://youtu.be/YOUR_DEMO_VIDEO_LINK_HERE)** *(Paste your recorded YouTube or Loom video link here)*
 
 ---
 
@@ -42,8 +52,11 @@
 ### 1. 🖥️ Product UI (Live Production Dashboard)
 ![Product UI](screenshots/product-ui.png)
 
-### 2. 📱 Mobile Responsive View (Smartphone Interface)
-![Mobile Responsive Dashboard](screenshots/mobile-responsive-ui.png)
+### 2. 📱 Mobile Responsive View (Smartphone Working Interface)
+<div align="center">
+  <img src="screenshots/mobile-responsive-ui.png" alt="VeilVote Smartphone Working Interface" width="380" style="border-radius: 20px; box-shadow: 0 12px 40px rgba(0,0,0,0.7);" />
+  <p><em>📱 Live mobile responsive view on smartphone viewport</em></p>
+</div>
 
 ### 3. 🛡️ ZK Privacy & Merkle Proof Explorer
 ![ZK Privacy Explorer](screenshots/privacy-explorer-ui.png)

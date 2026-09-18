@@ -192,7 +192,7 @@ export function App() {
         {activeTab === 'proposals' && (
           <>
             {/* Hero Banner with 3D Depth */}
-            <div className="glass-panel" style={{ padding: '2.75rem', margin: '1.25rem 0 2rem 0', position: 'relative', overflow: 'hidden', border: '1px solid rgba(16, 185, 129, 0.25)' }}>
+            <div className="glass-panel hero-banner-card">
               <div style={{ position: 'relative', zIndex: 1, maxWidth: '820px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.85rem', flexWrap: 'wrap' }}>
                   <span className="badge badge-active" style={{ padding: '0.35rem 0.75rem' }}>
@@ -203,7 +203,7 @@ export function App() {
                   </span>
                 </div>
 
-                <h1 style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.2, marginBottom: '1rem', background: 'linear-gradient(135deg, #ffffff 30%, #a7f3d0 70%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                <h1 className="hero-banner-title" style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.2, marginBottom: '1rem', background: 'linear-gradient(135deg, #ffffff 30%, #a7f3d0 70%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                   Confidential Governance & Secret Ballots on Midnight
                 </h1>
 
@@ -262,7 +262,7 @@ export function App() {
                   Loading Midnight ledger state...
                 </div>
               ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(480px, 1fr))', gap: '1.5rem' }}>
+                <div className="proposal-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))', gap: '1.5rem' }}>
                   {proposals.map((prop) => (
                     <ProposalCard
                       key={prop.id}
@@ -287,7 +287,7 @@ export function App() {
             </div>
 
             {/* Quick Explore Banner Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '1.25rem', marginTop: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '1.25rem', marginTop: '1rem' }}>
               <div
                 className="glass-panel"
                 style={{ padding: '1.5rem', cursor: 'pointer', border: '1px solid rgba(168, 85, 247, 0.25)' }}

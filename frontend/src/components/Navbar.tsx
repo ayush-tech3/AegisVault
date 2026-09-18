@@ -47,18 +47,18 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      <header className="glass-panel" style={{ margin: '1.25rem auto', padding: '0.85rem 1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+      <header className="glass-panel navbar-header">
         
         {/* Brand with 3D Icon */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer' }} onClick={() => onTabChange('proposals')}>
+        <div className="navbar-brand-section" onClick={() => onTabChange('proposals')}>
           <div className="brand-icon-3d">
             <Layers size={22} color="#07080d" strokeWidth={2.5} />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <h1 style={{ fontSize: '1.35rem', fontWeight: 800, letterSpacing: '-0.02em', background: 'linear-gradient(90deg, #f8fafc, #05f292, #c084fc)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', margin: 0 }}>
+              <span style={{ fontSize: '1.35rem', fontWeight: 800, letterSpacing: '-0.02em', background: 'linear-gradient(90deg, #f8fafc, #05f292, #c084fc)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', margin: 0 }}>
                 VeilVote
-              </h1>
+              </span>
               <span className="badge badge-active" style={{ fontSize: '0.6rem', padding: '0.1rem 0.4rem' }}>
                 ZK-SNARK
               </span>
@@ -103,7 +103,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Controls */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+        <div className="navbar-actions-section">
           <button onClick={onOpenCreateModal} className="btn btn-primary" id="btn-create-proposal" style={{ padding: '0.55rem 1rem', fontSize: '0.85rem' }}>
             + New Proposal
           </button>
