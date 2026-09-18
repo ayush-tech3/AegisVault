@@ -29,7 +29,7 @@
 | **1. Public GitHub Repository** | [github.com/ayush-tech3/midnight-privacy-dapp](https://github.com/ayush-tech3/midnight-privacy-dapp) | ✅ Active & Public |
 | **2. Minimum Meaningful Commits** | [15+ Commits on `main`](https://github.com/ayush-tech3/midnight-privacy-dapp/commits/main) | ✅ 15+ Commits |
 | **3. Live Production Application** | **[midnightprivacydevlop.netlify.app](https://midnightprivacydevlop.netlify.app/)** | ✅ Live & Production Ready |
-| **4. Demo Video Walkthrough (1-Min)** | [Watch 1080p Demo Video (YouTube) ⬇️](#-demo-video-walkthrough) | 🎬 [Paste Video Link Here] |
+| **4. Demo Video Walkthrough (1-Min)** | [Watch 1080p Demo Video (YouTube) ⬇️](https://youtu.be/n1FlJ9chiqg) | 🎬 
 | **5. Automated Tests Passing (3+ Required)** | [8/8 Passing Tests Table ⬇️](#-automated-test-suite-8-passing-tests) | ✅ 8 Tests Passing (100%) |
 | **6. CI/CD Workflow with Passing Runs** | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) | ✅ GitHub Actions Passing |
 | **7. Privacy Model Whitepaper** | [`docs/PRIVACY_MODEL.md`](docs/PRIVACY_MODEL.md) | ✅ Complete Privacy Analysis |
@@ -40,10 +40,9 @@
 
 ## 🎥 Demo Video Walkthrough
 
-[![Watch Demo Video](https://img.shields.io/badge/▶️_Watch_Demo_Video-YouTube-red?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/YOUR_DEMO_VIDEO_LINK_HERE)
-
+[![Watch Demo Video](https://youtu.be/n1FlJ9chiqg)
 > 🎬 **Direct Demo Video Link:**
-> **[https://youtu.be/YOUR_DEMO_VIDEO_LINK_HERE](https://youtu.be/YOUR_DEMO_VIDEO_LINK_HERE)** *(Paste your recorded YouTube or Loom video link here)*
+> **[https://youtu.be/YOUR_DEMO_VIDEO_LINK_HERE](https://youtu.be/n1FlJ9chiqg))**
 
 ---
 
