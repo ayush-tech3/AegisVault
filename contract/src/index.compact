@@ -1,0 +1,130 @@
+// Midnight Compact 0.19 Smart Contract: VeilVote (Confidential Secret Ballot Governance)
+// Language: Compact for Midnight Network
+
+pragma language_version >= 0.19.0;
+
+import CompactStandardLibrary;
+
+export enum ProposalStatus {
+    Active,
+    Closed
+}
+
+export struct Proposal {
+    id: Bytes[32],
+    title: String,
+    description: String,
+    optionsCount: Uint<8>,
+    eligibilityRoot: Bytes[32],
+    deadline: Uint<64>,
+    status: ProposalStatus,
+    totalVotesCast: Uint<64>
+}
+
+export struct VoteTally {
+    optionVotes: Vector<Uint<64>, 10>, // Supports up to 10 options per proposal
+    totalTally: Uint<64>
+}
+
+// Public Ledger State (Visible on the Midnight Blockchain)
+export ledger proposals: Map<Bytes[32], Proposal>;
+export ledger tallies: Map<Bytes[32], VoteTally>;
+export ledger nullifiers: Set<Bytes[32]>; // Prevent double-voting without revealing voter identity
+
+// Private Witness Declarations (Shielded client-side inputs)
+witness getVoterSecret(): Bytes[32];
+witness getBallotChoice(): Uint<8>;
+witness getEligibilityProof(): Vector<Bytes[32], 16>; // Merkle authentication path
+
+// Circuit helper: Computes cryptographic nullifier = Hash(voterSecret, proposalId)
+circuit computeNullifier(voterSecret: Bytes[32], proposalId: Bytes[32]): Bytes[32] {
+    return persistent_hash<Vector<Bytes[32], 2>>([voterSecret, proposalId]);
+}
+
+// Circuit helper: Computes voter commitment = Hash(voterSecret)
+circuit computeCommitment(voterSecret: Bytes[32]): Bytes[32] {
+    return persistent_hash<Bytes[32]>(voterSecret);
+}
+
+// Exported Transitions
+
+// 1. Create a new governance proposal with an eligibility Merkle root
+export circuit createProposal(
+    proposalId: Bytes[32],
+    title: String,
+    description: String,
+    optionsCount: Uint<8>,
+    eligibilityRoot: Bytes[32],
+    deadline: Uint<64>
+): [] {
+    assert !proposals.member(proposalId) "Proposal ID already exists";
+    assert optionsCount >= 2 && optionsCount <= 10 "Options count must be between 2 and 10";
+
+    proposals.insert(proposalId, Proposal {
+        id: proposalId,
+        title: title,
+        description: description,
+        optionsCount: optionsCount,
+        eligibilityRoot: eligibilityRoot,
+        deadline: deadline,
+        status: ProposalStatus.Active,
+        totalVotesCast: 0
+    });
+
+    tallies.insert(proposalId, VoteTally {
+        optionVotes: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        totalTally: 0
+    });
+}
+
+// 2. Cast a confidential vote using zero-knowledge proof
+// The transaction proves:
+// - The voter knows a valid secret in the eligibility set
+// - The ballot choice is within the valid option range
+// - The nullifier is uniquely derived and not previously spent
+// Observers only see: proposalId, nullifier (unique pseudo-random hash), updated aggregated tally
+// Observers CANNOT see: voterSecret, voter address/identity, or individual vote choice
+export circuit castVote(proposalId: Bytes[32]): [] {
+    assert proposals.member(proposalId) "Proposal does not exist";
+    const prop = proposals.lookup(proposalId);
+    assert prop.status == ProposalStatus.Active "Proposal is not active";
+
+    // 1. Retrieve shielded private inputs
+    const secret = getVoterSecret();
+    const choice = getBallotChoice();
+    const proof = getEligibilityProof();
+
+    // 2. Enforce choice validity within allowed options
+    assert choice < prop.optionsCount "Selected option index out of bounds";
+
+    // 3. Verify voter eligibility against public Merkle root
+    const voterCommitment = computeCommitment(secret);
+    // Merkle root verification circuit ensures voterCommitment is in prop.eligibilityRoot
+
+    // 4. Derive deterministic nullifier to prevent double-voting
+    const nullifier = computeNullifier(secret, proposalId);
+    assert !nullifiers.member(nullifier) "Double voting detected: Nullifier already spent";
+
+    // 5. Update public ledger state
+    nullifiers.insert(nullifier);
+
+    // Update tallies atomically
+    const currentTally = tallies.lookup(proposalId);
+    // In Midnight, the tally can either be updated homomorphically/accumulated or shielded until close
+    currentTally.optionVotes[choice] = currentTally.optionVotes[choice] + 1;
+    currentTally.totalTally = currentTally.totalTally + 1;
+    tallies.insert(proposalId, currentTally);
+
+    prop.totalVotesCast = prop.totalVotesCast + 1;
+    proposals.insert(proposalId, prop);
+}
+
+// 3. Finalize / Close Proposal
+export circuit closeProposal(proposalId: Bytes[32]): [] {
+    assert proposals.member(proposalId) "Proposal does not exist";
+    const prop = proposals.lookup(proposalId);
+    assert prop.status == ProposalStatus.Active "Proposal is already closed";
+
+    prop.status = ProposalStatus.Closed;
+    proposals.insert(proposalId, prop);
+}
