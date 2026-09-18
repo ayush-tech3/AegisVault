@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { Plus, Trash2, X, FileText, Sparkles } from 'lucide-react';
 
 interface CreateProposalModalProps {
+  isOpen?: boolean;
   onClose: () => void;
   onSubmit: (title: string, description: string, options: string[]) => Promise<void>;
 }
 
 export const CreateProposalModal: React.FC<CreateProposalModalProps> = ({
+  isOpen = true,
   onClose,
   onSubmit
 }) => {
@@ -15,6 +17,8 @@ export const CreateProposalModal: React.FC<CreateProposalModalProps> = ({
   const [options, setOptions] = useState<string[]>(['Approve', 'Reject']);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  if (!isOpen) return null;
 
   const handleAddOption = () => {
     if (options.length >= 6) return;
@@ -48,6 +52,9 @@ export const CreateProposalModal: React.FC<CreateProposalModalProps> = ({
 
     try {
       await onSubmit(title.trim(), description.trim(), options);
+      setTitle('');
+      setDescription('');
+      setOptions(['Approve', 'Reject']);
       onClose();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Failed to publish proposal';
@@ -69,7 +76,12 @@ export const CreateProposalModal: React.FC<CreateProposalModalProps> = ({
               Create Confidential Governance Proposal
             </h3>
           </div>
-          <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
+          <button
+            type="button"
+            onClick={onClose}
+            id="btn-close-proposal-modal"
+            style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.25rem' }}
+          >
             <X size={20} />
           </button>
         </div>
@@ -153,7 +165,13 @@ export const CreateProposalModal: React.FC<CreateProposalModalProps> = ({
           )}
 
           <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
-            <button type="button" onClick={onClose} className="btn btn-secondary" style={{ flex: 1 }}>
+            <button
+              type="button"
+              onClick={onClose}
+              className="btn btn-secondary"
+              style={{ flex: 1 }}
+              id="btn-cancel-create-proposal"
+            >
               Cancel
             </button>
             <button

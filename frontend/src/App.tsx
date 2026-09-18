@@ -276,10 +276,13 @@ export function App() {
         onSubmitVote={handleCastVote}
       />
 
-      <CreateProposalModal
-        onClose={() => setIsCreateOpen(false)}
-        onSubmit={handleCreateProposal}
-      />
+      {isCreateOpen && (
+        <CreateProposalModal
+          isOpen={isCreateOpen}
+          onClose={() => setIsCreateOpen(false)}
+          onSubmit={handleCreateProposal}
+        />
+      )}
 
       {inspectingProposal && (
         <PrivacyInspector
