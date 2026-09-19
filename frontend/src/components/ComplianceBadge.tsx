@@ -25,7 +25,7 @@ export const ComplianceBadge: React.FC = () => {
       </div>
 
       {/* Grid of Verified Checklist Items */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.85rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '0.85rem' }}>
         <div style={{ background: 'rgba(0,0,0,0.25)', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid var(--border-glass)', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
           <ShieldCheck size={18} color="#10b981" />
           <span style={{ fontSize: '0.85rem', color: '#cbd5e1' }}>Midnight Dual-State Privacy Model</span>

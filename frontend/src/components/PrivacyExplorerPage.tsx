@@ -24,7 +24,7 @@ export const PrivacyExplorerPage: React.FC<PrivacyExplorerPageProps> = ({
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', paddingBottom: '3rem' }}>
       
       {/* Top Banner */}
-      <div className="glass-panel" style={{ padding: '2rem 2.5rem', background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.12), rgba(16, 185, 129, 0.08))' }}>
+      <div className="glass-panel" style={{ padding: '1.5rem', background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.12), rgba(16, 185, 129, 0.08))' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
           <span className="badge badge-shielded">
             <Shield size={13} /> Midnight Dual-State Architecture
@@ -33,7 +33,7 @@ export const PrivacyExplorerPage: React.FC<PrivacyExplorerPageProps> = ({
             <Cpu size={13} /> Compact v0.19 Circuit Prover
           </span>
         </div>
-        <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#f8fafc', marginBottom: '0.5rem' }}>
+        <h2 className="hero-banner-title" style={{ fontSize: '2rem', fontWeight: 800, color: '#f8fafc', marginBottom: '0.5rem' }}>
           Zero-Knowledge Privacy & Merkle Inspector
         </h2>
         <p style={{ color: 'var(--text-secondary)', maxWidth: '850px', fontSize: '1rem', lineHeight: 1.6 }}>
@@ -42,7 +42,7 @@ export const PrivacyExplorerPage: React.FC<PrivacyExplorerPageProps> = ({
       </div>
 
       {/* Dual State Comparison Box */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(460px, 1fr))', gap: '1.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))', gap: '1.5rem' }}>
         
         {/* Shielded State */}
         <div
@@ -179,7 +179,7 @@ export const PrivacyExplorerPage: React.FC<PrivacyExplorerPageProps> = ({
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: '1rem' }}>
           {SEED_VOTERS.map((voter, idx) => (
             <div
               key={voter.name}
@@ -244,7 +244,9 @@ export const PrivacyExplorerPage: React.FC<PrivacyExplorerPageProps> = ({
                   border: '1px solid var(--border-glass)',
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'center'
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  gap: '0.5rem'
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>

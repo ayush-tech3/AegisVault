@@ -12,7 +12,7 @@ export const LedgerAuditPage: React.FC<LedgerAuditPageProps> = ({ logs, onRefres
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', paddingBottom: '3rem' }}>
       
       {/* Top Banner */}
-      <div className="glass-panel" style={{ padding: '2rem 2.5rem', background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(245, 158, 11, 0.08))' }}>
+      <div className="glass-panel" style={{ padding: '1.5rem', background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(245, 158, 11, 0.08))' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
           <span className="badge badge-active">
             <Activity size={13} /> Live Ledger Telemetry
@@ -21,7 +21,7 @@ export const LedgerAuditPage: React.FC<LedgerAuditPageProps> = ({ logs, onRefres
             <Award size={13} /> Rise In Level 3 Certified
           </span>
         </div>
-        <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#f8fafc', marginBottom: '0.5rem' }}>
+        <h2 className="hero-banner-title" style={{ fontSize: '2rem', fontWeight: 800, color: '#f8fafc', marginBottom: '0.5rem' }}>
           Public Ledger Stream & Cryptographic Audit
         </h2>
         <p style={{ color: 'var(--text-secondary)', maxWidth: '850px', fontSize: '1rem', lineHeight: 1.6 }}>
@@ -30,7 +30,7 @@ export const LedgerAuditPage: React.FC<LedgerAuditPageProps> = ({ logs, onRefres
       </div>
 
       {/* Grid: Live Feed & Specs */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(480px, 1fr))', gap: '1.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 480px), 1fr))', gap: '1.5rem' }}>
         
         {/* Live Blockchain Event Feed */}
         <div className="glass-panel" style={{ padding: '1.75rem' }}>
@@ -152,7 +152,7 @@ export const LedgerAuditPage: React.FC<LedgerAuditPageProps> = ({ logs, onRefres
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1rem' }}>
           {[
             { title: '1. Approved Problem', desc: 'Private Voting / Secret Governance Ballots implemented completely.', status: 'Verified' },
             { title: '2. Midnight Privacy Model', desc: 'Dual-state architecture with client-side witness & public nullifiers.', status: 'Verified' },

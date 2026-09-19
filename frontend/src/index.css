@@ -420,41 +420,167 @@ html, body {
   border: 1px solid rgba(16, 185, 129, 0.25);
 }
 
-/* Mobile Responsive Optimization */
+/* ========================================
+   RESPONSIVE DESIGN SYSTEM
+   Tablet (≤1024px) → Mobile (≤640px) → Small (≤400px)
+   ======================================== */
+
+/* --- TABLET BREAKPOINT (≤1024px) --- */
+@media (max-width: 1024px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .hero-banner-card {
+    padding: 2rem 1.75rem;
+  }
+}
+
+/* --- MOBILE BREAKPOINT (≤768px) --- */
+@media (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+
+  .container {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* --- Navbar --- */
+  .navbar-header {
+    flex-direction: column !important;
+    gap: 0.65rem !important;
+    padding: 0.75rem !important;
+    margin: 0.75rem auto !important;
+  }
+
+  .navbar-brand-section {
+    justify-content: space-between !important;
+    width: 100% !important;
+  }
+
+  .nav-tabs-container {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    width: 100% !important;
+    gap: 0.25rem !important;
+    padding: 0.25rem !important;
+  }
+
+  .nav-tab-btn {
+    padding: 0.45rem 0.25rem !important;
+    font-size: 0.78rem !important;
+    gap: 0.3rem !important;
+    justify-content: center !important;
+  }
+
+  .navbar-actions-section {
+    width: 100% !important;
+    gap: 0.5rem !important;
+    flex-wrap: wrap !important;
+  }
+
+  .navbar-actions-section > * {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+
+  .navbar-actions-section button {
+    padding: 0.45rem 0.65rem !important;
+    font-size: 0.8rem !important;
+    justify-content: center !important;
+  }
+
+  /* --- Hero Banner --- */
+  .hero-banner-card {
+    padding: 1.5rem 1.15rem !important;
+    margin: 0.75rem 0 1.25rem 0 !important;
+  }
+
+  .hero-banner-title {
+    font-size: 1.6rem !important;
+    line-height: 1.25 !important;
+    word-break: break-word !important;
+  }
+
+  /* --- Glass Panels --- */
+  .glass-panel {
+    border-radius: 14px !important;
+  }
+
+  /* --- Proposal Grid --- */
+  .proposal-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* --- Modals --- */
+  .modal-overlay {
+    padding: 0.5rem !important;
+    align-items: flex-end !important;
+  }
+
+  .modal-content {
+    max-width: 100% !important;
+    max-height: 92vh !important;
+    border-radius: 18px 18px 0 0 !important;
+    padding: 1.25rem !important;
+  }
+
+  /* --- Buttons --- */
+  .btn {
+    padding: 0.5rem 0.85rem !important;
+    font-size: 0.82rem !important;
+  }
+
+  /* --- Badges --- */
+  .badge {
+    font-size: 0.7rem !important;
+    padding: 0.2rem 0.5rem !important;
+  }
+
+  /* --- Hash Pills (prevent overflow) --- */
+  .hash-pill {
+    font-size: 0.72rem !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-all !important;
+  }
+
+  /* --- Orbs (scale down for performance) --- */
+  .orb-1 {
+    width: 280px !important;
+    height: 280px !important;
+  }
+
+  .orb-2 {
+    width: 320px !important;
+    height: 320px !important;
+  }
+
+  .orb-3 {
+    width: 180px !important;
+    height: 180px !important;
+  }
+}
+
+/* --- SMALL MOBILE BREAKPOINT (≤640px) --- */
 @media (max-width: 640px) {
   body {
     font-size: 14px;
   }
 
   .container {
-    padding-left: 0.65rem !important;
-    padding-right: 0.65rem !important;
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-
-  .hero-banner-card {
-    padding: 1.15rem 0.85rem !important;
-    margin: 0.75rem 0 1.25rem 0 !important;
-  }
-
-  .glass-panel {
-    padding: 1rem !important;
-    border-radius: 14px !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
   }
 
   .navbar-header {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 0.65rem !important;
-    padding: 0.75rem !important;
-  }
-
-  .navbar-brand-section {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    width: 100% !important;
+    padding: 0.6rem !important;
+    gap: 0.5rem !important;
+    margin: 0.5rem auto !important;
   }
 
   .brand-icon-3d {
@@ -463,54 +589,73 @@ html, body {
     flex-shrink: 0;
   }
 
-  .nav-tabs-container {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    width: 100% !important;
-    gap: 0.2rem !important;
-    padding: 0.2rem !important;
-  }
-
   .nav-tab-btn {
     padding: 0.4rem 0.15rem !important;
-    font-size: 0.68rem !important;
+    font-size: 0.7rem !important;
     gap: 0.2rem !important;
-    justify-content: center !important;
   }
 
   .nav-tab-btn span {
-    font-size: 0.68rem !important;
-  }
-
-  .navbar-actions-section {
-    display: flex !important;
-    width: 100% !important;
-    gap: 0.5rem !important;
+    font-size: 0.7rem !important;
   }
 
   .navbar-actions-section button {
     flex: 1 !important;
-    padding: 0.45rem 0.5rem !important;
-    font-size: 0.76rem !important;
-    justify-content: center !important;
+    padding: 0.4rem 0.5rem !important;
+    font-size: 0.75rem !important;
+  }
+
+  .hero-banner-card {
+    padding: 1.15rem 0.85rem !important;
+    margin: 0.5rem 0 1rem 0 !important;
   }
 
   .hero-banner-title {
-    font-size: 1.45rem !important;
-    line-height: 1.25 !important;
-    word-break: break-word !important;
+    font-size: 1.35rem !important;
+    line-height: 1.2 !important;
   }
 
-  .proposal-grid {
-    grid-template-columns: 1fr !important;
+  .glass-panel {
+    padding: 1rem !important;
+    border-radius: 12px !important;
   }
 
   .btn {
-    padding: 0.5rem 0.75rem !important;
-    font-size: 0.82rem !important;
+    padding: 0.45rem 0.65rem !important;
+    font-size: 0.78rem !important;
+  }
+
+  .modal-content {
+    padding: 1rem !important;
   }
 }
 
+/* --- EXTRA SMALL MOBILE (≤400px) --- */
+@media (max-width: 400px) {
+  body {
+    font-size: 13px;
+  }
 
+  .hero-banner-title {
+    font-size: 1.15rem !important;
+  }
 
+  .nav-tab-btn {
+    padding: 0.35rem 0.1rem !important;
+    font-size: 0.62rem !important;
+  }
 
+  .nav-tab-btn span {
+    font-size: 0.62rem !important;
+  }
+
+  .navbar-actions-section {
+    flex-direction: column !important;
+  }
+
+  .navbar-actions-section button,
+  .navbar-actions-section > * {
+    width: 100% !important;
+    flex: none !important;
+  }
+}

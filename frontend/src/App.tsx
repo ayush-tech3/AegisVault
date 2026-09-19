@@ -143,7 +143,10 @@ export function App() {
           <div style={{
             position: 'fixed',
             bottom: '1.5rem',
-            right: '1.5rem',
+            left: '1rem',
+            right: '1rem',
+            maxWidth: '420px',
+            marginLeft: 'auto',
             background: 'linear-gradient(135deg, rgba(14, 16, 23, 0.95), rgba(4, 31, 20, 0.95))',
             border: '1px solid rgba(16, 185, 129, 0.4)',
             color: '#f8fafc',
@@ -154,11 +157,11 @@ export function App() {
             display: 'flex',
             alignItems: 'center',
             gap: '0.6rem',
-            fontSize: '0.9rem',
+            fontSize: '0.85rem',
             fontWeight: 500
           }}>
-            <Sparkles size={16} color="#05f292" />
-            <span>{feedbackMessage}</span>
+            <Sparkles size={16} color="#05f292" style={{ flexShrink: 0 }} />
+            <span style={{ wordBreak: 'break-word' }}>{feedbackMessage}</span>
           </div>
         )}
 
@@ -178,9 +181,9 @@ export function App() {
 
         {!isConnected && (
           <div style={{ background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)', padding: '0.85rem 1.25rem', borderRadius: '14px', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: '#fbbf24', fontSize: '0.9rem' }}>
-              <AlertCircle size={18} />
-              <span>Wallet disconnected. Connect Freighter extension or Demo Prover to cast secret votes or create proposals.</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: '#fbbf24', fontSize: '0.85rem', minWidth: 0 }}>
+              <AlertCircle size={18} style={{ flexShrink: 0 }} />
+              <span style={{ wordBreak: 'break-word' }}>Wallet disconnected. Connect Freighter or Demo Prover to cast votes or create proposals.</span>
             </div>
             <button onClick={() => setIsWalletModalOpen(true)} className="btn btn-primary" style={{ fontSize: '0.8rem', padding: '0.4rem 0.85rem' }} id="btn-banner-connect">
               Connect Wallet
