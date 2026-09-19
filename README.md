@@ -39,9 +39,6 @@
 ---
 
 ## 🎥 Demo Video Walkthrough
-
-[![Watch Demo Video](https://youtu.be/n1FlJ9chiqg)!]
-
 > 🎬 **Direct Demo Video Link:**
 > **[https://youtu.be/YOUR_DEMO_VIDEO_LINK_HERE](https://youtu.be/n1FlJ9chiqg))**
 
