@@ -5,7 +5,11 @@
 * **Repository:** [https://github.com/ayush-tech3/AegisVault](https://github.com/ayush-tech3/AegisVault)
 * **Deployed Contract:** `0x4e8a1092837bc940182739485710293847561928374619283746192837461928` (`Midnight Preprod / Testnet`)
 
----
+### Selected Idea from Provided List (Level 3)
+This project implements a combination of two ideas from the official Midnight Moonshot provided idea list:
+1. **Private Allowlist Access** — Prove membership (accredited investor KYC) without revealing identity. Borrowers prove they belong to a verified accredited investor Merkle whitelist without exposing their leaf index, public address, or personal KYC documents.
+2. **Confidential Credentials** — Prove a credential is valid without disclosing it. The ZK circuit proves that a borrower's RWA collateral meets the ≥150% over-collateralization threshold and that the borrower holds valid accredited investor status — all without revealing the actual collateral value, asset type, or identity.
+
 
 ## 1. Product & Target Users (What Problem Does It Solve?)
 

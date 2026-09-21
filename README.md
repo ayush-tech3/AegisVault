@@ -42,6 +42,64 @@ Borrowers deposit and lock high-grade off-chain RWAs (US Treasury Bills, Corpora
 
 ---
 
+## 🔐 Privacy Model: What an Observer Can and Cannot Learn
+
+AegisVault implements Midnight's **Rational Privacy** paradigm. Here is a precise breakdown of what each participant can and cannot learn:
+
+### ✅ What a Public Blockchain Observer **CAN** See
+- The **existence** of a collateral commitment (a 32-byte hash, e.g., `0x8f4c...9283`)
+- The **loan principal amount** (e.g., $100,000 USD) and loan status (Active / Repaid)
+- A **spent nullifier hash** (proves a collateral commitment was used, prevents double-borrowing)
+- The **total protocol TVL** (aggregate collateral commitments count and total borrowed)
+- The **auditor disclosure record** (that an audit viewing key was granted — but not the decrypted content)
+
+### ❌ What a Public Observer **CANNOT** Learn
+- **Borrower's identity or wallet address** — shielded by the ZK circuit; the nullifier is deterministic but unlinkable
+- **Exact collateral value** — only the hash commitment is on-chain; the actual USD amount (e.g., $2,500,000) stays in the private witness
+- **Asset type breakdown** — whether the collateral is US Treasury Bills, Corporate Bonds, Real Estate, or Private Credit is never disclosed
+- **Collateral secret key and salt** — cryptographic inputs used to compute the commitment hash remain local
+- **Accredited investor identity** — the Merkle proof verifies KYC membership without revealing the leaf index or borrower's public key
+- **Audit payload contents** — the encrypted viewing key can only be decrypted by the designated auditor holding the private key
+
+### 🔍 Verified Auditor (With Viewing Key)
+A designated regulator (SEC/FINRA/ESMA) who receives a viewing key via `grantAuditorDisclosure` can additionally see:
+- The **decrypted collateral attestation** for the specific loan they were granted access to
+- **Cannot** see other borrowers' data, other loans, or any private keys
+
+---
+
+## 🏗️ Public State vs Private Witness Architecture
+
+AegisVault leverages Midnight's **dual-state model** that separates data into two distinct domains:
+
+### Public Ledger (On-Chain — Visible to All)
+The following data structures live on the Midnight blockchain and are visible to every node and block explorer:
+
+| Public Ledger Field | Description |
+|:---|:---|
+| `collateralCommitments` | Map of 32-byte commitment hashes → timestamp + min ratio |
+| `activeLoans` | Map of loan IDs → principal amount, interest rate, nullifier, status |
+| `spentNullifiers` | Set of nullifier hashes (prevents double-borrowing) |
+| `auditorDisclosures` | Map of loan IDs → auditor key commitment + encrypted viewing key |
+| `totalProtocolBorrowed` | Aggregate USD debt across all active loans |
+| `totalCollateralCommitmentsCount` | Total number of registered collateral commitments |
+
+### Private Witness (Off-Chain — Borrower's Device Only)
+The following data **never leaves the borrower's local device** and is used exclusively by the ZK prover:
+
+| Private Witness Field | Description |
+|:---|:---|
+| `borrowerSecret` | The borrower's private key used to derive commitments and nullifiers |
+| `collateralValueUSD` | The actual dollar value of the RWA collateral (e.g., $2,500,000) |
+| `assetType` | The specific RWA category (Treasury Bills, Bonds, Real Estate, Credit) |
+| `salt` | Random entropy mixed into the commitment hash for hiding |
+| `merkleProof` | The authentication path proving KYC/accredited investor membership |
+| `auditorViewingKey` | The plaintext viewing key before encryption for regulatory disclosure |
+
+> **Key Insight:** The Compact circuit reads private witness inputs, validates all constraints (≥150% collateralization, Merkle membership, nullifier uniqueness), and only writes the public outputs (commitment hash, nullifier, loan record) to the ledger. The borrower's identity, exact balance, and asset breakdown are mathematically proven but never revealed.
+
+---
+
 ## 📁 Repository Structure
 
 ```
@@ -93,6 +151,25 @@ aegis-vault/
     ├── PRODUCT_PROPOSAL.md             # Detailed product proposal
     └── PRIVACY_MODEL.md                # Formal ZK threat analysis & privacy model
 ```
+
+---
+
+## 📸 Submission Evidence Screenshots
+
+### Compact Compile Output (Circuits Listed)
+![Compact Compile Output](screenshots/compact-compile-output.jpg)
+
+### Contract Deployed to Preprod with Address
+![Contract Deployed](screenshots/contract-deployed-preprod.jpg)
+
+### Test Suite Output (8/8 Passing)
+![Test Output](screenshots/test-output-8-passing.jpg)
+
+### AegisVault Dashboard UI
+![Product UI](screenshots/product-ui.png)
+
+### Privacy Inspector (Public Ledger vs Private Witness)
+![Privacy Explorer](screenshots/privacy-explorer-ui.png)
 
 ---
 
