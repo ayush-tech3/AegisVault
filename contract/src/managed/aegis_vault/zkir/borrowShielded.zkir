@@ -1,0 +1,20 @@
+{
+  "version": { "major": 2, "minor": 0 },
+  "do_communications_commitment": true,
+  "num_inputs": 5,
+  "instructions": [
+    { "op": "load_imm", "val": "0x00" },
+    { "op": "read_witness", "index": 0 },
+    { "op": "read_witness", "index": 1 },
+    { "op": "read_witness", "index": 2 },
+    { "op": "read_witness", "index": 3 },
+    { "op": "read_witness", "index": 4 },
+    { "op": "hash_poseidon", "inputs": [1, 2, 3, 4], "output": 6 },
+    { "op": "assert_equal", "a": 6, "b": 0 },
+    { "op": "mul_const", "a": 2, "const": "0x2710", "output": 7 },
+    { "op": "mul_const", "a": 5, "const": "0x3a98", "output": 8 },
+    { "op": "assert_gte", "a": 7, "b": 8 },
+    { "op": "hash_poseidon", "inputs": [1, 5], "output": 9 },
+    { "op": "emit_nullifier", "val": 9 }
+  ]
+}

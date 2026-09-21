@@ -1,383 +1,268 @@
-import { useState, useEffect } from 'react';
-import { Navbar, AppPageTab } from './components/Navbar.tsx';
-import { ProposalCard } from './components/ProposalCard.tsx';
-import { CastVoteModal } from './components/CastVoteModal.tsx';
-import { CreateProposalModal } from './components/CreateProposalModal.tsx';
-import { ConnectWalletModal } from './components/ConnectWalletModal.tsx';
-import { PrivacyInspector } from './components/PrivacyInspector.tsx';
-import { PrivacyExplorerPage } from './components/PrivacyExplorerPage.tsx';
-import { LedgerAuditPage } from './components/LedgerAuditPage.tsx';
-import { midnightClient, SEED_VOTERS, WalletProviderType } from './services/midnight-client.ts';
-import { Proposal, VoteTally, VoterProfile, LedgerLog } from './types/index.ts';
-import { Shield, Sparkles, Activity, Cpu, AlertCircle, RefreshCw, Layers, ArrowRight, CheckCircle2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Navbar } from './components/Navbar';
+import { HeroStats } from './components/HeroStats';
+import { VaultsDashboard } from './components/VaultsDashboard';
+import { ActiveLoansView } from './components/ActiveLoansView';
+import { AuditorPortal } from './components/AuditorPortal';
+import { PrivacyInspector } from './components/PrivacyInspector';
+import { DepositCollateralModal } from './components/DepositCollateralModal';
+import { BorrowModal } from './components/BorrowModal';
+import { ConnectWalletModal } from './components/ConnectWalletModal';
+
+import {
+  VaultAssetType,
+  ShieldedVaultAsset,
+  ShieldedCollateralRecord,
+  ActiveLoanRecord,
+  AuditorDisclosureRecord,
+  LaceWalletState
+} from './types';
+import {
+  MidnightAegisClient,
+  AEGIS_VAULT_PREPROD_CONTRACT_ADDRESS
+} from './services/midnight-client';
+import { Shield, Lock, ExternalLink, CheckCircle, Cpu, Code2 } from 'lucide-react';
 
 export function App() {
-  const [proposals, setProposals] = useState<Proposal[]>([]);
-  const [tallies, setTallies] = useState<Map<string, VoteTally>>(new Map());
-  const [logs, setLogs] = useState<LedgerLog[]>([]);
-  const [nullifiers, setNullifiers] = useState<string[]>([]);
-  const [currentVoter, setCurrentVoter] = useState<VoterProfile>(SEED_VOTERS[0]);
-  const [isConnected, setIsConnected] = useState(false);
-  const [walletType, setWalletType] = useState<WalletProviderType>('disconnected');
-  const [activeTab, setActiveTab] = useState<AppPageTab>(() => {
-    if (typeof window !== 'undefined') {
-      const hash = window.location.hash.replace('#', '');
-      if (hash === 'privacy' || hash === 'audit' || hash === 'proposals') return hash as AppPageTab;
-      const params = new URLSearchParams(window.location.search);
-      const tabParam = params.get('tab');
-      if (tabParam === 'privacy' || tabParam === 'audit' || tabParam === 'proposals') return tabParam as AppPageTab;
-    }
-    return 'proposals';
-  });
-  const [isLoading, setIsLoading] = useState(true);
-  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+  const client = MidnightAegisClient.getInstance();
+
+  const [activeTab, setActiveTab] = useState<'vaults' | 'loans' | 'auditor' | 'privacy'>('vaults');
+  const [collateralRecords, setCollateralRecords] = useState<ShieldedCollateralRecord[]>([]);
+  const [activeLoans, setActiveLoans] = useState<ActiveLoanRecord[]>([]);
+  const [auditorDisclosures, setAuditorDisclosures] = useState<AuditorDisclosureRecord[]>([]);
 
   // Modals state
-  const [votingProposal, setVotingProposal] = useState<Proposal | null>(null);
-  const [inspectingProposal, setInspectingProposal] = useState<Proposal | null>(null);
-  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
+  const [depositSelectedAsset, setDepositSelectedAsset] = useState<ShieldedVaultAsset | undefined>();
+  const [isBorrowModalOpen, setIsBorrowModalOpen] = useState(false);
+  const [borrowSelectedCollateral, setBorrowSelectedCollateral] = useState<ShieldedCollateralRecord | null>(null);
   const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
 
+  // Lace Wallet State
+  const [walletState, setWalletState] = useState<LaceWalletState>({
+    isConnected: true,
+    address: 'midnight1qpv7x428g70k37a90...preprod',
+    networkId: 'preprod',
+    balanceTDUST: 850.0,
+    isConnecting: false,
+    error: null
+  });
+
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 4500);
+  };
+
+  const refreshState = () => {
+    setCollateralRecords(client.getCollateralRecords());
+    setActiveLoans(client.getActiveLoans());
+    setAuditorDisclosures(client.getAuditorDisclosures());
+  };
+
   useEffect(() => {
-    async function loadData() {
-      setIsLoading(true);
-      await midnightClient.init();
-      refreshData();
-      setIsLoading(false);
-    }
-    loadData();
+    refreshState();
   }, []);
 
-  const refreshData = () => {
-    const loadedProposals = midnightClient.getProposals();
-    setProposals([...loadedProposals]);
-
-    const newTallies = new Map<string, VoteTally>();
-    loadedProposals.forEach(p => {
-      const t = midnightClient.getTally(p.id);
-      if (t) newTallies.set(p.id, t);
-    });
-    setTallies(newTallies);
-
-    setLogs(midnightClient.getLogs());
-    setNullifiers(midnightClient.getNullifiers());
-    setCurrentVoter(midnightClient.getConnectedVoter());
-    setIsConnected(midnightClient.isWalletConnected());
-    setWalletType(midnightClient.getWalletType());
-  };
-
-  const handleSelectVoter = (voter: VoterProfile) => {
-    midnightClient.setConnectedVoter(voter);
-    setCurrentVoter(voter);
-    showToast(`Switched active voter identity to ${voter.name}`);
-  };
-
-  const handleConnectFreighter = async (fallbackToMock?: boolean) => {
-    const voter = await midnightClient.connectFreighter(fallbackToMock);
-    refreshData();
-    showToast(`Freighter Wallet Connected (${voter.address.slice(0, 4)}...${voter.address.slice(-4)})`);
-  };
-
-  const handleConnectDemo = (voter?: VoterProfile) => {
-    const target = midnightClient.connectDemo(voter);
-    refreshData();
-    showToast(`Demo Prover Connected as ${target.name}`);
+  // Handlers
+  const handleConnectWallet = async () => {
+    const res = await client.connectLaceWallet();
+    setWalletState(res);
+    if (res.isConnected) {
+      showToast('Midnight Lace Wallet connected successfully to Preprod network!');
+    }
   };
 
   const handleDisconnectWallet = () => {
-    midnightClient.disconnect();
-    refreshData();
-    showToast('Wallet disconnected. Click "Connect Wallet" to reconnect.');
+    setWalletState({
+      isConnected: false,
+      address: null,
+      networkId: 'preprod',
+      balanceTDUST: 0,
+      isConnecting: false,
+      error: null
+    });
+    showToast('Wallet disconnected');
   };
 
-  const handleOpenCreateModal = () => {
-    if (!isConnected) {
-      showToast('Please connect your wallet first to create a proposal.');
-      setIsWalletModalOpen(true);
-      return;
-    }
-    setIsCreateOpen(true);
+  const handleDepositCollateral = async (
+    assetType: VaultAssetType,
+    assetName: string,
+    amountUSD: number,
+    secretKey: string
+  ) => {
+    const record = await client.depositShieldedCollateral(assetType, assetName, amountUSD, secretKey);
+    refreshState();
+    showToast(`Deposited $${amountUSD.toLocaleString()} into shielded vault (Commitment Hash created).`);
+    return record;
   };
 
-  const handleOpenVoteModal = (proposal: Proposal) => {
-    if (!isConnected) {
-      showToast('Please connect your wallet first to cast a shielded vote.');
-      setIsWalletModalOpen(true);
-      return;
-    }
-    setVotingProposal(proposal);
+  const handleExecuteBorrow = async (
+    loanId: string,
+    principalUSD: number,
+    collateralRecord: ShieldedCollateralRecord,
+    borrowerSecret: string,
+    onProgress: (step: string, progress: number) => void
+  ) => {
+    const loan = await client.executeBorrowCircuit(
+      loanId,
+      principalUSD,
+      collateralRecord,
+      borrowerSecret,
+      onProgress
+    );
+    refreshState();
+    setActiveTab('loans');
+    showToast(`ZK Proof generated! Loan ${loanId} for $${principalUSD.toLocaleString()} active on Preprod.`);
+    return loan;
   };
 
-  const handleCastVote = async (proposalId: string, choiceIndex: number) => {
-    await midnightClient.castVote(proposalId, choiceIndex);
-    refreshData();
-    showToast('Confidential vote cast & nullifier registered on ledger!');
+  const handleRepayLoan = async (loanId: string) => {
+    await client.repayLoan(loanId);
+    refreshState();
+    showToast(`Loan ${loanId} successfully repaid and collateral unlocked.`);
   };
 
-  const handleCreateProposal = async (title: string, description: string, options: string[]) => {
-    await midnightClient.createProposal(title, description, options);
-    refreshData();
-    showToast(`Proposal "${title}" published on Midnight ledger!`);
+  const handleGrantAuditorDisclosure = async (loanId: string, auditorOrg: string) => {
+    const rec = await client.grantAuditorDisclosure(loanId, auditorOrg);
+    refreshState();
+    showToast(`Granted cryptographic audit viewing access to ${auditorOrg}!`);
+    return rec;
   };
 
-  const showToast = (msg: string) => {
-    setFeedbackMessage(msg);
-    setTimeout(() => {
-      setFeedbackMessage(null);
-    }, 4000);
-  };
+  const totalCollateral = client.getTotalCollateralUSD();
+  const totalBorrowed = client.getTotalBorrowedUSD();
 
   return (
-    <>
-      {/* 3D Dynamic Ambient Canvas */}
-      <div className="background-3d-wrapper">
-        <div className="grid-plane-3d" />
-        <div className="orb-3d orb-1" />
-        <div className="orb-3d orb-2" />
-        <div className="orb-3d orb-3" />
-      </div>
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white">
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 bg-slate-900/95 border border-indigo-500/60 rounded-2xl shadow-2xl backdrop-blur-lg animate-bounce">
+          <CheckCircle className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+          <span className="text-xs font-semibold text-white">{toastMessage}</span>
+        </div>
+      )}
 
-      <div className="container" style={{ paddingBottom: '4rem' }}>
-        {/* Toast Feedback Notification */}
-        {feedbackMessage && (
-          <div style={{
-            position: 'fixed',
-            bottom: '1.5rem',
-            left: '1rem',
-            right: '1rem',
-            maxWidth: '420px',
-            marginLeft: 'auto',
-            background: 'linear-gradient(135deg, rgba(14, 16, 23, 0.95), rgba(4, 31, 20, 0.95))',
-            border: '1px solid rgba(16, 185, 129, 0.4)',
-            color: '#f8fafc',
-            padding: '0.85rem 1.25rem',
-            borderRadius: '12px',
-            boxShadow: '0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(16, 185, 129, 0.2)',
-            zIndex: 2000,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.6rem',
-            fontSize: '0.85rem',
-            fontWeight: 500
-          }}>
-            <Sparkles size={16} color="#05f292" style={{ flexShrink: 0 }} />
-            <span style={{ wordBreak: 'break-word' }}>{feedbackMessage}</span>
+      {/* Navigation Bar */}
+      <Navbar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        walletState={walletState}
+        onOpenWalletModal={() => setIsWalletModalOpen(true)}
+        onDisconnectWallet={handleDisconnectWallet}
+      />
+
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+        {/* Hero & Metrics Header */}
+        <HeroStats
+          totalCollateralUSD={totalCollateral}
+          totalBorrowedUSD={totalBorrowed}
+          activeLoansCount={activeLoans.filter(l => l.status === 'Active').length}
+          onDepositClick={() => {
+            setDepositSelectedAsset(undefined);
+            setIsDepositModalOpen(true);
+          }}
+          onExploreCompliance={() => setActiveTab('auditor')}
+        />
+
+        {/* Tab Content */}
+        {activeTab === 'vaults' && (
+          <VaultsDashboard
+            collateralRecords={collateralRecords}
+            onOpenDepositModal={asset => {
+              setDepositSelectedAsset(asset);
+              setIsDepositModalOpen(true);
+            }}
+            onOpenBorrowModal={collateral => {
+              setBorrowSelectedCollateral(collateral);
+              setIsBorrowModalOpen(true);
+            }}
+          />
+        )}
+
+        {activeTab === 'loans' && (
+          <ActiveLoansView
+            loans={activeLoans}
+            onRepayLoan={handleRepayLoan}
+            onOpenAuditorModal={loan => setActiveTab('auditor')}
+          />
+        )}
+
+        {activeTab === 'auditor' && (
+          <AuditorPortal
+            disclosures={auditorDisclosures}
+            activeLoans={activeLoans.filter(l => l.status === 'Active')}
+            onGrantDisclosure={handleGrantAuditorDisclosure}
+          />
+        )}
+
+        {activeTab === 'privacy' && <PrivacyInspector />}
+      </main>
+
+      {/* Footer */}
+      <footer className="mt-20 border-t border-slate-900 bg-slate-950/80 py-10 text-xs text-slate-500">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 font-bold text-slate-300">
+              <Shield className="w-4 h-4 text-cyan-400" />
+              AegisVault Protocol
+            </div>
+            <span>•</span>
+            <span>Midnight Network Preprod</span>
+            <span>•</span>
+            <span className="font-mono text-[11px] text-slate-400">
+              Contract: {AEGIS_VAULT_PREPROD_CONTRACT_ADDRESS.slice(0, 10)}...
+            </span>
           </div>
-        )}
 
-        {/* Navigation */}
-        <Navbar
-          currentVoter={currentVoter}
-          isConnected={isConnected}
-          walletType={walletType}
-          activeTab={activeTab}
-          onTabChange={(tab) => setActiveTab(tab)}
-          onSelectVoter={handleSelectVoter}
-          onConnectWallet={() => setIsWalletModalOpen(true)}
-          onDisconnectWallet={handleDisconnectWallet}
-          onOpenCreateModal={handleOpenCreateModal}
-          onVoterUpdated={refreshData}
-        />
-
-        {!isConnected && (
-          <div style={{ background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)', padding: '0.85rem 1.25rem', borderRadius: '14px', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: '#fbbf24', fontSize: '0.85rem', minWidth: 0 }}>
-              <AlertCircle size={18} style={{ flexShrink: 0 }} />
-              <span style={{ wordBreak: 'break-word' }}>Wallet disconnected. Connect Freighter or Demo Prover to cast votes or create proposals.</span>
-            </div>
-            <button onClick={() => setIsWalletModalOpen(true)} className="btn btn-primary" style={{ fontSize: '0.8rem', padding: '0.4rem 0.85rem' }} id="btn-banner-connect">
-              Connect Wallet
-            </button>
+          <div className="flex items-center gap-4">
+            <a
+              href="https://github.com/ayush-tech3/AegisVault"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors"
+            >
+              <Code2 className="w-4 h-4" />
+              GitHub Repository
+            </a>
+            <a
+              href="https://midnight.network"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors"
+            >
+              Midnight Docs
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
           </div>
-        )}
+        </div>
+      </footer>
 
-        {/* PAGE 1: GOVERNANCE BALLOTS */}
-        {activeTab === 'proposals' && (
-          <>
-            {/* Hero Banner with 3D Depth */}
-            <div className="glass-panel hero-banner-card">
-              <div style={{ position: 'relative', zIndex: 1, maxWidth: '820px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.85rem', flexWrap: 'wrap' }}>
-                  <span className="badge badge-active" style={{ padding: '0.35rem 0.75rem' }}>
-                    <Sparkles size={14} /> Zero-Knowledge Dual-State Engine
-                  </span>
-                  <span className="badge badge-shielded" style={{ padding: '0.35rem 0.75rem' }}>
-                    <Cpu size={14} /> Compact Smart Contract v0.19
-                  </span>
-                </div>
+      {/* Modals */}
+      <DepositCollateralModal
+        isOpen={isDepositModalOpen}
+        initialAsset={depositSelectedAsset}
+        onClose={() => setIsDepositModalOpen(false)}
+        onDeposit={handleDepositCollateral}
+      />
 
-                <h1 className="hero-banner-title" style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.2, marginBottom: '1rem', background: 'linear-gradient(135deg, #ffffff 30%, #a7f3d0 70%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                  Confidential Governance & Secret Ballots on Midnight
-                </h1>
+      <BorrowModal
+        isOpen={isBorrowModalOpen}
+        collateral={borrowSelectedCollateral}
+        onClose={() => setIsBorrowModalOpen(false)}
+        onExecuteBorrow={handleExecuteBorrow}
+      />
 
-                <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: 1.6, marginBottom: '1.75rem' }}>
-                  VeilVote utilizes Midnight’s dual-state zero-knowledge paradigm to guarantee mathematically confidential votes. Observers and blockchain indexers verify proof correctness, voter eligibility, and single-use nullifiers without ever learning who voted for which outcome.
-                </p>
-
-                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                  <button
-                    onClick={() => setActiveTab('privacy')}
-                    className="btn btn-primary"
-                    id="btn-hero-inspect"
-                  >
-                    <Shield size={16} /> Open ZK Privacy Explorer
-                  </button>
-                  <button
-                    onClick={handleOpenCreateModal}
-                    className="btn btn-purple"
-                    id="btn-hero-create"
-                  >
-                    + Create New Ballot
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('audit')}
-                    className="btn btn-secondary"
-                  >
-                    <Activity size={16} color="#fbbf24" /> Live Ledger Feed
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Proposals Section */}
-            <div style={{ marginBottom: '2.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
-                <div>
-                  <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#f8fafc' }}>
-                    Active Governance Proposals
-                  </h2>
-                  <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                    Cast your secret ballot using client-side zero-knowledge witness generation
-                  </span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <button onClick={refreshData} className="btn btn-secondary" style={{ padding: '0.4rem 0.65rem', fontSize: '0.8rem' }} title="Refresh Ledger State">
-                    <RefreshCw size={14} />
-                  </button>
-                  <span className="badge badge-active">
-                    {proposals.length} Proposals Live
-                  </span>
-                </div>
-              </div>
-
-              {isLoading ? (
-                <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary)' }}>
-                  Loading Midnight ledger state...
-                </div>
-              ) : (
-                <div className="proposal-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))', gap: '1.5rem' }}>
-                  {proposals.map((prop) => (
-                    <ProposalCard
-                      key={prop.id}
-                      proposal={prop}
-                      tally={tallies.get(prop.id)}
-                      currentVoter={currentVoter}
-                      isConnected={isConnected}
-                      onVoteClick={(p) => {
-                        if (!isConnected) {
-                          showToast('Please connect your wallet first to cast a vote.');
-                          setIsWalletModalOpen(true);
-                          return;
-                        }
-                        setVotingProposal(p);
-                      }}
-                      onInspectClick={(p) => setInspectingProposal(p)}
-                      onProposalFinalized={refreshData}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Quick Explore Banner Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '1.25rem', marginTop: '1rem' }}>
-              <div
-                className="glass-panel"
-                style={{ padding: '1.5rem', cursor: 'pointer', border: '1px solid rgba(168, 85, 247, 0.25)' }}
-                onClick={() => setActiveTab('privacy')}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                  <span style={{ fontWeight: 700, fontSize: '1.1rem', color: '#c084fc' }}>
-                    🛡️ ZK Privacy & Merkle Inspector
-                  </span>
-                  <ArrowRight size={18} color="#c084fc" />
-                </div>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: 0 }}>
-                  Inspect private witness states, Merkle allowlist leaves, and on-chain nullifier registries in real-time.
-                </p>
-              </div>
-
-              <div
-                className="glass-panel"
-                style={{ padding: '1.5rem', cursor: 'pointer', border: '1px solid rgba(245, 158, 11, 0.25)' }}
-                onClick={() => setActiveTab('audit')}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                  <span style={{ fontWeight: 700, fontSize: '1.1rem', color: '#fbbf24' }}>
-                    📊 Public Ledger & Level 3 Audit
-                  </span>
-                  <ArrowRight size={18} color="#fbbf24" />
-                </div>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: 0 }}>
-                  View live on-chain event telemetry, Compact v0.19 circuit specifications, and Rise In compliance matrix.
-                </p>
-              </div>
-            </div>
-          </>
-        )}
-
-        {/* PAGE 2: PRIVACY & ZK EXPLORER */}
-        {activeTab === 'privacy' && (
-          <PrivacyExplorerPage
-            proposals={proposals}
-            tallies={tallies}
-            currentVoter={currentVoter}
-            nullifiers={nullifiers}
-          />
-        )}
-
-        {/* PAGE 3: PUBLIC LEDGER & AUDIT */}
-        {activeTab === 'audit' && (
-          <LedgerAuditPage
-            logs={logs}
-            onRefresh={refreshData}
-          />
-        )}
-
-        {/* Modals */}
-        <ConnectWalletModal
-          isOpen={isWalletModalOpen}
-          onClose={() => setIsWalletModalOpen(false)}
-          onConnectFreighter={handleConnectFreighter}
-          onConnectDemo={handleConnectDemo}
-        />
-
-        <CastVoteModal
-          proposal={votingProposal}
-          voter={currentVoter}
-          onClose={() => setVotingProposal(null)}
-          onSubmitVote={handleCastVote}
-        />
-
-        {isCreateOpen && (
-          <CreateProposalModal
-            isOpen={isCreateOpen}
-            onClose={() => setIsCreateOpen(false)}
-            onSubmit={handleCreateProposal}
-          />
-        )}
-
-        {inspectingProposal && (
-          <PrivacyInspector
-            proposal={inspectingProposal}
-            tally={tallies.get(inspectingProposal.id)}
-            currentVoter={currentVoter}
-            nullifiers={nullifiers}
-            onClose={() => setInspectingProposal(null)}
-          />
-        )}
-      </div>
-    </>
+      <ConnectWalletModal
+        isOpen={isWalletModalOpen}
+        onClose={() => setIsWalletModalOpen(false)}
+        walletState={walletState}
+        onConnect={handleConnectWallet}
+        onDisconnect={handleDisconnectWallet}
+      />
+    </div>
   );
 }
-

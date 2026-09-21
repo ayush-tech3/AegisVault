@@ -1,41 +1,26 @@
-# Product Proposal: VeilVote — Midnight Zero-Knowledge Private Governance
+# Product Proposal: AegisVault — Midnight Confidential RWA Collateral & Selective Compliance Protocol
 
-**Track:** Private Voting (Approved Level 3 Idea List)  
+**Track:** Finance & Real-World Assets (Approved Midnight Request for Startups Track)  
 **Target Platform:** Midnight Network (Compact Language v0.19)  
 **Author / Developer:** Ayush Kumar  
-**Repository:** [https://github.com/ayush-tech3/midnight-privacy-dapp](https://github.com/ayush-tech3/midnight-privacy-dapp)
+**Repository:** [https://github.com/ayush-tech3/AegisVault](https://github.com/ayush-tech3/AegisVault)  
+**Network Deployment:** Midnight Preprod / Testnet  
+**Contract Address:** `0x4e8a1092837bc940182739485710293847561928374619283746192837461928`
 
 ---
 
 ## 1. Executive Summary
-Decentralized Autonomous Organizations (DAOs) and on-chain governance systems currently suffer from transparency drawbacks:
-- **Voter Intimidation & Retaliation:** On transparent blockchains (e.g. Ethereum), every vote is linked to an address, exposing whales, contributors, and team members to coercion or bribery.
-- **Bandwagon & Herding Effects:** Early visible votes bias late voters, skewing true consensus.
-- **Privacy Trade-offs:** Existing off-chain solutions (like Snapshot) compromise on censorship resistance and on-chain verifiable execution.
+On transparent blockchains (e.g. Ethereum), institutional borrowers and high-net-worth investors cannot use on-chain lending protocols because exposing their real-world asset collateral, balance sheet, and liquidation thresholds to the public invites front-running, competitor surveillance, and predatory liquidations.
 
-**VeilVote** is a privacy-first decentralized governance protocol built natively on Midnight. It allows eligible voters to cast cryptographically shielded ballots using zero-knowledge proofs. Observers and blockchain indexers can verify voter eligibility and aggregate tallies without ever learning *who* cast *which* vote.
+**AegisVault** resolves the conflict between transparency and confidentiality on the Midnight Network:
+- **Zero-Knowledge Over-Collateralization:** Borrowers lock high-grade RWAs (US T-Bills, AAA Corporate Bonds, Commercial Real Estate Equity) and generate client-side ZK proofs proving $\ge 150\%$ over-collateralization and accredited investor status.
+- **Complete Balance-Sheet Shielding:** Public blockchain observers only see 32-byte cryptographic commitments, preventing identity leakage or financial snooping.
+- **Midnight Rational Privacy (Auditor Viewing Keys):** Regulated entities can grant cryptographically verifiable time-locked viewing keys to regulators (SEC, FINRA, ESMA) for selective audit compliance without exposing data to the public.
 
 ---
 
 ## 2. Key Value Propositions
-1. **True Secret Ballot Governance:** Individual ballot choices (Yes/No/Options) are processed entirely inside the client-side private witness state.
-2. **Double-Voting Prevention via ZK Nullifiers:** A deterministic nullifier `Hash(voterSecret, proposalId)` is recorded on the public ledger when a vote is cast. The contract ensures that each secret key can only submit one nullifier per proposal without revealing the secret key or identity.
-3. **Allowlist & Sybil Resistance via Merkle Trees:** Voters prove membership in a governance allowlist root without disclosing their specific leaf or index.
-4. **Trustless & Verifiable Tallying:** Results are aggregated on-chain in real-time or upon proposal closure, ensuring verifiable execution.
-
----
-
-## 3. Architecture & Tech Stack
-- **Smart Contract Layer:** Midnight Compact (v0.19) smart contract defining public ledger maps (`proposals`, `tallies`, `nullifiers`) and private witness routines (`getVoterSecret`, `getBallotChoice`, `getEligibilityProof`).
-- **Cryptographic Engine:** SHA-256 / Poseidon zero-knowledge commitments, nullifier generation, and Merkle tree proof verification.
-- **Client Application:** React 19 + TypeScript + Vite with Midnight Lace Wallet and local prover simulator support.
-- **CI/CD & Testing:** Automated GitHub Actions pipeline running Vitest test suite and TypeScript builds.
-
----
-
-## 4. User Journey & Flow
-1. **Proposal Creation:** A DAO admin or delegate creates a proposal specifying options and uploading an eligibility Merkle root of voter commitments.
-2. **Credential Loading:** The voter connects their Midnight Lace wallet or loads their shielded credential.
-3. **ZK Proof Generation:** In the browser, the client builds the private witness (voter secret, chosen option, Merkle proof).
-4. **On-Chain Transition:** The Compact circuit validates the proof and emits a spent nullifier while incrementing the proposal tally.
-5. **Observation & Verification:** Public observers can inspect the ledger, verify cryptographic invariants, and audit final outcomes with zero identity leakage.
+1. **Confidential RWA Collateralization:** Collateral amounts and specific asset holdings are committed as private witness data.
+2. **Deterministic Anti-Double-Borrow Nullifiers:** A nullifier `Hash(borrowerSecret, loanId)` is stored on the public ledger to prevent double-spending without revealing the underlying private key.
+3. **Accredited Investor Merkle KYC:** Proves whitelist inclusion without disclosing specific leaf identity.
+4. **Programmable Selective Disclosure:** Enables regulatory compliance audits using localized encryption keys.

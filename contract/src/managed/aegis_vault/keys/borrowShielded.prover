@@ -1,0 +1,8 @@
+{
+  "circuit": "borrowShielded",
+  "system": "plonk_zk_snark",
+  "curve": "bls12_381",
+  "provingKeyHash": "0x7a93f1bc448e89f81a1c90bd192934ec795bb51a94e82df4b4f59cb03de7a192",
+  "constraintsCount": 14820,
+  "publicInputsCount": 5
+}

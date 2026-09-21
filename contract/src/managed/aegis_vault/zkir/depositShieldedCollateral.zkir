@@ -1,0 +1,12 @@
+{
+  "version": { "major": 2, "minor": 0 },
+  "do_communications_commitment": true,
+  "num_inputs": 3,
+  "instructions": [
+    { "op": "load_imm", "val": "0x00" },
+    { "op": "read_public", "index": 0 },
+    { "op": "read_public", "index": 1 },
+    { "op": "assert_gte", "a": 2, "const": "0x2ee0" },
+    { "op": "insert_map", "map": "collateralCommitments", "key": 1, "val": 2 }
+  ]
+}

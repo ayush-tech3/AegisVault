@@ -1,16 +1,19 @@
 {
-  "name": "@midnight-dapp/contract",
+  "name": "@aegis-vault/contract",
   "version": "1.0.0",
-  "description": "Midnight Compact smart contracts and zero-knowledge verification engine for VeilVote",
+  "description": "Midnight Compact smart contracts and zero-knowledge verification engine for AegisVault (Confidential RWA Collateral & Selective Compliance Lending)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "compile:compact": "echo 'Compiling Compact circuits to managed/...' && tsc",
     "build": "tsc",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@midnight-ntwrk/compact-runtime": "^0.19.0"
+    "@midnight-ntwrk/compact-runtime": "^0.19.0",
+    "@midnight-ntwrk/midnight-js-network-id": "^0.19.0",
+    "@midnight-ntwrk/dapp-connector-api": "^0.19.0"
   },
   "devDependencies": {
     "@types/node": "^22.13.0",

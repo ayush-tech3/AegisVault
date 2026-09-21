@@ -1,56 +1,69 @@
-export enum ProposalStatus {
-  Active = 0,
-  Closed = 1
+export enum VaultAssetType {
+  USTreasuryBills = 0,
+  CorporateBonds = 1,
+  CommercialRealEstate = 2,
+  PrivateCredit = 3
 }
 
-export interface Proposal {
+export enum LoanStatus {
+  Active = 'Active',
+  Repaid = 'Repaid',
+  Liquidated = 'Liquidated'
+}
+
+export interface ShieldedVaultAsset {
   id: string;
-  title: string;
-  description: string;
-  options: string[];
-  optionsCount: number;
-  eligibilityRoot: string;
-  deadline: number;
-  status: ProposalStatus;
-  totalVotesCast: number;
-}
-
-export interface VoteTally {
-  proposalId: string;
-  optionVotes: number[];
-  totalTally: number;
-}
-
-export interface VoterProfile {
   name: string;
-  address: string;
-  voterSecret: string;
-  voterCommitment: string;
-  isRegistered: boolean;
-  indexInAllowlist: number;
+  ticker: string;
+  assetType: VaultAssetType;
+  apr: number;
+  totalDepositedUSD: number;
+  minRatioPercent: number; // e.g., 150%
+  underlyingRating: string;
+  custodian: string;
+  icon: string;
 }
 
-export interface LedgerLog {
-  id: string;
+export interface ShieldedCollateralRecord {
+  commitmentHash: string;
+  assetType: VaultAssetType;
+  assetName: string;
+  depositedAmountUSD: number; // Known only client-side
+  minRatioBps: number;
   timestamp: number;
-  type: 'PROPOSAL_CREATED' | 'VOTE_CAST' | 'PROPOSAL_CLOSED';
-  proposalId: string;
-  nullifier?: string;
-  publicDetails: string;
+  secretKey: string;
+  salt: string;
+  status: 'Deposited' | 'BorrowedAgainst' | 'Unlocked';
 }
 
-export interface PrivacyInspectionData {
-  publicLedger: {
-    proposalId: string;
-    nullifiersCount: number;
-    tallies: number[];
-    nullifiersList: string[];
-    contractAddress: string;
-  };
-  privateWitness: {
-    voterSecretHidden: boolean;
-    choiceShielded: boolean;
-    merkleProofValid: boolean;
-    zkProofGenerated: boolean;
-  };
+export interface ActiveLoanRecord {
+  loanId: string;
+  principalAmountUSD: number;
+  collateralCommitmentHash: string;
+  interestRateBps: number;
+  accreditedRoot: string;
+  nullifier: string;
+  status: LoanStatus;
+  createdAt: number;
+  borrowerAddress: string;
+  zkProofHash: string;
+}
+
+export interface AuditorDisclosureRecord {
+  loanId: string;
+  auditorOrganization: string;
+  auditorKeyCommitment: string;
+  encryptedViewingKey: string;
+  accessGrantedAt: number;
+  status: 'Active' | 'Revoked';
+  verifiedComplianceTag: string;
+}
+
+export interface LaceWalletState {
+  isConnected: boolean;
+  address: string | null;
+  networkId: 'preprod' | 'testnet' | 'mainnet' | 'undeployed';
+  balanceTDUST: number;
+  isConnecting: boolean;
+  error: string | null;
 }

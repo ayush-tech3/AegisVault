@@ -1,47 +1,60 @@
-export enum ProposalStatus {
-  Active = 0,
-  Closed = 1
+/**
+ * AegisVault TypeScript Definitions for Midnight Network
+ */
+
+export enum VaultAssetType {
+  USTreasuryBills = 0,
+  CorporateBonds = 1,
+  CommercialRealEstate = 2,
+  PrivateCredit = 3
 }
 
-export interface Proposal {
-  id: string; // Hex 32 bytes
-  title: string;
-  description: string;
-  options: string[];
-  optionsCount: number;
-  eligibilityRoot: string;
-  deadline: number;
-  status: ProposalStatus;
-  totalVotesCast: number;
+export enum LoanStatus {
+  Active = 'Active',
+  Repaid = 'Repaid',
+  Liquidated = 'Liquidated'
 }
 
-export interface VoteTally {
-  proposalId: string;
-  optionVotes: number[];
-  totalTally: number;
+export interface ShieldedCollateralCommitment {
+  commitmentHash: string;
+  timestamp: number;
+  minRatioBps: number; // e.g., 15000 = 150%
 }
 
-export interface PrivateVoterCredentials {
-  voterSecret: string; // 32-byte private key/secret
-  voterCommitment: string; // Hash(voterSecret)
-  merkleProof: string[]; // Merkle authentication path to eligibilityRoot
-}
-
-export interface CastVoteWitness {
-  voterSecret: string;
-  ballotChoice: number;
-  eligibilityProof: string[];
-}
-
-export interface PublicVoteTransaction {
-  proposalId: string;
+export interface LoanAgreement {
+  loanId: string;
+  principalAmount: number;
+  interestRateBps: number;
+  accreditedRoot: string;
   nullifier: string;
-  proof: string; // zk-SNARK proof data
+  status: LoanStatus;
+  createdAt: number;
+}
+
+export interface AuditorDisclosureRecord {
+  loanId: string;
+  auditorKeyCommitment: string;
+  encryptedViewingKey: string;
   timestamp: number;
 }
 
-export interface LedgerState {
-  proposals: Map<string, Proposal>;
-  tallies: Map<string, VoteTally>;
-  nullifiers: Set<string>;
+export interface PrivateWitnessData {
+  borrowerSecret: string;
+  collateralValueUSD: number;
+  assetType: VaultAssetType;
+  salt: string;
+  merkleProof: string[];
+  leafIndex: number;
+}
+
+export interface ZkProofPayload {
+  circuit: 'borrowShielded';
+  proofBytes: string;
+  publicInputs: {
+    loanId: string;
+    principalAmount: number;
+    commitmentHash: string;
+    accreditedRoot: string;
+    nullifier: string;
+  };
 }

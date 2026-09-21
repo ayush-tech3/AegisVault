@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { VaultAssetType } from './types.js';
 
 /**
  * Deterministic cryptographic hash function (SHA-256 formatted to 32-byte hex)
@@ -10,24 +11,37 @@ export function sha256(data: string | Buffer): string {
 }
 
 /**
- * Computes a voter commitment from their private secret.
- * Commitment = Hash(voterSecret)
+ * Computes a Shielded Collateral Commitment:
+ * Hash(borrowerSecret, salt, collateralValueUSD, assetType)
  */
-export function computeCommitment(voterSecret: string): string {
-  return sha256(`voter:commitment:${voterSecret}`);
+export function computeCollateralCommitment(
+  borrowerSecret: string,
+  collateralValueUSD: number,
+  assetType: VaultAssetType,
+  salt: string
+): string {
+  return sha256(`aegis:collateral:${borrowerSecret}:${salt}:${collateralValueUSD}:${assetType}`);
 }
 
 /**
- * Computes a deterministic nullifier for a specific proposal.
- * Nullifier = Hash(voterSecret, proposalId)
- * This prevents double-voting on the same proposal without exposing the voter's secret or identity.
+ * Computes a deterministic borrow nullifier:
+ * Hash(borrowerSecret, loanId)
+ * Prevents double-borrowing against the same credential without revealing identity.
  */
-export function computeNullifier(voterSecret: string, proposalId: string): string {
-  return sha256(`voter:nullifier:${voterSecret}:${proposalId}`);
+export function computeBorrowNullifier(borrowerSecret: string, loanId: string): string {
+  return sha256(`aegis:nullifier:${borrowerSecret}:${loanId}`);
 }
 
 /**
- * Simple Merkle Tree implementation for voter eligibility allowlists.
+ * Computes an investor KYC/AML identity commitment:
+ * Hash(borrowerSecret)
+ */
+export function computeInvestorCommitment(borrowerSecret: string): string {
+  return sha256(`aegis:investor:${borrowerSecret}`);
+}
+
+/**
+ * Merkle Tree implementation for Accredited Investor KYC/AML Whitelists
  */
 export class MerkleTree {
   private leaves: string[];
@@ -75,7 +89,7 @@ export class MerkleTree {
       if (siblingIndex < layer.length) {
         proof.push(layer[siblingIndex]);
       } else {
-        proof.push(layer[index]); // Duplicate if odd number
+        proof.push(layer[index]);
       }
       index = Math.floor(index / 2);
     }

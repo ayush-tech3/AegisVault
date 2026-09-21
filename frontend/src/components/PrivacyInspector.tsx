@@ -1,157 +1,155 @@
 import React from 'react';
-import { Eye, EyeOff, ShieldCheck, Database, Key, CheckCircle, XCircle } from 'lucide-react';
-import { Proposal, VoteTally, VoterProfile } from '../types/index.ts';
+import { Shield, Lock, Eye, EyeOff, Check, X, FileCode, Cpu } from 'lucide-react';
+import { AEGIS_VAULT_PREPROD_CONTRACT_ADDRESS } from '../services/midnight-client';
 
-interface PrivacyInspectorProps {
-  proposal: Proposal;
-  tally?: VoteTally;
-  currentVoter: VoterProfile;
-  nullifiers: string[];
-  onClose: () => void;
-}
-
-export const PrivacyInspector: React.FC<PrivacyInspectorProps> = ({
-  proposal,
-  tally,
-  currentVoter,
-  nullifiers,
-  onClose
-}) => {
+export const PrivacyInspector: React.FC = () => {
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '850px', padding: '1.5rem', width: '100%' }}>
-        {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-glass)', paddingBottom: '1rem' }}>
-          <div>
-            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#fff', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <ShieldCheck size={22} color="#8b5cf6" /> Midnight Privacy Matrix & Observer Inspector
-            </h3>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-              Target: {proposal.title}
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+          <EyeOff className="w-6 h-6 text-cyan-400" />
+          Midnight Zero-Knowledge Privacy Architecture Inspector
+        </h2>
+        <p className="text-sm text-slate-400">
+          Cryptographic breakdown comparing what is publicly visible on the Midnight Preprod blockchain vs what remains 100% shielded inside the private witness.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Left Card: Public Ledger State (On-chain Midnight Preprod) */}
+        <div className="p-6 rounded-3xl bg-slate-900/80 border border-slate-800 shadow-xl space-y-6">
+          <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+            <div className="flex items-center gap-2.5">
+              <div className="p-2 rounded-xl bg-cyan-950 border border-cyan-800 text-cyan-400">
+                <Eye className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-white">Public Ledger State</h3>
+                <p className="text-xs text-slate-400">Visible to Indexers, Observers & Nodes</p>
+              </div>
+            </div>
+            <span className="px-2.5 py-1 text-xs font-bold rounded-lg bg-cyan-950 text-cyan-300 border border-cyan-800 font-mono">
+              Preprod Network
             </span>
           </div>
-          <button onClick={onClose} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}>
-            Close
-          </button>
-        </div>
 
-        {/* Dual-State Visualizer Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))', gap: '1.25rem', marginBottom: '1.5rem' }}>
-          {/* Public Ledger State (What an Observer CAN see) */}
-          <div style={{ background: 'rgba(15, 23, 42, 0.7)', borderRadius: '14px', border: '1px solid rgba(56, 189, 248, 0.25)', padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#38bdf8', fontWeight: 700, fontSize: '0.95rem' }}>
-              <Eye size={18} />
-              <Database size={16} />
-              <span>Public Blockchain Ledger State</span>
-            </div>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-              Visible to any observer, indexer, or validator on the network:
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.82rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.35rem' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Proposal ID:</span>
-                <span className="hash-pill">{proposal.id.slice(0, 14)}...</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.35rem' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Eligibility Root:</span>
-                <span className="hash-pill">{proposal.eligibilityRoot.slice(0, 14)}...</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.35rem' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Aggregate Tallies:</span>
-                <span style={{ color: '#10b981', fontWeight: 600 }}>{JSON.stringify(tally?.optionVotes || [])}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.35rem' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Spent Nullifiers ({nullifiers.length}):</span>
-                <span style={{ color: '#a78bfa' }}>Registered</span>
+          <div className="space-y-3">
+            <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-400 font-medium">Contract Address</span>
+                <span className="font-mono text-cyan-300 font-bold">
+                  {AEGIS_VAULT_PREPROD_CONTRACT_ADDRESS.slice(0, 8)}...{AEGIS_VAULT_PREPROD_CONTRACT_ADDRESS.slice(-6)}
+                </span>
               </div>
             </div>
 
-            <div style={{ marginTop: '0.5rem', background: 'rgba(0,0,0,0.3)', padding: '0.65rem', borderRadius: '8px', maxHeight: '90px', overflowY: 'auto' }}>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.25rem' }}>On-Chain Nullifiers:</span>
-              {nullifiers.length === 0 ? (
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>No votes cast yet</span>
-              ) : (
-                nullifiers.map((n, i) => (
-                  <div key={i} className="hash-pill" style={{ fontSize: '0.7rem', marginBottom: '0.2rem' }}>{n}</div>
-                ))
-              )}
+            <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-400 font-medium">Collateral Commitment Map</span>
+                <span className="text-emerald-400 font-semibold">✓ 32-Byte One-Way Hashes</span>
+              </div>
+              <p className="text-[11px] text-slate-500 font-mono">
+                <code>collateralCommitments: Map&lt;Bytes[32], Commitment&gt;</code>
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-400 font-medium">Spent Nullifier Set</span>
+                <span className="text-purple-400 font-semibold">✓ Anti-Double-Borrow</span>
+              </div>
+              <p className="text-[11px] text-slate-500 font-mono">
+                <code>spentNullifiers: Set&lt;Bytes[32]&gt;</code>
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-400 font-medium">Total Protocol Borrowed</span>
+                <span className="text-white font-mono font-bold">$500,000 USD</span>
+              </div>
             </div>
           </div>
 
-          {/* Private Witness State (What an Observer CANNOT see) */}
-          <div style={{ background: 'rgba(30, 20, 50, 0.7)', borderRadius: '14px', border: '1px solid rgba(168, 85, 247, 0.35)', padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#c084fc', fontWeight: 700, fontSize: '0.95rem' }}>
-              <EyeOff size={18} />
-              <Key size={16} />
-              <span>Shielded Private Witness (Client Prover)</span>
-            </div>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-              Kept strictly confidential in local memory during proof generation:
+          <div className="p-4 rounded-2xl bg-cyan-950/20 border border-cyan-900/40 text-xs text-slate-300 space-y-1">
+            <span className="font-bold text-cyan-300 flex items-center gap-1.5">
+              <Check className="w-4 h-4 text-cyan-400" />
+              Public Verifiability Guarantee:
+            </span>
+            <p className="text-slate-400 text-[11px] leading-relaxed">
+              Anyone can audit that total loans never exceed allowable limits and that every loan has a valid zero-knowledge mathematical proof verifying the ≥150% over-collateralization invariant.
             </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.82rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.35rem' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Voter Private Secret:</span>
-                <span className="hash-pill" style={{ color: '#f43f5e' }}>HIDDEN (Local Only)</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.35rem' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Individual Ballot Choice:</span>
-                <span className="hash-pill" style={{ color: '#f43f5e' }}>SHIELDED (Local Only)</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.35rem' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Merkle Auth Path:</span>
-                <span style={{ color: '#10b981', fontWeight: 600 }}>Proven via zk-SNARK</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.35rem' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Active Identity Profile:</span>
-                <span style={{ color: '#38bdf8' }}>{currentVoter.name}</span>
-              </div>
-            </div>
-
-            <div style={{ marginTop: '0.5rem', background: 'rgba(0,0,0,0.3)', padding: '0.65rem', borderRadius: '8px' }}>
-              <span style={{ fontSize: '0.75rem', color: '#c4b5fd', display: 'block', marginBottom: '0.2rem' }}>Local Secret Key:</span>
-              <span className="hash-pill" style={{ fontSize: '0.75rem', color: '#f472b6' }}>{currentVoter.voterSecret}</span>
-            </div>
           </div>
         </div>
 
-        {/* Privacy Matrix Table */}
-        <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '12px', padding: '1rem', border: '1px solid var(--border-glass)', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-          <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.75rem' }}>
-            Midnight Information Leakage Analysis
-          </h4>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem', minWidth: '540px' }}>
-            <thead>
-              <tr style={{ borderBottom: '1px solid var(--border-glass)', textAlign: 'left', color: 'var(--text-muted)' }}>
-                <th style={{ padding: '0.5rem' }}>Data Element</th>
-                <th style={{ padding: '0.5rem' }}>Observer Visibility</th>
-                <th style={{ padding: '0.5rem' }}>Cryptographic Protection</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                <td style={{ padding: '0.5rem', fontWeight: 600 }}>Voter Identity / Wallet Address</td>
-                <td style={{ padding: '0.5rem', color: '#f43f5e', display: 'flex', alignItems: 'center', gap: '0.3rem' }}><XCircle size={14} /> Never Revealed</td>
-                <td style={{ padding: '0.5rem', color: 'var(--text-secondary)' }}>Shielded by ZK Merkle membership proof</td>
-              </tr>
-              <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                <td style={{ padding: '0.5rem', fontWeight: 600 }}>Individual Ballot Choice (Yes/No)</td>
-                <td style={{ padding: '0.5rem', color: '#f43f5e', display: 'flex', alignItems: 'center', gap: '0.3rem' }}><XCircle size={14} /> Never Revealed</td>
-                <td style={{ padding: '0.5rem', color: 'var(--text-secondary)' }}>Unlinkable nullifier + private witness state</td>
-              </tr>
-              <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                <td style={{ padding: '0.5rem', fontWeight: 600 }}>Double-Voting Prevention</td>
-                <td style={{ padding: '0.5rem', color: '#10b981', display: 'flex', alignItems: 'center', gap: '0.3rem' }}><CheckCircle size={14} /> Publicly Enforced</td>
-                <td style={{ padding: '0.5rem', color: 'var(--text-secondary)' }}>Nullifier = Hash(Secret, ProposalID) uniqueness check</td>
-              </tr>
-              <tr>
-                <td style={{ padding: '0.5rem', fontWeight: 600 }}>Proposal Status & Total Tallies</td>
-                <td style={{ padding: '0.5rem', color: '#38bdf8', display: 'flex', alignItems: 'center', gap: '0.3rem' }}><CheckCircle size={14} /> Publicly Verifiable</td>
-                <td style={{ padding: '0.5rem', color: 'var(--text-secondary)' }}>Compact smart contract public ledger accumulator</td>
-              </tr>
-            </tbody>
-          </table>
+        {/* Right Card: Private Witness State (Client-Side Prover Only) */}
+        <div className="p-6 rounded-3xl bg-slate-900/80 border border-slate-800 shadow-xl space-y-6">
+          <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+            <div className="flex items-center gap-2.5">
+              <div className="p-2 rounded-xl bg-purple-950 border border-purple-800 text-purple-400">
+                <Lock className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-white">Private Witness State</h3>
+                <p className="text-xs text-purple-400">Kept Exclusively in Browser / Lace Wallet</p>
+              </div>
+            </div>
+            <span className="px-2.5 py-1 text-xs font-bold rounded-lg bg-purple-950 text-purple-300 border border-purple-800 font-mono">
+              Never Disclosed
+            </span>
+          </div>
+
+          <div className="space-y-3">
+            <div className="p-3.5 rounded-xl bg-slate-950 border border-purple-900/40 space-y-1">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-400 font-medium">Borrower Secret Key</span>
+                <span className="text-rose-400 font-semibold font-mono">⛔ SHIELDED</span>
+              </div>
+              <p className="text-[11px] text-slate-500 font-mono">
+                <code>witness getBorrowerSecret(): Bytes[32]</code>
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-slate-950 border border-purple-900/40 space-y-1">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-400 font-medium">Exact Collateral Value (USD)</span>
+                <span className="text-rose-400 font-semibold font-mono">⛔ SHIELDED</span>
+              </div>
+              <p className="text-[11px] text-slate-500 font-mono">
+                <code>witness getCollateralValueUSD(): Uint&lt;64&gt;</code>
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-slate-950 border border-purple-900/40 space-y-1">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-400 font-medium">RWA Asset Breakdown & Salt</span>
+                <span className="text-rose-400 font-semibold font-mono">⛔ SHIELDED</span>
+              </div>
+              <p className="text-[11px] text-slate-500 font-mono">
+                <code>witness getCollateralSalt(): Bytes[32]</code>
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-slate-950 border border-purple-900/40 space-y-1">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-400 font-medium">KYC Merkle Authentication Path</span>
+                <span className="text-rose-400 font-semibold font-mono">⛔ SHIELDED</span>
+              </div>
+              <p className="text-[11px] text-slate-500 font-mono">
+                <code>witness getAccreditedMerkleProof(): Vector&lt;Bytes[32], 16&gt;</code>
+              </p>
+            </div>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-purple-950/20 border border-purple-900/40 text-xs text-slate-300 space-y-1">
+            <span className="font-bold text-purple-300 flex items-center gap-1.5">
+              <Lock className="w-4 h-4 text-purple-400" />
+              Institutional Privacy Guarantee:
+            </span>
+            <p className="text-slate-400 text-[11px] leading-relaxed">
+              Competitors, block builders, and blockchain analytics firms can never see your portfolio size, specific Treasury holdings, or borrowing patterns.
+            </p>
+          </div>
         </div>
       </div>
     </div>

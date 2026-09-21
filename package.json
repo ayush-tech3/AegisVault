@@ -1,7 +1,7 @@
 {
-  "name": "midnight-privacy-dapp-root",
+  "name": "aegis-vault-root",
   "version": "1.0.0",
-  "description": "Midnight Level 3 Submission: Private Voting (VeilVote) - Zero-Knowledge Secret Ballot Governance",
+  "description": "AegisVault: Confidential Real-World Asset (RWA) Collateral & Selective Compliance Lending Protocol on Midnight Network",
   "private": true,
   "workspaces": [
     "contract",
@@ -12,6 +12,7 @@
     "test": "npm run test --workspace=contract",
     "test:contract": "npm run test --workspace=contract",
     "build": "npm run build --workspace=contract && npm run build --workspace=frontend",
+    "build:contract": "npm run build --workspace=contract",
     "build:frontend": "npm run build --workspace=frontend",
     "dev": "npm run dev --workspace=frontend",
     "lint": "npm run lint --workspace=frontend"
@@ -21,7 +22,10 @@
     "zero-knowledge",
     "compact",
     "zk-snark",
-    "private-voting",
+    "rwa",
+    "confidential-lending",
+    "selective-disclosure",
+    "compliance",
     "dapp"
   ],
   "author": "Ayush Kumar",

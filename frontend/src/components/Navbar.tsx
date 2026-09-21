@@ -1,292 +1,138 @@
-import React, { useState } from 'react';
-import { Shield, Lock, Wallet, UserCheck, Key, Plus, LogOut, Power, Compass, Layers, Activity, Vote } from 'lucide-react';
-import { VoterProfile } from '../types/index.ts';
-import { SEED_VOTERS, midnightClient, WalletProviderType } from '../services/midnight-client.ts';
-
-export type AppPageTab = 'proposals' | 'privacy' | 'audit';
+import React from 'react';
+import { Shield, Lock, Wallet, ExternalLink, Activity, EyeOff, CheckCircle } from 'lucide-react';
+import { LaceWalletState } from '../types';
+import { AEGIS_VAULT_PREPROD_CONTRACT_ADDRESS } from '../services/midnight-client';
 
 interface NavbarProps {
-  currentVoter: VoterProfile;
-  isConnected: boolean;
-  walletType: WalletProviderType;
-  activeTab: AppPageTab;
-  onTabChange: (tab: AppPageTab) => void;
-  onSelectVoter: (voter: VoterProfile) => void;
-  onConnectWallet: () => void;
+  activeTab: 'vaults' | 'loans' | 'auditor' | 'privacy';
+  setActiveTab: (tab: 'vaults' | 'loans' | 'auditor' | 'privacy') => void;
+  walletState: LaceWalletState;
+  onOpenWalletModal: () => void;
   onDisconnectWallet: () => void;
-  onOpenCreateModal: () => void;
-  onVoterUpdated: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
-  currentVoter,
-  isConnected,
-  walletType,
   activeTab,
-  onTabChange,
-  onSelectVoter,
-  onConnectWallet,
-  onDisconnectWallet,
-  onOpenCreateModal,
-  onVoterUpdated
+  setActiveTab,
+  walletState,
+  onOpenWalletModal,
+  onDisconnectWallet
 }) => {
-  const [showKeyModal, setShowKeyModal] = useState(false);
-  const [showImportModal, setShowImportModal] = useState(false);
-  const [customName, setCustomName] = useState('');
-  const [customSecret, setCustomSecret] = useState('');
-
-  const handleImport = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!customName || !customSecret) return;
-    await midnightClient.importCustomVoter(customName, customSecret);
-    setShowImportModal(false);
-    setCustomName('');
-    setCustomSecret('');
-    onVoterUpdated();
-  };
-
   return (
-    <>
-      <header className="glass-panel navbar-header">
-        
-        {/* Brand with 3D Icon */}
-        <div className="navbar-brand-section" onClick={() => onTabChange('proposals')}>
-          <div className="brand-icon-3d">
-            <Layers size={22} color="#07080d" strokeWidth={2.5} />
+    <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-slate-950/80 border-b border-indigo-950/60 transition-all">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        {/* Brand Logo */}
+        <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab('vaults')}>
+          <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-cyan-400 p-[1px] shadow-lg shadow-indigo-500/20">
+            <div className="w-full h-full bg-slate-950 rounded-xl flex items-center justify-center">
+              <Shield className="w-6 h-6 text-cyan-400" />
+            </div>
+            <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-slate-950 animate-pulse" />
           </div>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <span style={{ fontSize: '1.35rem', fontWeight: 800, letterSpacing: '-0.02em', background: 'linear-gradient(90deg, #f8fafc, #05f292, #c084fc)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', margin: 0 }}>
-                VeilVote
+            <div className="flex items-center gap-2">
+              <span className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-white via-slate-100 to-indigo-200 bg-clip-text text-transparent">
+                AegisVault
               </span>
-              <span className="badge badge-active" style={{ fontSize: '0.6rem', padding: '0.1rem 0.4rem' }}>
-                ZK-SNARK
+              <span className="px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase bg-indigo-950/80 text-cyan-300 border border-indigo-700/50 rounded-full">
+                Midnight Preprod
               </span>
             </div>
-            <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-              <span className="glow-indicator" /> Midnight Privacy Protocol
-            </span>
+            <p className="text-xs text-slate-400 font-medium">Confidential RWA & Selective Compliance</p>
           </div>
         </div>
 
-        {/* 3-Page Navigation Tabs */}
-        <div className="nav-tabs-container">
+        {/* Navigation Tabs */}
+        <nav className="hidden md:flex items-center gap-1 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 shadow-inner">
           <button
-            type="button"
-            onClick={() => onTabChange('proposals')}
-            className={`nav-tab-btn ${activeTab === 'proposals' ? 'active' : ''}`}
-            id="nav-tab-proposals"
+            onClick={() => setActiveTab('vaults')}
+            className={`px-4 py-2 text-sm font-semibold rounded-xl transition-all flex items-center gap-2 ${
+              activeTab === 'vaults'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+            }`}
           >
-            <Vote size={16} color={activeTab === 'proposals' ? '#05f292' : undefined} />
-            <span>Ballots</span>
+            <Lock className="w-4 h-4" />
+            Shielded Vaults
           </button>
-
           <button
-            type="button"
-            onClick={() => onTabChange('privacy')}
-            className={`nav-tab-btn ${activeTab === 'privacy' ? 'active' : ''}`}
-            id="nav-tab-privacy"
+            onClick={() => setActiveTab('loans')}
+            className={`px-4 py-2 text-sm font-semibold rounded-xl transition-all flex items-center gap-2 ${
+              activeTab === 'loans'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+            }`}
           >
-            <Shield size={16} color={activeTab === 'privacy' ? '#c084fc' : undefined} />
-            <span>ZK Explorer</span>
+            <Activity className="w-4 h-4" />
+            Active Loans
           </button>
-
           <button
-            type="button"
-            onClick={() => onTabChange('audit')}
-            className={`nav-tab-btn ${activeTab === 'audit' ? 'active' : ''}`}
-            id="nav-tab-audit"
+            onClick={() => setActiveTab('auditor')}
+            className={`px-4 py-2 text-sm font-semibold rounded-xl transition-all flex items-center gap-2 ${
+              activeTab === 'auditor'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+            }`}
           >
-            <Activity size={16} color={activeTab === 'audit' ? '#fbbf24' : undefined} />
-            <span>Ledger & Audit</span>
+            <CheckCircle className="w-4 h-4 text-emerald-400" />
+            Auditor Portal
           </button>
-        </div>
-
-        {/* Controls */}
-        <div className="navbar-actions-section">
-          <button onClick={onOpenCreateModal} className="btn btn-primary" id="btn-create-proposal" style={{ padding: '0.55rem 1rem', fontSize: '0.85rem' }}>
-            + New Proposal
+          <button
+            onClick={() => setActiveTab('privacy')}
+            className={`px-4 py-2 text-sm font-semibold rounded-xl transition-all flex items-center gap-2 ${
+              activeTab === 'privacy'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+            }`}
+          >
+            <EyeOff className="w-4 h-4 text-cyan-400" />
+            Privacy Inspector
           </button>
+        </nav>
 
-          {/* Identity / Voter Switcher */}
-          {isConnected && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: 'rgba(0,0,0,0.45)', padding: '0.3rem 0.6rem', borderRadius: '10px', border: '1px solid var(--border-glass)' }}>
-              <UserCheck size={15} color="#05f292" />
-              <select
-                value={currentVoter.name}
-                onChange={(e) => {
-                  const selected = SEED_VOTERS.find(v => v.name === e.target.value);
-                  if (selected) onSelectVoter(selected);
-                }}
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  color: '#05f292',
-                  fontFamily: 'var(--font-main)',
-                  fontSize: '0.82rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  outline: 'none',
-                  maxWidth: '150px'
-                }}
-                id="select-voter-identity"
-              >
-                {SEED_VOTERS.map((v) => (
-                  <option key={v.name} value={v.name} style={{ background: '#0e1017', color: '#fff' }}>
-                    {v.name}
-                  </option>
-                ))}
-              </select>
+        {/* Right Section: Network & Lace Wallet */}
+        <div className="flex items-center gap-3">
+          {/* Contract Address Pill */}
+          <div
+            title={`Contract: ${AEGIS_VAULT_PREPROD_CONTRACT_ADDRESS}`}
+            className="hidden lg:flex items-center gap-2 px-3 py-1.5 bg-slate-900/90 rounded-xl border border-slate-800 text-xs text-slate-400"
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Preprod:</span>
+            <span className="font-mono text-cyan-300 font-semibold">
+              {AEGIS_VAULT_PREPROD_CONTRACT_ADDRESS.slice(0, 6)}...{AEGIS_VAULT_PREPROD_CONTRACT_ADDRESS.slice(-4)}
+            </span>
+          </div>
 
-              <button
-                onClick={() => setShowKeyModal(true)}
-                title="View Shielded Credentials"
-                style={{ background: 'transparent', border: 'none', color: '#c084fc', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '0.2rem' }}
-              >
-                <Key size={13} />
-              </button>
-
-              <button
-                onClick={() => setShowImportModal(true)}
-                title="Import Custom Voter Key"
-                style={{ background: 'transparent', border: 'none', color: '#fbbf24', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '0.2rem' }}
-              >
-                <Plus size={13} />
-              </button>
-            </div>
-          )}
-
-          {/* Wallet Connect/Disconnect */}
-          {isConnected ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
-              <div
-                className={`badge ${walletType === 'freighter' ? 'badge-active' : 'badge-shielded'}`}
-                style={{
-                  padding: '0.45rem 0.75rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                  border: walletType === 'freighter' ? '1px solid rgba(16, 185, 129, 0.4)' : undefined
-                }}
-              >
-                {walletType === 'freighter' ? (
-                  <>
-                    <Compass size={13} color="#05f292" />
-                    <span style={{ color: '#05f292' }}>Freighter ({currentVoter.address.slice(0, 4)}...{currentVoter.address.slice(-4)})</span>
-                  </>
-                ) : (
-                  <>
-                    <Wallet size={13} />
-                    <span>{currentVoter.name.split(' ')[0]} (Prover)</span>
-                  </>
-                )}
+          {/* Lace Wallet Connect Button */}
+          {walletState.isConnected ? (
+            <div className="flex items-center gap-2 bg-slate-900 border border-indigo-900/60 rounded-xl p-1.5 pr-3 shadow-md">
+              <div className="px-2.5 py-1 bg-indigo-950/80 border border-indigo-800/50 rounded-lg text-xs font-mono text-cyan-300 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                {walletState.balanceTDUST.toFixed(1)} tDUST
               </div>
+              <span className="text-xs font-mono text-slate-300 font-medium">
+                {walletState.address?.slice(0, 8)}...{walletState.address?.slice(-4)}
+              </span>
               <button
                 onClick={onDisconnectWallet}
-                title="Disconnect Wallet"
-                className="btn btn-secondary"
-                style={{ padding: '0.4rem 0.6rem', fontSize: '0.75rem' }}
-                id="btn-disconnect-wallet"
+                className="text-xs text-slate-500 hover:text-rose-400 ml-1 transition-colors"
+                title="Disconnect Lace Wallet"
               >
-                <LogOut size={13} />
+                Disconnect
               </button>
             </div>
           ) : (
             <button
-              onClick={onConnectWallet}
-              className="btn btn-primary"
-              style={{ padding: '0.5rem 0.9rem', fontSize: '0.85rem' }}
-              id="btn-connect-wallet"
+              onClick={onOpenWalletModal}
+              className="px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold text-sm rounded-xl shadow-lg shadow-indigo-600/30 flex items-center gap-2 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
             >
-              <Power size={14} /> Connect Wallet
+              <Wallet className="w-4 h-4" />
+              Connect Lace Wallet
             </button>
           )}
         </div>
-      </header>
-
-      {/* Shielded Key Inspector Modal */}
-      {showKeyModal && (
-        <div className="modal-overlay" onClick={() => setShowKeyModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ padding: '2rem', maxWidth: '540px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h3 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Key size={18} color="#c084fc" /> Shielded Voter Credentials
-              </h3>
-              <button onClick={() => setShowKeyModal(false)} className="btn btn-secondary" style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem' }}>
-                Close
-              </button>
-            </div>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '1.25rem' }}>
-              These private keys generate zero-knowledge proofs on the client side. They are never transmitted across the network or stored in public ledger state.
-            </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <div>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Voter Identity</span>
-                <div style={{ fontWeight: 600, color: '#f8fafc' }}>{currentVoter.name}</div>
-              </div>
-              <div>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Midnight Wallet Address</span>
-                <div className="hash-pill">{currentVoter.address}</div>
-              </div>
-              <div>
-                <span style={{ fontSize: '0.75rem', color: '#f43f5e', fontWeight: 600 }}>Private Voter Secret (Shielded Client Witness)</span>
-                <div className="hash-pill" style={{ color: '#f472b6' }}>{currentVoter.voterSecret}</div>
-              </div>
-              <div>
-                <span style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: 600 }}>Public Commitment = Hash(voterSecret)</span>
-                <div className="hash-pill" style={{ color: '#34d399' }}>{currentVoter.voterCommitment || 'Calculated on-demand'}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Import Custom Key Modal */}
-      {showImportModal && (
-        <div className="modal-overlay" onClick={() => setShowImportModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ padding: '2rem', maxWidth: '500px' }}>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '1rem' }}>
-              Import Custom Voter Credentials
-            </h3>
-            <form onSubmit={handleImport} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <div>
-                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.3rem' }}>
-                  Voter Profile Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Stake Pool Operator #9"
-                  value={customName}
-                  onChange={(e) => setCustomName(e.target.value)}
-                  className="input-field"
-                  required
-                />
-              </div>
-              <div>
-                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.3rem' }}>
-                  Private Secret Key (Hex / Passphrase)
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. secret_custom_key_0x9923..."
-                  value={customSecret}
-                  onChange={(e) => setCustomSecret(e.target.value)}
-                  className="input-field"
-                  required
-                />
-              </div>
-              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
-                <button type="button" onClick={() => setShowImportModal(false)} className="btn btn-secondary" style={{ flex: 1 }}>
-                  Cancel
-                </button>
-                <button type="submit" className="btn btn-primary" style={{ flex: 1 }}>
-                  Import & Register
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-    </>
+      </div>
+    </header>
   );
 };
