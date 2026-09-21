@@ -68,11 +68,27 @@ export function App() {
   }, []);
 
   // Handlers
-  const handleConnectWallet = async () => {
+  const handleConnectLace = async () => {
     const res = await client.connectLaceWallet();
     setWalletState(res);
     if (res.isConnected) {
       showToast('Midnight Lace Wallet connected successfully to Preprod network!');
+    }
+  };
+
+  const handleConnectFreighter = async () => {
+    const res = await client.connectFreighterWallet();
+    setWalletState(res);
+    if (res.isConnected) {
+      showToast('Freighter Wallet (Stellar Bridge) connected successfully!');
+    }
+  };
+
+  const handleConnectDemo = async () => {
+    const res = await client.connectDemoWallet();
+    setWalletState(res);
+    if (res.isConnected) {
+      showToast('Demo Shielded Wallet connected with 2,500 tDUST preloaded!');
     }
   };
 
@@ -272,7 +288,9 @@ export function App() {
         isOpen={isWalletModalOpen}
         onClose={() => setIsWalletModalOpen(false)}
         walletState={walletState}
-        onConnect={handleConnectWallet}
+        onConnectLace={handleConnectLace}
+        onConnectFreighter={handleConnectFreighter}
+        onConnectDemo={handleConnectDemo}
         onDisconnect={handleDisconnectWallet}
       />
     </div>

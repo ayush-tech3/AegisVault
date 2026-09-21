@@ -66,4 +66,5 @@ export interface LaceWalletState {
   balanceTDUST: number;
   isConnecting: boolean;
   error: string | null;
+  walletType?: 'lace' | 'freighter' | 'demo';
 }
