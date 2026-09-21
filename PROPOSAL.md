@@ -1,6 +1,10 @@
 # AegisVault: Product Proposal & Architecture Specification
 **Midnight Network Level 1, 2 & 3 Program Submission (Moonshot Moon Phase)**
 
+* **Live Frontend Demo:** [https://aegisvalutmoonlight.netlify.app/](https://aegisvalutmoonlight.netlify.app/)
+* **Repository:** [https://github.com/ayush-tech3/AegisVault](https://github.com/ayush-tech3/AegisVault)
+* **Deployed Contract:** `0x4e8a1092837bc940182739485710293847561928374619283746192837461928` (`Midnight Preprod / Testnet`)
+
 ---
 
 ## 1. Product & Target Users (What Problem Does It Solve?)

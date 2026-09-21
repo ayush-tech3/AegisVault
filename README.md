@@ -20,7 +20,7 @@ Borrowers deposit and lock high-grade off-chain RWAs (US Treasury Bills, Corpora
 | **Deployed Contract Address** | `0x4e8a1092837bc940182739485710293847561928374619283746192837461928` |
 | **Compact Compiler Target** | `Compact v0.19.0 (BLS12-381 PLONK ZK-SNARK)` |
 | **Accredited KYC Merkle Root** | `0x7b93f1bc448e89f81a1c90bd192934ec795bb51a94e82df4b4f59cb03de7a192` |
-| **Live Frontend Demo (Netlify)** | [https://aegis-vault.netlify.app](https://aegis-vault.netlify.app) *(or local preview via `npm run dev`)* |
+| **Live Frontend Demo (Netlify)** | [https://aegisvalutmoonlight.netlify.app/](https://aegisvalutmoonlight.netlify.app/) |
 | **Source Code Repository** | [https://github.com/ayush-tech3/AegisVault](https://github.com/ayush-tech3/AegisVault) |
 
 ---

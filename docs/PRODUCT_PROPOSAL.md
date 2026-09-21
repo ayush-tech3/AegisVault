@@ -4,6 +4,7 @@
 **Target Platform:** Midnight Network (Compact Language v0.19)  
 **Author / Developer:** Ayush Kumar  
 **Repository:** [https://github.com/ayush-tech3/AegisVault](https://github.com/ayush-tech3/AegisVault)  
+**Live Demo (Netlify):** [https://aegisvalutmoonlight.netlify.app/](https://aegisvalutmoonlight.netlify.app/)  
 **Network Deployment:** Midnight Preprod / Testnet  
 **Contract Address:** `0x4e8a1092837bc940182739485710293847561928374619283746192837461928`
 
