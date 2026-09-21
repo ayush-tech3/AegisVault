@@ -2,6 +2,7 @@
 **Midnight Network Level 1, 2 & 3 Program Submission (Moonshot Moon Phase)**
 
 * **Live Frontend Demo:** [https://aegisvalutmoonlight.netlify.app/](https://aegisvalutmoonlight.netlify.app/)
+* **Demo Video (YouTube):** [https://youtu.be/GK1J3Dq58_8](https://youtu.be/GK1J3Dq58_8)
 * **Repository:** [https://github.com/ayush-tech3/AegisVault](https://github.com/ayush-tech3/AegisVault)
 * **Deployed Contract:** `0x4e8a1092837bc940182739485710293847561928374619283746192837461928` (`Midnight Preprod / Testnet`)
 

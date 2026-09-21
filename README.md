@@ -6,6 +6,7 @@
 [![Compact Language](https://img.shields.io/badge/Compact%20Language-v0.19.0-indigo)](https://midnight.network)
 [![CI/CD Pipeline](https://github.com/ayush-tech3/AegisVault/actions/workflows/ci.yml/badge.svg)](https://github.com/ayush-tech3/AegisVault/actions)
 [![Live Demo](https://img.shields.io/badge/🌐_Live%20DApp-Production%20Website-cyan?logo=netlify)](https://aegisvalutmoonlight.netlify.app/)
+[![Demo Video](https://img.shields.io/badge/🎬_Demo%20Video-YouTube%20Walkthrough-red?logo=youtube)](https://youtu.be/GK1J3Dq58_8)
 [![Security Audit](https://img.shields.io/badge/🛡️_Security%20Audit-Passed%20100%25-brightgreen)](SECURITY_AUDIT_REPORT.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
@@ -31,15 +32,16 @@
 | **1. Public GitHub Repository** | [github.com/ayush-tech3/AegisVault](https://github.com/ayush-tech3/AegisVault) | ✅ Active & Public |
 | **2. Minimum Meaningful Commits** | [40+ Commits on `main`](https://github.com/ayush-tech3/AegisVault/commits/main) | ✅ 40+ Commits |
 | **3. Live Production DApp** | **[aegisvalutmoonlight.netlify.app](https://aegisvalutmoonlight.netlify.app/)** | ✅ Live & Responsive |
-| **4. Compact Smart Contract (v0.19)** | [`contract/src/index.compact`](contract/src/index.compact) | ✅ 4 Circuits Verified |
-| **5. Preprod Deployed Contract Address** | `0x4e8a1092837bc940182739485710293847561928374619283746192837461928` | ✅ Deployed on Preprod |
-| **6. Automated Test Suite (8 Tests)** | [`contract/tests/aegis-vault.test.ts`](contract/tests/aegis-vault.test.ts) | ✅ 8/8 Tests Passing |
-| **7. CI/CD Automated Workflow** | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) | ✅ GitHub Actions Green |
-| **8. Official Approved Idea Reference** | [`PROPOSAL.md`](PROPOSAL.md) *(Private Allowlist Access & Confidential Credentials)* | ✅ Approved Track |
-| **9. Formal ZK Privacy Threat Model** | [`docs/PRIVACY_MODEL.md`](docs/PRIVACY_MODEL.md) & [Jump to Privacy Section ⬇️](#-privacy-model-what-an-observer-can-and-cannot-learn) | ✅ Full Analysis |
-| **10. Dual-State Architecture Spec** | [Jump to Architecture Section ⬇️](#-public-state-vs-private-witness-architecture) | ✅ Public vs Private Tables |
-| **11. Security & Circuit Audit Report** | [`SECURITY_AUDIT_REPORT.md`](SECURITY_AUDIT_REPORT.md) | ✅ Passed 100% |
-| **12. Multi-Wallet Bridge Integration** | Midnight Lace Wallet + Stellar Freighter Extension + Instant Demo Wallet | ✅ Multi-Wallet Live |
+| **4. Demo Video Walkthrough** | **[Watch 1080p Demo on YouTube](https://youtu.be/GK1J3Dq58_8)** | ✅ Live on YouTube |
+| **5. Compact Smart Contract (v0.19)** | [`contract/src/index.compact`](contract/src/index.compact) | ✅ 4 Circuits Verified |
+| **6. Preprod Deployed Contract Address** | `0x4e8a1092837bc940182739485710293847561928374619283746192837461928` | ✅ Deployed on Preprod |
+| **7. Automated Test Suite (8 Tests)** | [`contract/tests/aegis-vault.test.ts`](contract/tests/aegis-vault.test.ts) | ✅ 8/8 Tests Passing |
+| **8. CI/CD Automated Workflow** | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) | ✅ GitHub Actions Green |
+| **9. Official Approved Idea Reference** | [`PROPOSAL.md`](PROPOSAL.md) *(Private Allowlist Access & Confidential Credentials)* | ✅ Approved Track |
+| **10. Formal ZK Privacy Threat Model** | [`docs/PRIVACY_MODEL.md`](docs/PRIVACY_MODEL.md) & [Jump to Privacy Section ⬇️](#-privacy-model-what-an-observer-can-and-cannot-learn) | ✅ Full Analysis |
+| **11. Dual-State Architecture Spec** | [Jump to Architecture Section ⬇️](#-public-state-vs-private-witness-architecture) | ✅ Public vs Private Tables |
+| **12. Security & Circuit Audit Report** | [`SECURITY_AUDIT_REPORT.md`](SECURITY_AUDIT_REPORT.md) | ✅ Passed 100% |
+| **13. Multi-Wallet Bridge Integration** | Midnight Lace Wallet + Stellar Freighter Extension + Instant Demo Wallet | ✅ Multi-Wallet Live |
 
 ---
 
@@ -62,6 +64,17 @@
 
 ### 6. 🧪 Automated Test Suite Output (8/8 Passing)
 ![Test Output](screenshots/test-output-8-passing.jpg)
+
+---
+
+## 🎥 Demo Video Walkthrough
+
+Watch the complete **AegisVault** workflow in action on YouTube:
+
+[![Watch AegisVault Demo on YouTube](https://img.shields.io/badge/▶️_Watch_Demo_Video-YouTube-red?style=for-the-badge&logo=youtube)](https://youtu.be/GK1J3Dq58_8)
+
+> **Direct Link:** [https://youtu.be/GK1J3Dq58_8](https://youtu.be/GK1J3Dq58_8)  
+> **Video Covers:** Midnight Lace / Demo Wallet connection, Shielded RWA Collateral deposit, Zero-Knowledge Over-Collateralization proof execution ($\ge 150\%$), Active Loans management, and Selective Regulatory Auditor Viewing Keys.
 
 ---
 
