@@ -165,13 +165,11 @@ aegis-vault/
 ### Test Suite Output (8/8 Passing)
 ![Test Output](screenshots/test-output-8-passing.jpg)
 
-### AegisVault Dashboard UI
+### AegisVault Desktop Dashboard UI
 ![Product UI](screenshots/product-ui.png)
 
 ### AegisVault Mobile Responsive UI
-<p align="center">
-  <img src="screenshots/mobile-responsive-ui.jpg" alt="Mobile Responsive UI" width="380" />
-</p>
+![Mobile Responsive UI](screenshots/mobile-responsive-ui.png)
 
 ### Privacy Inspector (Public Ledger vs Private Witness)
 ![Privacy Explorer](screenshots/privacy-explorer-ui.png)
