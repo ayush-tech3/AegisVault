@@ -38,12 +38,12 @@ export function App() {
   const [borrowSelectedCollateral, setBorrowSelectedCollateral] = useState<ShieldedCollateralRecord | null>(null);
   const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
 
-  // Lace Wallet State
+  // Web3 Wallet State
   const [walletState, setWalletState] = useState<LaceWalletState>({
-    isConnected: true,
-    address: 'midnight1qpv7x428g70k37a90...preprod',
+    isConnected: false,
+    address: null,
     networkId: 'preprod',
-    balanceTDUST: 850.0,
+    balanceTDUST: 0,
     isConnecting: false,
     error: null
   });
