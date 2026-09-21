@@ -1,0 +1,7 @@
+{
+  "name": "@midnight-ntwrk/compact-runtime",
+  "version": "0.19.0",
+  "description": "Compact runtime bindings and mock types",
+  "main": "index.js",
+  "types": "index.d.ts"
+}
