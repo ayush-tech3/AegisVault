@@ -172,20 +172,59 @@ export class MidnightAegisClient {
   }
 
   /**
-   * Connect to Freighter Wallet (Stellar Bridge / Shielded Multi-Chain)
+   * Connect to Freighter Wallet (Stellar Bridge / Real Browser Extension)
    */
   public async connectFreighterWallet(): Promise<LaceWalletState> {
     try {
-      await new Promise(resolve => setTimeout(resolve, 600));
-      return {
-        isConnected: true,
-        address: 'GA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJVVO4',
-        networkId: 'testnet',
-        balanceTDUST: 500.0,
-        isConnecting: false,
-        error: null,
-        walletType: 'freighter'
+      const windowWithFreighter = window as unknown as {
+        freighterApi?: {
+          isConnected?: () => Promise<boolean>;
+          requestAccess?: () => Promise<string | { address?: string; error?: string }>;
+          getPublicKey?: () => Promise<string>;
+          getNetwork?: () => Promise<string>;
+        };
+        freighter?: {
+          isConnected?: () => Promise<boolean>;
+          requestAccess?: () => Promise<string>;
+          getPublicKey?: () => Promise<string>;
+          getNetwork?: () => Promise<string>;
+        };
       };
+
+      const freighter = windowWithFreighter.freighterApi || windowWithFreighter.freighter;
+
+      if (freighter) {
+        let address = '';
+        if (typeof freighter.requestAccess === 'function') {
+          const res = await freighter.requestAccess();
+          if (typeof res === 'string') {
+            address = res;
+          } else if (res && typeof res === 'object' && res.address) {
+            address = res.address;
+          }
+        }
+
+        if (!address && typeof freighter.getPublicKey === 'function') {
+          address = await freighter.getPublicKey();
+        }
+
+        if (address) {
+          return {
+            isConnected: true,
+            address,
+            networkId: 'testnet',
+            balanceTDUST: 750.0,
+            isConnecting: false,
+            error: null,
+            walletType: 'freighter'
+          };
+        }
+      }
+
+      // If Freighter extension not detected in browser
+      throw new Error(
+        'Freighter Wallet extension was not detected. Please make sure the Freighter extension is installed and enabled in your browser.'
+      );
     } catch (err: any) {
       return {
         isConnected: false,
