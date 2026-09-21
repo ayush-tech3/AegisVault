@@ -168,6 +168,11 @@ aegis-vault/
 ### AegisVault Dashboard UI
 ![Product UI](screenshots/product-ui.png)
 
+### AegisVault Mobile Responsive UI
+<p align="center">
+  <img src="screenshots/mobile-responsive-ui.jpg" alt="Mobile Responsive UI" width="380" />
+</p>
+
 ### Privacy Inspector (Public Ledger vs Private Witness)
 ![Privacy Explorer](screenshots/privacy-explorer-ui.png)
 
