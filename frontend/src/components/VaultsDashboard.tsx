@@ -84,49 +84,49 @@ export const VaultsDashboard: React.FC<VaultsDashboardProps> = ({
       <div>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-              <Building className="w-6 h-6 text-cyan-400" />
+            <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+              <Building className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400" />
               Verified Institutional RWA Collateral Vaults
             </h2>
-            <p className="text-sm text-slate-400">
+            <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
               Select an asset tier to commit shielded collateral on Midnight Preprod network
             </p>
           </div>
           <button
             onClick={() => onOpenDepositModal()}
-            className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm rounded-xl shadow-lg shadow-indigo-600/30 flex items-center gap-2 transition-all self-start sm:self-auto"
+            className="w-full sm:w-auto justify-center px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs sm:text-sm rounded-xl shadow-lg shadow-indigo-600/30 flex items-center gap-2 transition-all active:scale-95"
           >
             <PlusCircle className="w-4 h-4" />
             Deposit New Collateral
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {AVAILABLE_RWA_ASSETS.map(asset => (
             <div
               key={asset.id}
-              className="p-6 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-indigo-500/50 transition-all flex flex-col justify-between group shadow-lg"
+              className="p-4 sm:p-6 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-indigo-500/50 transition-all flex flex-col justify-between group shadow-lg"
             >
               <div>
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <span className="text-3xl">{asset.icon}</span>
+                <div className="flex items-start justify-between mb-4 gap-2">
+                  <div className="flex items-center gap-2.5 sm:gap-3">
+                    <span className="text-2xl sm:text-3xl flex-shrink-0">{asset.icon}</span>
                     <div>
-                      <h3 className="font-bold text-white text-base group-hover:text-cyan-300 transition-colors">
+                      <h3 className="font-bold text-white text-sm sm:text-base group-hover:text-cyan-300 transition-colors line-clamp-2">
                         {asset.name}
                       </h3>
-                      <div className="flex items-center gap-2 mt-0.5">
+                      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-0.5">
                         <span className="font-mono text-xs text-indigo-400 font-semibold">
                           {asset.ticker}
                         </span>
-                        <span className="text-slate-600">•</span>
-                        <span className="text-xs text-slate-400">{asset.underlyingRating}</span>
+                        <span className="text-slate-600 hidden sm:inline">•</span>
+                        <span className="text-[11px] sm:text-xs text-slate-400">{asset.underlyingRating}</span>
                       </div>
                     </div>
                   </div>
-                  <span className="px-2.5 py-1 text-xs font-bold rounded-lg bg-emerald-950/80 text-emerald-300 border border-emerald-800/60 flex items-center gap-1">
-                    <TrendingUp className="w-3.5 h-3.5" />
-                    {asset.apr}% Yield
+                  <span className="px-2 py-1 text-[11px] sm:text-xs font-bold rounded-lg bg-emerald-950/80 text-emerald-300 border border-emerald-800/60 flex items-center gap-1 flex-shrink-0">
+                    <TrendingUp className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                    {asset.apr}%
                   </span>
                 </div>
 

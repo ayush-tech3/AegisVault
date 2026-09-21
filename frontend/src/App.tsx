@@ -171,10 +171,10 @@ export function App() {
         onDisconnectWallet={handleDisconnectWallet}
       />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* PAGE 1: Shielded Vaults & Deposit Hub */}
         {activeTab === 'vaults' && (
-          <div className="space-y-12">
+          <div className="space-y-8 sm:space-y-12">
             <HeroStats
               totalCollateralUSD={totalCollateral}
               totalBorrowedUSD={totalBorrowed}
@@ -231,17 +231,17 @@ export function App() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-20 border-t border-slate-900 bg-slate-950/80 py-10 text-xs text-slate-500">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+      <footer className="mt-12 sm:mt-20 border-t border-slate-900 bg-slate-950/80 py-8 sm:py-10 text-xs text-slate-500">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 sm:gap-3">
             <div className="flex items-center gap-1.5 font-bold text-slate-300">
               <Shield className="w-4 h-4 text-cyan-400" />
               AegisVault Protocol
             </div>
             <span>•</span>
-            <span>Midnight Network Preprod</span>
-            <span>•</span>
-            <span className="font-mono text-[11px] text-slate-400">
+            <span>Midnight Preprod</span>
+            <span className="hidden sm:inline">•</span>
+            <span className="font-mono text-[11px] text-slate-400 block sm:inline">
               Contract: {AEGIS_VAULT_PREPROD_CONTRACT_ADDRESS.slice(0, 10)}...
             </span>
           </div>
@@ -254,7 +254,7 @@ export function App() {
               className="flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors"
             >
               <Code2 className="w-4 h-4" />
-              GitHub Repository
+              GitHub
             </a>
             <a
               href="https://midnight.network"
@@ -262,7 +262,7 @@ export function App() {
               rel="noreferrer"
               className="flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors"
             >
-              Midnight Docs
+              Docs
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
