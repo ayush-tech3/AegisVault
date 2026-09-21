@@ -41,7 +41,9 @@
 | **10. Formal ZK Privacy Threat Model** | [`docs/PRIVACY_MODEL.md`](docs/PRIVACY_MODEL.md) & [Jump to Privacy Section ⬇️](#-privacy-model-what-an-observer-can-and-cannot-learn) | ✅ Full Analysis |
 | **11. Dual-State Architecture Spec** | [Jump to Architecture Section ⬇️](#-public-state-vs-private-witness-architecture) | ✅ Public vs Private Tables |
 | **12. Security & Circuit Audit Report** | [`SECURITY_AUDIT_REPORT.md`](SECURITY_AUDIT_REPORT.md) | ✅ Passed 100% |
-| **13. Multi-Wallet Bridge Integration** | Midnight Lace Wallet + Stellar Freighter Extension + Instant Demo Wallet | ✅ Multi-Wallet Live |
+| **13. Idea Specification PDF** | [`AegisVault_Idea_Description.pdf`](AegisVault_Idea_Description.pdf) | ✅ PDF Specification |
+| **14. Pitch Deck Presentation PPTX** | [`AegisVault_Pitch_Deck.pptx`](AegisVault_Pitch_Deck.pptx) | ✅ 16:9 Presentation |
+| **15. Multi-Wallet Bridge Integration** | Midnight Lace Wallet + Stellar Freighter Extension + Instant Demo Wallet | ✅ Multi-Wallet Live |
 
 ---
 
