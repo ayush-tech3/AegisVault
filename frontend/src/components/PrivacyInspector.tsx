@@ -1,20 +1,49 @@
 import React from 'react';
-import { Shield, Lock, Eye, EyeOff, Check, X, FileCode, Cpu } from 'lucide-react';
-import { AEGIS_VAULT_PREPROD_CONTRACT_ADDRESS } from '../services/midnight-client';
+import { Shield, Lock, Eye, EyeOff, Check, X, FileCode, Cpu, ShieldCheck, Database, Key } from 'lucide-react';
+import { AEGIS_VAULT_PREPROD_CONTRACT_ADDRESS, ACCREDITED_INVESTOR_MERKLE_ROOT } from '../services/midnight-client';
 
 export const PrivacyInspector: React.FC = () => {
   return (
     <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-          <EyeOff className="w-6 h-6 text-cyan-400" />
-          Midnight Zero-Knowledge Privacy Architecture Inspector
-        </h2>
-        <p className="text-sm text-slate-400">
-          Cryptographic breakdown comparing what is publicly visible on the Midnight Preprod blockchain vs what remains 100% shielded inside the private witness.
-        </p>
+      {/* Page Header */}
+      <div className="p-8 rounded-3xl bg-slate-900/80 border border-slate-800 shadow-2xl relative overflow-hidden">
+        <div className="max-w-3xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950/80 border border-purple-800 text-xs font-bold text-purple-300 mb-3">
+            <EyeOff className="w-4 h-4 text-purple-400" />
+            Midnight Network Dual-State Architecture
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+            Zero-Knowledge Privacy Inspector
+          </h1>
+          <p className="text-sm text-slate-300 mt-2 leading-relaxed">
+            Inspect the mathematical and cryptographic boundary between Midnight's <strong>Public Ledger</strong> (visible to all blockchain observers) and the <strong>Private Witness</strong> (executed locally on the borrower's device with 0 identity or balance leakage).
+          </p>
+        </div>
+
+        {/* Quick Summary Pills */}
+        <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-slate-800/80">
+          <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800/80">
+            <span className="text-xs text-slate-400 block mb-1">ZK Proof System</span>
+            <span className="text-xl font-black text-cyan-300 font-mono">
+              BLS12-381 PLONK
+            </span>
+          </div>
+          <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800/80">
+            <span className="text-xs text-slate-400 block mb-1">Identity & Balance Leaks</span>
+            <span className="text-xl font-black text-emerald-400 font-mono">
+              0.00% Leaked
+            </span>
+          </div>
+          <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800/80">
+            <span className="text-xs text-slate-400 block mb-1">Over-Collateral Constraint</span>
+            <span className="text-xl font-black text-purple-300 font-mono">
+              ≥ 150.0% Enforced
+            </span>
+          </div>
+        </div>
       </div>
 
+      {/* Side-by-Side Dual-State Inspector */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Left Card: Public Ledger State (On-chain Midnight Preprod) */}
         <div className="p-6 rounded-3xl bg-slate-900/80 border border-slate-800 shadow-xl space-y-6">
@@ -25,7 +54,7 @@ export const PrivacyInspector: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-base font-bold text-white">Public Ledger State</h3>
-                <p className="text-xs text-slate-400">Visible to Indexers, Observers & Nodes</p>
+                <p className="text-xs text-slate-400">Visible to Indexers, Block Explorers & Nodes</p>
               </div>
             </div>
             <span className="px-2.5 py-1 text-xs font-bold rounded-lg bg-cyan-950 text-cyan-300 border border-cyan-800 font-mono">
@@ -67,6 +96,13 @@ export const PrivacyInspector: React.FC = () => {
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-400 font-medium">Total Protocol Borrowed</span>
                 <span className="text-white font-mono font-bold">$500,000 USD</span>
+              </div>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-400 font-medium">Accredited KYC Merkle Root</span>
+                <span className="font-mono text-cyan-300">{ACCREDITED_INVESTOR_MERKLE_ROOT.slice(0, 10)}...</span>
               </div>
             </div>
           </div>

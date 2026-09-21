@@ -155,51 +155,63 @@ export function App() {
         onDisconnectWallet={handleDisconnectWallet}
       />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
-        {/* Hero & Metrics Header */}
-        <HeroStats
-          totalCollateralUSD={totalCollateral}
-          totalBorrowedUSD={totalBorrowed}
-          activeLoansCount={activeLoans.filter(l => l.status === 'Active').length}
-          onDepositClick={() => {
-            setDepositSelectedAsset(undefined);
-            setIsDepositModalOpen(true);
-          }}
-          onExploreCompliance={() => setActiveTab('auditor')}
-        />
-
-        {/* Tab Content */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* PAGE 1: Shielded Vaults & Deposit Hub */}
         {activeTab === 'vaults' && (
-          <VaultsDashboard
-            collateralRecords={collateralRecords}
-            onOpenDepositModal={asset => {
-              setDepositSelectedAsset(asset);
-              setIsDepositModalOpen(true);
-            }}
-            onOpenBorrowModal={collateral => {
-              setBorrowSelectedCollateral(collateral);
-              setIsBorrowModalOpen(true);
-            }}
-          />
+          <div className="space-y-12">
+            <HeroStats
+              totalCollateralUSD={totalCollateral}
+              totalBorrowedUSD={totalBorrowed}
+              activeLoansCount={activeLoans.filter(l => l.status === 'Active').length}
+              onDepositClick={() => {
+                setDepositSelectedAsset(undefined);
+                setIsDepositModalOpen(true);
+              }}
+              onExploreCompliance={() => setActiveTab('auditor')}
+            />
+
+            <VaultsDashboard
+              collateralRecords={collateralRecords}
+              onOpenDepositModal={asset => {
+                setDepositSelectedAsset(asset);
+                setIsDepositModalOpen(true);
+              }}
+              onOpenBorrowModal={collateral => {
+                setBorrowSelectedCollateral(collateral);
+                setIsBorrowModalOpen(true);
+              }}
+            />
+          </div>
         )}
 
+        {/* PAGE 2: Active Loans Page */}
         {activeTab === 'loans' && (
-          <ActiveLoansView
-            loans={activeLoans}
-            onRepayLoan={handleRepayLoan}
-            onOpenAuditorModal={loan => setActiveTab('auditor')}
-          />
+          <div className="space-y-8 animate-fadeIn">
+            <ActiveLoansView
+              loans={activeLoans}
+              onRepayLoan={handleRepayLoan}
+              onOpenAuditorModal={() => setActiveTab('auditor')}
+            />
+          </div>
         )}
 
+        {/* PAGE 3: Auditor Portal Page */}
         {activeTab === 'auditor' && (
-          <AuditorPortal
-            disclosures={auditorDisclosures}
-            activeLoans={activeLoans.filter(l => l.status === 'Active')}
-            onGrantDisclosure={handleGrantAuditorDisclosure}
-          />
+          <div className="space-y-8 animate-fadeIn">
+            <AuditorPortal
+              disclosures={auditorDisclosures}
+              activeLoans={activeLoans.filter(l => l.status === 'Active')}
+              onGrantDisclosure={handleGrantAuditorDisclosure}
+            />
+          </div>
         )}
 
-        {activeTab === 'privacy' && <PrivacyInspector />}
+        {/* PAGE 4: Privacy Inspector Page */}
+        {activeTab === 'privacy' && (
+          <div className="space-y-8 animate-fadeIn">
+            <PrivacyInspector />
+          </div>
+        )}
       </main>
 
       {/* Footer */}
