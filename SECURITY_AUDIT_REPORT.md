@@ -1,7 +1,7 @@
 # 🛡️ AegisVault Protocol — Zero-Knowledge Security & Circuit Audit Report
 
 **Target:** AegisVault Midnight Compact Smart Contract (`contract/src/index.compact`)  
-**Network:** Midnight Preprod Network (Testnet)  
+**Network:** Midnight Preprod Network (`NetworkId.Preprod`)  
 **Compiler:** Compact v0.19.0 (BLS12-381 PLONK Proving System)  
 **Audit Scope:** Mathematical Invariants, Zero-Knowledge Privacy Leakage, Double-Borrow Prevention, Merkle Membership Verification, and Selective Regulatory Disclosure.  
 **Result:** **100% Passed (0 Critical, 0 High, 0 Medium, 0 Low Vulnerabilities)**

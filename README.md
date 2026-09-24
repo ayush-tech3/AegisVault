@@ -2,7 +2,7 @@
 
 > An institutional-grade zero-knowledge Real-World Asset (RWA) collateralization and confidential credit protocol built natively on the Midnight Network using Compact smart contracts.
 
-[![Midnight Network](https://img.shields.io/badge/Midnight-Preprod%20Testnet-blue?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEyIDJBMTAgMTAgMCAxIDAgMjIgMTJBMTAgMTAgMCAwIDAgMTIgMlptMCAxOGE4IDggMCAxIDEgOC04QTggOCAwIDAgMSAxMiAyMFoiLz48L3N2Zz4=)](https://midnight.network)
+[![Midnight Network](https://img.shields.io/badge/Midnight-Preprod-blue?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEyIDJBMTAgMTAgMCAxIDAgMjIgMTJBMTAgMTAgMCAwIDAgMTIgMlptMCAxOGE4IDggMCAxIDEgOC04QTggOCAwIDAgMSAxMiAyMFoiLz48L3N2Zz4=)](https://midnight.network)
 [![Compact Language](https://img.shields.io/badge/Compact%20Language-v0.19.0-indigo)](https://midnight.network)
 [![CI/CD Pipeline](https://github.com/ayush-tech3/AegisVault/actions/workflows/ci.yml/badge.svg)](https://github.com/ayush-tech3/AegisVault/actions)
 [![Live Demo](https://img.shields.io/badge/🌐_Live%20DApp-Production%20Website-cyan?logo=netlify)](https://aegisvalutmoonlight.netlify.app/)
