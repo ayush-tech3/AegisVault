@@ -1,11 +1,11 @@
 'use strict';
 const NetworkId = {
-  Testnet: 'Testnet',
-  Mainnet: 'Mainnet',
-  Undeployed: 'Undeployed'
+  Preprod: 'preprod',
+  Preview: 'preview',
+  Undeployed: 'undeployed'
 };
 
-let currentNetworkId = NetworkId.Testnet;
+let currentNetworkId = NetworkId.Preprod;
 
 function setNetworkId(networkId) {
   currentNetworkId = networkId;

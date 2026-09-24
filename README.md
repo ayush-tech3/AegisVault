@@ -34,7 +34,7 @@
 | **3. Live Production DApp** | **[aegisvalutmoonlight.netlify.app](https://aegisvalutmoonlight.netlify.app/)** | ✅ Live & Responsive |
 | **4. Demo Video Walkthrough** | **[Watch 1080p Demo on YouTube](https://youtu.be/GK1J3Dq58_8)** | ✅ Live on YouTube |
 | **5. Compact Smart Contract (v0.19)** | [`contract/src/index.compact`](contract/src/index.compact) | ✅ 4 Circuits Verified |
-| **6. Preprod Deployed Contract Address** | `0x4e8a1092837bc940182739485710293847561928374619283746192837461928` | ✅ Deployed on Preprod |
+| **6. Preprod Deployed Contract Address** | `020067426bcdaef449f8754142dbb9ab5794770faee88737bf60dca19ad792b3` | ✅ Deployed on Preprod (`NetworkId.Preprod`) |
 | **7. Automated Test Suite (8 Tests)** | [`contract/tests/aegis-vault.test.ts`](contract/tests/aegis-vault.test.ts) | ✅ 8/8 Tests Passing |
 | **8. CI/CD Automated Workflow** | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) | ✅ GitHub Actions Green |
 | **9. Official Approved Idea Reference** | [`PROPOSAL.md`](PROPOSAL.md) *(Private Allowlist Access & Confidential Credentials)* | ✅ Approved Track |
@@ -216,6 +216,9 @@ aegis-vault/
 │   ├── package.json                    # @midnight-ntwrk/dapp-connector-api & midnight-js
 │   ├── vite.config.ts                  # Vite build config with Midnight SDK polyfills
 │   ├── src/
+│   │   ├── environments/               # Midnight Network Environment Configuration
+│   │   │   ├── environment.ts          # Preprod network target configuration
+│   │   │   └── environment.prod.ts     # Production Preprod configuration
 │   │   ├── App.tsx                     # Main dashboard with mobile responsive drawer
 │   │   ├── main.tsx
 │   │   ├── index.css                   # Glassmorphic dark mode styling
@@ -237,6 +240,39 @@ aegis-vault/
 └── docs/
     ├── PRODUCT_PROPOSAL.md             # Detailed product architecture proposal
     └── PRIVACY_MODEL.md                # Formal ZK threat analysis & privacy model
+```
+
+---
+
+## 🌐 Midnight Network Configuration (`NetworkId`)
+
+AegisVault is configured strictly against the official Midnight Network IDs specification. Only `preprod`, `preview`, and `undeployed` are valid:
+
+```typescript
+import { NetworkId, setNetworkId } from '@midnight-ntwrk/midnight-js-network-id';
+
+// Available Network IDs:
+//   NetworkId.Preprod    → 'preprod'
+//   NetworkId.Preview    → 'preview'
+//   NetworkId.Undeployed → 'undeployed'
+
+setNetworkId(NetworkId.Preprod); // Active target: Midnight Preprod
+```
+
+The full deployment configuration is maintained in [`frontend/src/environments/environment.ts`](frontend/src/environments/environment.ts):
+
+```typescript
+import { NetworkId } from '@midnight-ntwrk/midnight-js-network-id';
+
+export const environment = {
+  networkId:     NetworkId.Preprod,  // 'preprod'
+  networkName:   'Midnight Preprod',
+  contractAddress: '020067426bcdaef449f8754142dbb9ab5794770faee88737bf60dca19ad792b3',
+  indexerUrl:    'https://indexer.preprod.midnight.network/api/v1/graphql',
+  indexerWsUrl:  'wss://indexer.preprod.midnight.network/api/v1/graphql/ws',
+  nodeUrl:       'https://rpc.preprod.midnight.network',
+  proofServerUrl: 'http://localhost:6300'
+};
 ```
 
 ---

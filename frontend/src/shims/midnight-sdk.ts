@@ -1,10 +1,10 @@
 export enum NetworkId {
-  Testnet = 'Testnet',
-  Mainnet = 'Mainnet',
-  Undeployed = 'Undeployed'
+  Preprod = 'preprod',
+  Preview = 'preview',
+  Undeployed = 'undeployed'
 }
 
-let currentNetworkId: NetworkId = NetworkId.Testnet;
+let currentNetworkId: NetworkId = NetworkId.Preprod;
 
 export function setNetworkId(networkId: NetworkId): void {
   currentNetworkId = networkId;

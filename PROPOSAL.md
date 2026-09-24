@@ -4,7 +4,8 @@
 * **Live Frontend Demo:** [https://aegisvalutmoonlight.netlify.app/](https://aegisvalutmoonlight.netlify.app/)
 * **Demo Video (YouTube):** [https://youtu.be/GK1J3Dq58_8](https://youtu.be/GK1J3Dq58_8)
 * **Repository:** [https://github.com/ayush-tech3/AegisVault](https://github.com/ayush-tech3/AegisVault)
-* **Deployed Contract:** `0x4e8a1092837bc940182739485710293847561928374619283746192837461928` (`Midnight Preprod / Testnet`)
+* **Deployed Contract:** `020067426bcdaef449f8754142dbb9ab5794770faee88737bf60dca19ad792b3` (`Midnight Preprod / NetworkId.Preprod`)
+* **Environment Config:** [`frontend/src/environments/environment.ts`](frontend/src/environments/environment.ts) (`NetworkId.Preprod`)
 
 ### Selected Idea from Provided List (Level 3)
 This project implements a combination of two ideas from the official Midnight Moonshot provided idea list:

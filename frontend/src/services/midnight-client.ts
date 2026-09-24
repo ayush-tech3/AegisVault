@@ -22,16 +22,17 @@ import {
   computeInvestorCommitmentBrowser
 } from './crypto-browser';
 
+import { environment } from '../environments/environment';
+
 // Deployed Midnight Preprod Contract Address
-export const AEGIS_VAULT_PREPROD_CONTRACT_ADDRESS =
-  '0x4e8a1092837bc940182739485710293847561928374619283746192837461928';
+export const AEGIS_VAULT_PREPROD_CONTRACT_ADDRESS = environment.contractAddress;
 
 export const ACCREDITED_INVESTOR_MERKLE_ROOT =
   '0x7b93f1bc448e89f81a1c90bd192934ec795bb51a94e82df4b4f59cb03de7a192';
 
-// Set active Midnight Network to Preprod (NetworkId.Testnet or NetworkId.Undeployed)
+// Set active Midnight Network to Preprod
 try {
-  setNetworkId(NetworkId.Testnet);
+  setNetworkId(NetworkId.Preprod);
 } catch {
   // Graceful fallback for browser environments
 }
