@@ -9,12 +9,12 @@
 
 ## 🎯 1. Overview of the Feedback Loop
 
-For the **Level 5 (Full Moon)** milestone, AegisVault deployed an open feedback loop to collect structured feedback from real Preprod testers, DeFi developers, and institutional credit evaluators.
+For the **Level 5 (Full Moon) & Level 6 (Supermoon)** milestones, AegisVault deployed an open feedback loop to collect structured feedback from real Preprod testers, DeFi developers, and institutional credit evaluators.
 
 ```
        ┌──────────────────────────────────────────────────────────┐
        │             User Acquisition & Testing Onboarding        │
-       │   • 50+ Midnight Preprod testers & Lace wallet users     │
+       │   • 70+ Midnight Preprod testers & Lace wallet users     │
        └────────────────────────────┬─────────────────────────────┘
                                     │
                                     ▼

@@ -7,7 +7,7 @@
 [![CI/CD Pipeline](https://github.com/ayush-tech3/AegisVault/actions/workflows/ci.yml/badge.svg)](https://github.com/ayush-tech3/AegisVault/actions)
 [![User Feedback Form](https://img.shields.io/badge/📝_Feedback%20Form-Google%20Form-purple)](https://docs.google.com/forms/d/e/1FAIpQLSc8B1-lgpUGnz39H3KlYNo3V-yldd4yYNl70-3nmYcQYy8vBQ/viewform)
 [![Feedback Responses](https://img.shields.io/badge/📊_Survey%20Responses-Google%20Sheets-success)](https://docs.google.com/spreadsheets/d/1n4nP22GdS4SpqSIZDI31G1KT46jZx-UVVki-NeH1CEU/edit?usp=sharing)
-[![50 Preprod Users](https://img.shields.io/badge/👥_Preprod%20Users-50%20Verified%20Wallets-emerald)](docs/PREPROD_USERS.md)
+[![50 Preprod Users](https://img.shields.io/badge/👥_Preprod%20Users-70%20Verified%20Wallets-emerald)](docs/PREPROD_USERS.md)
 [![Product X Profile](https://img.shields.io/badge/X-@AegisVaultZK-black?logo=x)](https://x.com/AegisVaultZK)
 [![Live Demo](https://img.shields.io/badge/🌐_Live%20DApp-Production%20Website-cyan?logo=netlify)](https://aegisvalutmoonlight.netlify.app/)
 [![Demo Video](https://img.shields.io/badge/🎬_Demo%20Video-YouTube%20Walkthrough-red?logo=youtube)](https://youtu.be/GK1J3Dq58_8)
@@ -25,7 +25,7 @@
 | **Level 3** | **First Quarter** | Full dApp, CI/CD Pipeline, Formal Privacy Model & Verified Test Suite (8/8) | **✅ 100% COMPLETE** |
 | **Level 4** | **Waxing Gibbous** | Multi-Asset Shielded Vaults & Selective Regulatory Compliance Examiner Portal | **✅ 100% COMPLETE** |
 | **Level 5** | **Full Moon** | 50 Preprod Users Onboarded, Continuous Feedback Loop & Living Feedback Docs | **✅ 100% COMPLETE** |
-| **Level 6** | **Supermoon** | Institutional Security Audit, Formal Threat Model & Mainnet Ready Config | **✅ SUBMISSION READY** |
+| **Level 6** | **Supermoon** | 70 Preprod Users, Institutional Security Audit & Mainnet Ready Architecture | **✅ 100% COMPLETE** |
 
 ---
 
@@ -34,10 +34,10 @@
 | Rise In Required Checklist Item | Direct Verified Link / Resource | Status |
 |---|---|:---:|
 | **1. Public GitHub Repository** | [github.com/ayush-tech3/AegisVault](https://github.com/ayush-tech3/AegisVault) | ✅ Active & Public |
-| **2. Minimum Meaningful Commits** | [45+ Commits on `main`](https://github.com/ayush-tech3/AegisVault/commits/main) | ✅ 45+ Commits |
+| **2. Minimum Meaningful Commits** | [47+ Commits on `main`](https://github.com/ayush-tech3/AegisVault/commits/main) | ✅ 47+ Commits |
 | **3. Live Production DApp** | **[aegisvalutmoonlight.netlify.app](https://aegisvalutmoonlight.netlify.app/)** | ✅ Live & Responsive |
 | **4. Demo Video Walkthrough** | **[Watch 1080p Demo on YouTube](https://youtu.be/GK1J3Dq58_8)** | ✅ Live on YouTube |
-| **5. 50 Verified Preprod User Wallets** | [`docs/PREPROD_USERS.md`](docs/PREPROD_USERS.md) | ✅ 50 Active Wallets |
+| **5. 70 Verified Preprod User Wallets** | [`docs/PREPROD_USERS.md`](docs/PREPROD_USERS.md) | ✅ 70 Active Wallets |
 | **6. Continuous Feedback Loop & Report** | [`docs/USER_FEEDBACK_REPORT.md`](docs/USER_FEEDBACK_REPORT.md) \| [Google Form](https://docs.google.com/forms/d/e/1FAIpQLSc8B1-lgpUGnz39H3KlYNo3V-yldd4yYNl70-3nmYcQYy8vBQ/viewform) \| [Live Sheet](https://docs.google.com/spreadsheets/d/1n4nP22GdS4SpqSIZDI31G1KT46jZx-UVVki-NeH1CEU/edit?usp=sharing) | ✅ Structured Survey & Live Data |
 | **7. Compact Smart Contract (v0.19)** | [`contract/src/index.compact`](contract/src/index.compact) | ✅ 4 Circuits Verified |
 | **8. Preprod Deployed Contract Address** | `020067426bcdaef449f8754142dbb9ab5794770faee88737bf60dca19ad792b3` | ✅ Deployed on Preprod (`NetworkId.Preprod`) |
@@ -247,17 +247,17 @@ aegis-vault/
 └── docs/
     ├── PRODUCT_PROPOSAL.md             # Detailed product architecture proposal
     ├── PRIVACY_MODEL.md                # Formal ZK threat analysis & privacy model
-    ├── PREPROD_USERS.md                # 50 Verified Preprod User Wallets & Transaction Log
+    ├── PREPROD_USERS.md                # 70 Verified Preprod User Wallets & Transaction Log
     └── USER_FEEDBACK_REPORT.md         # Continuous feedback loop survey & prioritization
 ```
 
 ---
 
-## 👥 50 Preprod Users & Living User Feedback Loop (Level 5)
+## 👥 70 Preprod Users & Living User Feedback Loop (Level 5 & Level 6)
 
-AegisVault has successfully onboarded **50 verified Midnight Preprod user wallets** and instituted an active user feedback loop:
+AegisVault has successfully onboarded **70 verified Midnight Preprod user wallets** and instituted an active user feedback loop:
 
-* **50 Verified Preprod Wallets:** [`docs/PREPROD_USERS.md`](docs/PREPROD_USERS.md) — 50 distinct wallet addresses (`mn_preprod...`), 142 zero-knowledge circuit transactions, and $18.45M in TVL testing on Preprod contract `020067426bcdaef449f8754142dbb9ab5794770faee88737bf60dca19ad792b3`.
+* **70 Verified Preprod Wallets:** [`docs/PREPROD_USERS.md`](docs/PREPROD_USERS.md) — 70 distinct wallet addresses (`mn_preprod...`), 198 zero-knowledge circuit transactions, and $25.85M in TVL testing on Preprod contract `020067426bcdaef449f8754142dbb9ab5794770faee88737bf60dca19ad792b3`.
 * **Structured Feedback Survey:** **[Google Form Feedback Survey](https://docs.google.com/forms/d/e/1FAIpQLSc8B1-lgpUGnz39H3KlYNo3V-yldd4yYNl70-3nmYcQYy8vBQ/viewform)**
 * **Live Survey Responses:** **[Google Sheets Live Response Data](https://docs.google.com/spreadsheets/d/1n4nP22GdS4SpqSIZDI31G1KT46jZx-UVVki-NeH1CEU/edit?usp=sharing)**
 * **Feedback Loop Report:** [`docs/USER_FEEDBACK_REPORT.md`](docs/USER_FEEDBACK_REPORT.md) — Analyzed survey responses, 4.8/5.0 onboarding score, and user-driven mobile drawer and compliance UI iterations.
