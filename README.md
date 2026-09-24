@@ -5,6 +5,8 @@
 [![Midnight Network](https://img.shields.io/badge/Midnight-Preprod-blue?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEyIDJBMTAgMTAgMCAxIDAgMjIgMTJBMTAgMTAgMCAwIDAgMTIgMlptMCAxOGE4IDggMCAxIDEgOC04QTggOCAwIDAgMSAxMiAyMFoiLz48L3N2Zz4=)](https://midnight.network)
 [![Compact Language](https://img.shields.io/badge/Compact%20Language-v0.19.0-indigo)](https://midnight.network)
 [![CI/CD Pipeline](https://github.com/ayush-tech3/AegisVault/actions/workflows/ci.yml/badge.svg)](https://github.com/ayush-tech3/AegisVault/actions)
+[![User Feedback Form](https://img.shields.io/badge/📝_Feedback%20Form-Google%20Form-purple)](https://docs.google.com/forms/d/e/1FAIpQLSc8B1-lgpUGnz39H3KlYNo3V-yldd4yYNl70-3nmYcQYy8vBQ/viewform)
+[![50 Preprod Users](https://img.shields.io/badge/👥_Preprod%20Users-50%20Verified%20Wallets-emerald)](docs/PREPROD_USERS.md)
 [![Product X Profile](https://img.shields.io/badge/X-@AegisVaultZK-black?logo=x)](https://x.com/AegisVaultZK)
 [![Live Demo](https://img.shields.io/badge/🌐_Live%20DApp-Production%20Website-cyan?logo=netlify)](https://aegisvalutmoonlight.netlify.app/)
 [![Demo Video](https://img.shields.io/badge/🎬_Demo%20Video-YouTube%20Walkthrough-red?logo=youtube)](https://youtu.be/GK1J3Dq58_8)
@@ -20,8 +22,8 @@
 | **Level 1** | **New Moon** | Toolchain Setup, Compact v0.19 Smart Contract, Unit Tests & Managed Bindings | **✅ 100% COMPLETE** |
 | **Level 2** | **Waxing Crescent** | Lace Wallet Connection, Client-Side Circuit Execution & Observable Privacy | **✅ 100% COMPLETE** |
 | **Level 3** | **First Quarter** | Full dApp, CI/CD Pipeline, Formal Privacy Model & Verified Test Suite (8/8) | **✅ 100% COMPLETE** |
-| **Level 4** | **Waxing Gibbous** | Multi-Asset Shielded Vaults & Selective Regulatory Compliance Examiner Portal | **✅ COMPLETE** |
-| **Level 5** | **Full Moon** | Cross-Chain Multi-Wallet Settlement Bridge (Midnight Lace + Stellar Freighter) | **✅ COMPLETE** |
+| **Level 4** | **Waxing Gibbous** | Multi-Asset Shielded Vaults & Selective Regulatory Compliance Examiner Portal | **✅ 100% COMPLETE** |
+| **Level 5** | **Full Moon** | 50 Preprod Users Onboarded, Continuous Feedback Loop & Living Feedback Docs | **✅ 100% COMPLETE** |
 | **Level 6** | **Supermoon** | Institutional Security Audit, Formal Threat Model & Mainnet Ready Config | **✅ SUBMISSION READY** |
 
 ---
@@ -31,21 +33,23 @@
 | Rise In Required Checklist Item | Direct Verified Link / Resource | Status |
 |---|---|:---:|
 | **1. Public GitHub Repository** | [github.com/ayush-tech3/AegisVault](https://github.com/ayush-tech3/AegisVault) | ✅ Active & Public |
-| **2. Minimum Meaningful Commits** | [40+ Commits on `main`](https://github.com/ayush-tech3/AegisVault/commits/main) | ✅ 40+ Commits |
+| **2. Minimum Meaningful Commits** | [45+ Commits on `main`](https://github.com/ayush-tech3/AegisVault/commits/main) | ✅ 45+ Commits |
 | **3. Live Production DApp** | **[aegisvalutmoonlight.netlify.app](https://aegisvalutmoonlight.netlify.app/)** | ✅ Live & Responsive |
 | **4. Demo Video Walkthrough** | **[Watch 1080p Demo on YouTube](https://youtu.be/GK1J3Dq58_8)** | ✅ Live on YouTube |
-| **5. Compact Smart Contract (v0.19)** | [`contract/src/index.compact`](contract/src/index.compact) | ✅ 4 Circuits Verified |
-| **6. Preprod Deployed Contract Address** | `020067426bcdaef449f8754142dbb9ab5794770faee88737bf60dca19ad792b3` | ✅ Deployed on Preprod (`NetworkId.Preprod`) |
-| **7. Automated Test Suite (8 Tests)** | [`contract/tests/aegis-vault.test.ts`](contract/tests/aegis-vault.test.ts) | ✅ 8/8 Tests Passing |
-| **8. CI/CD Automated Workflow** | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) | ✅ GitHub Actions Green |
-| **9. Product Public X Profile** | [x.com/AegisVaultZK](https://x.com/AegisVaultZK) | ✅ Building in Public |
-| **10. Official Approved Idea Reference** | [`PROPOSAL.md`](PROPOSAL.md) *(Private Allowlist Access & Confidential Credentials)* | ✅ Approved Track |
-| **11. Formal ZK Privacy Threat Model** | [`docs/PRIVACY_MODEL.md`](docs/PRIVACY_MODEL.md) & [Jump to Privacy Section ⬇️](#-privacy-model-what-an-observer-can-and-cannot-learn) | ✅ Full Analysis |
-| **12. Dual-State Architecture Spec** | [Jump to Architecture Section ⬇️](#-public-state-vs-private-witness-architecture) | ✅ Public vs Private Tables |
-| **13. Security & Circuit Audit Report** | [`SECURITY_AUDIT_REPORT.md`](SECURITY_AUDIT_REPORT.md) | ✅ Passed 100% |
-| **14. Idea Specification PDF** | [`AegisVault_Idea_Description.pdf`](AegisVault_Idea_Description.pdf) | ✅ PDF Specification |
-| **15. Pitch Deck Presentation PPTX** | [`AegisVault_Pitch_Deck.pptx`](AegisVault_Pitch_Deck.pptx) | ✅ 16:9 Presentation |
-| **16. Multi-Wallet Bridge Integration** | Midnight Lace Wallet + Stellar Freighter Extension + Instant Demo Wallet | ✅ Multi-Wallet Live |
+| **5. 50 Verified Preprod User Wallets** | [`docs/PREPROD_USERS.md`](docs/PREPROD_USERS.md) | ✅ 50 Active Wallets |
+| **6. Continuous Feedback Loop & Report** | [`docs/USER_FEEDBACK_REPORT.md`](docs/USER_FEEDBACK_REPORT.md) & [Google Form](https://docs.google.com/forms/d/e/1FAIpQLSc8B1-lgpUGnz39H3KlYNo3V-yldd4yYNl70-3nmYcQYy8vBQ/viewform) | ✅ Structured Survey |
+| **7. Compact Smart Contract (v0.19)** | [`contract/src/index.compact`](contract/src/index.compact) | ✅ 4 Circuits Verified |
+| **8. Preprod Deployed Contract Address** | `020067426bcdaef449f8754142dbb9ab5794770faee88737bf60dca19ad792b3` | ✅ Deployed on Preprod (`NetworkId.Preprod`) |
+| **9. Automated Test Suite (8 Tests)** | [`contract/tests/aegis-vault.test.ts`](contract/tests/aegis-vault.test.ts) | ✅ 8/8 Tests Passing |
+| **10. CI/CD Automated Workflow** | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) | ✅ GitHub Actions Green |
+| **11. Product Public X Profile** | [x.com/AegisVaultZK](https://x.com/AegisVaultZK) | ✅ Building in Public |
+| **12. Official Approved Idea Reference** | [`PROPOSAL.md`](PROPOSAL.md) *(Private Allowlist Access & Confidential Credentials)* | ✅ Approved Track |
+| **13. Formal ZK Privacy Threat Model** | [`docs/PRIVACY_MODEL.md`](docs/PRIVACY_MODEL.md) | ✅ Full Analysis |
+| **14. Dual-State Architecture Spec** | [Jump to Architecture Section ⬇️](#-public-state-vs-private-witness-architecture) | ✅ Public vs Private Tables |
+| **15. Security & Circuit Audit Report** | [`SECURITY_AUDIT_REPORT.md`](SECURITY_AUDIT_REPORT.md) | ✅ Passed 100% |
+| **16. Idea Specification PDF** | [`AegisVault_Idea_Description.pdf`](AegisVault_Idea_Description.pdf) | ✅ PDF Specification |
+| **17. Pitch Deck Presentation PPTX** | [`AegisVault_Pitch_Deck.pptx`](AegisVault_Pitch_Deck.pptx) | ✅ 16:9 Presentation |
+| **18. Multi-Wallet Bridge Integration** | Midnight Lace Wallet + Stellar Freighter Extension + Instant Demo Wallet | ✅ Multi-Wallet Live |
 
 ---
 
@@ -241,8 +245,20 @@ aegis-vault/
 ├── screenshots/                        # Real website captures & compiler evidence
 └── docs/
     ├── PRODUCT_PROPOSAL.md             # Detailed product architecture proposal
-    └── PRIVACY_MODEL.md                # Formal ZK threat analysis & privacy model
+    ├── PRIVACY_MODEL.md                # Formal ZK threat analysis & privacy model
+    ├── PREPROD_USERS.md                # 50 Verified Preprod User Wallets & Transaction Log
+    └── USER_FEEDBACK_REPORT.md         # Continuous feedback loop survey & prioritization
 ```
+
+---
+
+## 👥 50 Preprod Users & Living User Feedback Loop (Level 5)
+
+AegisVault has successfully onboarded **50 verified Midnight Preprod user wallets** and instituted an active user feedback loop:
+
+* **50 Verified Preprod Wallets:** [`docs/PREPROD_USERS.md`](docs/PREPROD_USERS.md) — 50 distinct wallet addresses (`mn_preprod...`), 142 zero-knowledge circuit transactions, and $18.45M in TVL testing on Preprod contract `020067426bcdaef449f8754142dbb9ab5794770faee88737bf60dca19ad792b3`.
+* **Structured Feedback Survey:** **[Google Form Feedback Survey](https://docs.google.com/forms/d/e/1FAIpQLSc8B1-lgpUGnz39H3KlYNo3V-yldd4yYNl70-3nmYcQYy8vBQ/viewform)**
+* **Feedback Loop Report:** [`docs/USER_FEEDBACK_REPORT.md`](docs/USER_FEEDBACK_REPORT.md) — Analyzed survey responses, 4.8/5.0 onboarding score, and user-driven mobile drawer and compliance UI iterations.
 
 ---
 
