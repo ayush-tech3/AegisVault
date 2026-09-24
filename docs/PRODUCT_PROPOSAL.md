@@ -5,6 +5,7 @@
 **Author / Developer:** Ayush Kumar  
 **Repository:** [https://github.com/ayush-tech3/AegisVault](https://github.com/ayush-tech3/AegisVault)  
 **Live Demo (Netlify):** [https://aegisvalutmoonlight.netlify.app/](https://aegisvalutmoonlight.netlify.app/)  
+**Product X Profile:** [https://x.com/AegisVaultZK](https://x.com/AegisVaultZK)  
 **Network Deployment:** Midnight Preprod (`NetworkId.Preprod`)  
 **Contract Address:** `020067426bcdaef449f8754142dbb9ab5794770faee88737bf60dca19ad792b3`  
 **Environment Config:** `frontend/src/environments/environment.ts`

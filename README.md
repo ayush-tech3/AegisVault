@@ -5,6 +5,7 @@
 [![Midnight Network](https://img.shields.io/badge/Midnight-Preprod-blue?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEyIDJBMTAgMTAgMCAxIDAgMjIgMTJBMTAgMTAgMCAwIDAgMTIgMlptMCAxOGE4IDggMCAxIDEgOC04QTggOCAwIDAgMSAxMiAyMFoiLz48L3N2Zz4=)](https://midnight.network)
 [![Compact Language](https://img.shields.io/badge/Compact%20Language-v0.19.0-indigo)](https://midnight.network)
 [![CI/CD Pipeline](https://github.com/ayush-tech3/AegisVault/actions/workflows/ci.yml/badge.svg)](https://github.com/ayush-tech3/AegisVault/actions)
+[![Product X Profile](https://img.shields.io/badge/X-@AegisVaultZK-black?logo=x)](https://x.com/AegisVaultZK)
 [![Live Demo](https://img.shields.io/badge/🌐_Live%20DApp-Production%20Website-cyan?logo=netlify)](https://aegisvalutmoonlight.netlify.app/)
 [![Demo Video](https://img.shields.io/badge/🎬_Demo%20Video-YouTube%20Walkthrough-red?logo=youtube)](https://youtu.be/GK1J3Dq58_8)
 [![Security Audit](https://img.shields.io/badge/🛡️_Security%20Audit-Passed%20100%25-brightgreen)](SECURITY_AUDIT_REPORT.md)
@@ -37,13 +38,14 @@
 | **6. Preprod Deployed Contract Address** | `020067426bcdaef449f8754142dbb9ab5794770faee88737bf60dca19ad792b3` | ✅ Deployed on Preprod (`NetworkId.Preprod`) |
 | **7. Automated Test Suite (8 Tests)** | [`contract/tests/aegis-vault.test.ts`](contract/tests/aegis-vault.test.ts) | ✅ 8/8 Tests Passing |
 | **8. CI/CD Automated Workflow** | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) | ✅ GitHub Actions Green |
-| **9. Official Approved Idea Reference** | [`PROPOSAL.md`](PROPOSAL.md) *(Private Allowlist Access & Confidential Credentials)* | ✅ Approved Track |
-| **10. Formal ZK Privacy Threat Model** | [`docs/PRIVACY_MODEL.md`](docs/PRIVACY_MODEL.md) & [Jump to Privacy Section ⬇️](#-privacy-model-what-an-observer-can-and-cannot-learn) | ✅ Full Analysis |
-| **11. Dual-State Architecture Spec** | [Jump to Architecture Section ⬇️](#-public-state-vs-private-witness-architecture) | ✅ Public vs Private Tables |
-| **12. Security & Circuit Audit Report** | [`SECURITY_AUDIT_REPORT.md`](SECURITY_AUDIT_REPORT.md) | ✅ Passed 100% |
-| **13. Idea Specification PDF** | [`AegisVault_Idea_Description.pdf`](AegisVault_Idea_Description.pdf) | ✅ PDF Specification |
-| **14. Pitch Deck Presentation PPTX** | [`AegisVault_Pitch_Deck.pptx`](AegisVault_Pitch_Deck.pptx) | ✅ 16:9 Presentation |
-| **15. Multi-Wallet Bridge Integration** | Midnight Lace Wallet + Stellar Freighter Extension + Instant Demo Wallet | ✅ Multi-Wallet Live |
+| **9. Product Public X Profile** | [x.com/AegisVaultZK](https://x.com/AegisVaultZK) | ✅ Building in Public |
+| **10. Official Approved Idea Reference** | [`PROPOSAL.md`](PROPOSAL.md) *(Private Allowlist Access & Confidential Credentials)* | ✅ Approved Track |
+| **11. Formal ZK Privacy Threat Model** | [`docs/PRIVACY_MODEL.md`](docs/PRIVACY_MODEL.md) & [Jump to Privacy Section ⬇️](#-privacy-model-what-an-observer-can-and-cannot-learn) | ✅ Full Analysis |
+| **12. Dual-State Architecture Spec** | [Jump to Architecture Section ⬇️](#-public-state-vs-private-witness-architecture) | ✅ Public vs Private Tables |
+| **13. Security & Circuit Audit Report** | [`SECURITY_AUDIT_REPORT.md`](SECURITY_AUDIT_REPORT.md) | ✅ Passed 100% |
+| **14. Idea Specification PDF** | [`AegisVault_Idea_Description.pdf`](AegisVault_Idea_Description.pdf) | ✅ PDF Specification |
+| **15. Pitch Deck Presentation PPTX** | [`AegisVault_Pitch_Deck.pptx`](AegisVault_Pitch_Deck.pptx) | ✅ 16:9 Presentation |
+| **16. Multi-Wallet Bridge Integration** | Midnight Lace Wallet + Stellar Freighter Extension + Instant Demo Wallet | ✅ Multi-Wallet Live |
 
 ---
 

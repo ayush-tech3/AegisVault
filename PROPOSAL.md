@@ -1,8 +1,9 @@
 # AegisVault: Product Proposal & Architecture Specification
-**Midnight Network Level 1, 2 & 3 Program Submission (Moonshot Moon Phase)**
+**Midnight Network Level 1, 2, 3 & 4 Program Submission (Moonshot Moon Phase)**
 
 * **Live Frontend Demo:** [https://aegisvalutmoonlight.netlify.app/](https://aegisvalutmoonlight.netlify.app/)
 * **Demo Video (YouTube):** [https://youtu.be/GK1J3Dq58_8](https://youtu.be/GK1J3Dq58_8)
+* **Product X Profile:** [https://x.com/AegisVaultZK](https://x.com/AegisVaultZK)
 * **Repository:** [https://github.com/ayush-tech3/AegisVault](https://github.com/ayush-tech3/AegisVault)
 * **Deployed Contract:** `020067426bcdaef449f8754142dbb9ab5794770faee88737bf60dca19ad792b3` (`Midnight Preprod / NetworkId.Preprod`)
 * **Environment Config:** [`frontend/src/environments/environment.ts`](frontend/src/environments/environment.ts) (`NetworkId.Preprod`)
