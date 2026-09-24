@@ -1,6 +1,7 @@
 # 📋 AegisVault — User Feedback & Continuous Feedback Loop Report
 
 > **Official Feedback Form:** [https://docs.google.com/forms/d/e/1FAIpQLSc8B1-lgpUGnz39H3KlYNo3V-yldd4yYNl70-3nmYcQYy8vBQ/viewform](https://docs.google.com/forms/d/e/1FAIpQLSc8B1-lgpUGnz39H3KlYNo3V-yldd4yYNl70-3nmYcQYy8vBQ/viewform)  
+> **Live Responses Sheet:** [https://docs.google.com/spreadsheets/d/1n4nP22GdS4SpqSIZDI31G1KT46jZx-UVVki-NeH1CEU/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1n4nP22GdS4SpqSIZDI31G1KT46jZx-UVVki-NeH1CEU/edit?usp=sharing)  
 > **Live DApp:** [https://aegisvalutmoonlight.netlify.app/](https://aegisvalutmoonlight.netlify.app/)  
 > **Target Network:** Midnight Preprod (`preprod`)
 
@@ -74,5 +75,6 @@ Based on the feedback gathered:
 
 ## 🔗 4. Continuous Feedback Channels
 * **Feedback Form:** [Google Form Survey](https://docs.google.com/forms/d/e/1FAIpQLSc8B1-lgpUGnz39H3KlYNo3V-yldd4yYNl70-3nmYcQYy8vBQ/viewform)
+* **Live Response Sheet:** [Google Sheets Live Data](https://docs.google.com/spreadsheets/d/1n4nP22GdS4SpqSIZDI31G1KT46jZx-UVVki-NeH1CEU/edit?usp=sharing)
 * **X (formerly Twitter):** [@AegisVaultZK](https://x.com/AegisVaultZK)
 * **GitHub Issues:** [github.com/ayush-tech3/AegisVault/issues](https://github.com/ayush-tech3/AegisVault/issues)

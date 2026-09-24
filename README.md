@@ -6,6 +6,7 @@
 [![Compact Language](https://img.shields.io/badge/Compact%20Language-v0.19.0-indigo)](https://midnight.network)
 [![CI/CD Pipeline](https://github.com/ayush-tech3/AegisVault/actions/workflows/ci.yml/badge.svg)](https://github.com/ayush-tech3/AegisVault/actions)
 [![User Feedback Form](https://img.shields.io/badge/📝_Feedback%20Form-Google%20Form-purple)](https://docs.google.com/forms/d/e/1FAIpQLSc8B1-lgpUGnz39H3KlYNo3V-yldd4yYNl70-3nmYcQYy8vBQ/viewform)
+[![Feedback Responses](https://img.shields.io/badge/📊_Survey%20Responses-Google%20Sheets-success)](https://docs.google.com/spreadsheets/d/1n4nP22GdS4SpqSIZDI31G1KT46jZx-UVVki-NeH1CEU/edit?usp=sharing)
 [![50 Preprod Users](https://img.shields.io/badge/👥_Preprod%20Users-50%20Verified%20Wallets-emerald)](docs/PREPROD_USERS.md)
 [![Product X Profile](https://img.shields.io/badge/X-@AegisVaultZK-black?logo=x)](https://x.com/AegisVaultZK)
 [![Live Demo](https://img.shields.io/badge/🌐_Live%20DApp-Production%20Website-cyan?logo=netlify)](https://aegisvalutmoonlight.netlify.app/)
@@ -37,7 +38,7 @@
 | **3. Live Production DApp** | **[aegisvalutmoonlight.netlify.app](https://aegisvalutmoonlight.netlify.app/)** | ✅ Live & Responsive |
 | **4. Demo Video Walkthrough** | **[Watch 1080p Demo on YouTube](https://youtu.be/GK1J3Dq58_8)** | ✅ Live on YouTube |
 | **5. 50 Verified Preprod User Wallets** | [`docs/PREPROD_USERS.md`](docs/PREPROD_USERS.md) | ✅ 50 Active Wallets |
-| **6. Continuous Feedback Loop & Report** | [`docs/USER_FEEDBACK_REPORT.md`](docs/USER_FEEDBACK_REPORT.md) & [Google Form](https://docs.google.com/forms/d/e/1FAIpQLSc8B1-lgpUGnz39H3KlYNo3V-yldd4yYNl70-3nmYcQYy8vBQ/viewform) | ✅ Structured Survey |
+| **6. Continuous Feedback Loop & Report** | [`docs/USER_FEEDBACK_REPORT.md`](docs/USER_FEEDBACK_REPORT.md) \| [Google Form](https://docs.google.com/forms/d/e/1FAIpQLSc8B1-lgpUGnz39H3KlYNo3V-yldd4yYNl70-3nmYcQYy8vBQ/viewform) \| [Live Sheet](https://docs.google.com/spreadsheets/d/1n4nP22GdS4SpqSIZDI31G1KT46jZx-UVVki-NeH1CEU/edit?usp=sharing) | ✅ Structured Survey & Live Data |
 | **7. Compact Smart Contract (v0.19)** | [`contract/src/index.compact`](contract/src/index.compact) | ✅ 4 Circuits Verified |
 | **8. Preprod Deployed Contract Address** | `020067426bcdaef449f8754142dbb9ab5794770faee88737bf60dca19ad792b3` | ✅ Deployed on Preprod (`NetworkId.Preprod`) |
 | **9. Automated Test Suite (8 Tests)** | [`contract/tests/aegis-vault.test.ts`](contract/tests/aegis-vault.test.ts) | ✅ 8/8 Tests Passing |
@@ -258,6 +259,7 @@ AegisVault has successfully onboarded **50 verified Midnight Preprod user wallet
 
 * **50 Verified Preprod Wallets:** [`docs/PREPROD_USERS.md`](docs/PREPROD_USERS.md) — 50 distinct wallet addresses (`mn_preprod...`), 142 zero-knowledge circuit transactions, and $18.45M in TVL testing on Preprod contract `020067426bcdaef449f8754142dbb9ab5794770faee88737bf60dca19ad792b3`.
 * **Structured Feedback Survey:** **[Google Form Feedback Survey](https://docs.google.com/forms/d/e/1FAIpQLSc8B1-lgpUGnz39H3KlYNo3V-yldd4yYNl70-3nmYcQYy8vBQ/viewform)**
+* **Live Survey Responses:** **[Google Sheets Live Response Data](https://docs.google.com/spreadsheets/d/1n4nP22GdS4SpqSIZDI31G1KT46jZx-UVVki-NeH1CEU/edit?usp=sharing)**
 * **Feedback Loop Report:** [`docs/USER_FEEDBACK_REPORT.md`](docs/USER_FEEDBACK_REPORT.md) — Analyzed survey responses, 4.8/5.0 onboarding score, and user-driven mobile drawer and compliance UI iterations.
 
 ---
