@@ -155,12 +155,12 @@ def build_pdf(filename="AegisVault_Idea_Description.pdf"):
 
     # Meta Info Box Table
     meta_data = [
-        [Paragraph("<b>Target Network:</b>", body_style), Paragraph("Midnight Preprod Testnet (0x01)", body_style),
+        [Paragraph("<b>Target Network:</b>", body_style), Paragraph("Midnight Preprod (preprod)", body_style),
          Paragraph("<b>Language / Compiler:</b>", body_style), Paragraph("Compact v0.19 (BLS12-381)", body_style)],
         [Paragraph("<b>Live Website:</b>", body_style), Paragraph("<a href='https://aegisvalutmoonlight.netlify.app/' color='#4f46e5'>aegisvalutmoonlight.netlify.app</a>", body_style),
          Paragraph("<b>GitHub Repo:</b>", body_style), Paragraph("<a href='https://github.com/ayush-tech3/AegisVault' color='#4f46e5'>github.com/ayush-tech3/AegisVault</a>", body_style)],
         [Paragraph("<b>Demo Video:</b>", body_style), Paragraph("<a href='https://youtu.be/GK1J3Dq58_8' color='#dc2626'>youtu.be/GK1J3Dq58_8 (1080p)</a>", body_style),
-         Paragraph("<b>Contract Address:</b>", body_style), Paragraph("0x4e8a...1928 (Preprod)", body_style)]
+         Paragraph("<b>Contract Address:</b>", body_style), Paragraph("020067...92b3 (Preprod)", body_style)]
     ]
     meta_table = Table(meta_data, colWidths=[110, 150, 110, 134])
     meta_table.setStyle(TableStyle([
@@ -540,7 +540,7 @@ def build_pptx(filename="AegisVault_Pitch_Deck.pptx"):
 
     grid_items = [
         ("Compact Smart Contract", "contract/src/index.compact (4 Circuits: Deposit, Borrow, Repay, Audit)", C_CYAN),
-        ("Preprod Deployment", "Contract 0x4e8a...1928 Live on Midnight Preprod Testnet", C_CYAN),
+        ("Preprod Deployment", "Contract 020067...92b3 Configured on Midnight Preprod", C_CYAN),
         ("Automated Test Suite", "8/8 Unit Tests Passing (Constraint checks, double-borrow, KYC)", C_EMERALD),
         ("Live Production DApp", "https://aegisvalutmoonlight.netlify.app/ (Mobile & Desktop)", C_EMERALD),
         ("Security Audit Report", "SECURITY_AUDIT_REPORT.md (100% Passed, 0 Vulnerabilities)", C_INDIGO),
