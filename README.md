@@ -7,7 +7,7 @@
 [![CI/CD Pipeline](https://github.com/ayush-tech3/AegisVault/actions/workflows/ci.yml/badge.svg)](https://github.com/ayush-tech3/AegisVault/actions)
 [![User Feedback Form](https://img.shields.io/badge/📝_Feedback%20Form-Google%20Form-purple)](https://docs.google.com/forms/d/e/1FAIpQLSc8B1-lgpUGnz39H3KlYNo3V-yldd4yYNl70-3nmYcQYy8vBQ/viewform)
 [![Feedback Responses](https://img.shields.io/badge/📊_Survey%20Responses-Google%20Sheets-success)](https://docs.google.com/spreadsheets/d/1n4nP22GdS4SpqSIZDI31G1KT46jZx-UVVki-NeH1CEU/edit?usp=sharing)
-[![50 Preprod Users](https://img.shields.io/badge/👥_Preprod%20Users-70%20Verified%20Wallets-emerald)](docs/PREPROD_USERS.md)
+[![70 Preprod Users](https://img.shields.io/badge/👥_Preprod%20Users-70%20Verified%20Wallets-emerald)](docs/PREPROD_USERS.md)
 [![Product X Profile](https://img.shields.io/badge/X-@AegisVaultZK-black?logo=x)](https://x.com/AegisVaultZK)
 [![Live Demo](https://img.shields.io/badge/🌐_Live%20DApp-Production%20Website-cyan?logo=netlify)](https://aegisvalutmoonlight.netlify.app/)
 [![Demo Video](https://img.shields.io/badge/🎬_Demo%20Video-YouTube%20Walkthrough-red?logo=youtube)](https://youtu.be/GK1J3Dq58_8)
